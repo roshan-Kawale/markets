@@ -14,7 +14,10 @@ const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "./frontend/build")));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors())
+app.use(cors({
+  origin: '*', // or 'https://markets-two.vercel.app/'
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+}));
 
 
 dotenv.config(); 
