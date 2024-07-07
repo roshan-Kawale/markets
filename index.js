@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./backend/routes/auth.js";
 import { errormiddleware } from "./backend/utils/error.js";
 import path from "path";
+import cors from "cors";
 
 const app = express();
 
@@ -13,11 +14,7 @@ const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "./frontend/build")));
 app.use(express.json());
 app.use(cookieParser());
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors())
 
 
 dotenv.config(); 
