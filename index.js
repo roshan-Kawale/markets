@@ -12,7 +12,6 @@ const app = express();
 const __dirname = path.resolve();
 
 app.use(express.static(path.join(__dirname, "./frontend/build")));
-app.use(express.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -20,6 +19,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
+app.use(express.json());
 
 dotenv.config(); 
 // Connect to MongoDB using Mongoose
