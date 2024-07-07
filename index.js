@@ -11,15 +11,12 @@ const app = express();
 
 const __dirname = path.resolve();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "./frontend/build")));
 app.use(cookieParser());
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-app.use(express.json());
+app.use(cors({ origin: '*' }));
+
 
 dotenv.config(); 
 // Connect to MongoDB using Mongoose
@@ -48,6 +45,6 @@ app.get("*", (req, res) => {
 
 app.use(errormiddleware);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log('Server started on port 5000');
 });
