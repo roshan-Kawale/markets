@@ -11,12 +11,11 @@ const app = express();
 
 const __dirname = path.resolve();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "./frontend/build")));
 app.use(cookieParser());
 app.use(cors({ origin: '*' }));
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 dotenv.config(); 
 // Connect to MongoDB using Mongoose
@@ -31,10 +30,6 @@ mongoose
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error.message); 
   });
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
 app.use("/api/auth" , authRouter);
 
