@@ -20,7 +20,7 @@ const ProductCard = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/product/getall");
+      const res = await fetch("/api/product/getall");
       const data = await res.json();
       setProducts(data);
     } catch (error) {
@@ -36,7 +36,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/product/like/${id}`, {
+      const res = await fetch(`/api/product/like/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/product/comment/${id}`, {
+      const res = await fetch(`/api/product/comment/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
