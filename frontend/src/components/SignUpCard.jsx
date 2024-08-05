@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { userAtom } from "../atoms/store";
+import { useAtom } from "jotai";
+import { createCustomer } from "../api/customer";
 
 function SignUpCard() {
   const [formData, setFormData] = useState({role : "consumer"});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-
+  const [user, setUser] = useAtom(userAtom);
   const navigate = useNavigate();
 
   const handleShowPassword = () => setShowPassword(!showPassword);
@@ -28,7 +31,7 @@ function SignUpCard() {
     event.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch("http://localhost:5000/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,9 +44,17 @@ function SignUpCard() {
         setError(data.message);
         return;
       }
+      setUser(data);
       setLoading(false);
       setError(null);
-      navigate("/");
+      if (data.role === "shopkeeper") {
+        navigate("/detail");
+      } else {
+        const value = await createCustomer(data._id);
+        if (value) {
+          navigate("/", { replace: true });
+        }
+      }
     } catch (error) {
       setLoading(false);
       setError(error.message);

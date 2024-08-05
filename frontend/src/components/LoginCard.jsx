@@ -1,11 +1,15 @@
+import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { userAtom } from "../atoms/store";
 
 function LoginCard() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+
+  const [user, setUser] = useAtom(userAtom);
 
   const navigate = useNavigate();
 
@@ -22,7 +26,7 @@ function LoginCard() {
     event.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("/api/auth/signin", {
+      const res = await fetch("http://localhost:5000/api/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,15 +39,16 @@ function LoginCard() {
         setError(data.message);
         return;
       }
+      
+      setUser(data);
       setLoading(false);
       setError(null);
-      navigate("/");
+      navigate("/")
     } catch (error) {
       setLoading(false);
       setError(error.message);
     }
   };
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -51,10 +56,9 @@ function LoginCard() {
         <div className="flex flex-col justify-center items-center gap-2">
           <h2 className="text-2xl font-bold text-gray-800">Agent Login</h2>
           <p className="flex flex-col justify-center items-center text-gray-600 text-md font-semibold">
-            Hey, Enter your details to get sign in  <br />
-            <span>to your account</span> 
+            Hey, Enter your details to get sign in <br />
+            <span>to your account</span>
           </p>
-          
         </div>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col mb-4">

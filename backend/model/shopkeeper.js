@@ -11,13 +11,19 @@ const shopkeeperSchema = new mongoose.Schema({
     required: true
   },
   shopAddress: {
-    type: String,
+    type: {
+      area: { type: String, required: true },
+      city: { type: String, required: true },
+      district: { type: String, required: true },
+      state: { type: String, required: true },
+      country: { type: String, required: true }
+    },
     required: true
   },
   shopDescription: {
     type: String
   },
-  contactNumber: {
+  contactNumber: [{
     type: String,
     required: true,
     validate: {
@@ -26,11 +32,25 @@ const shopkeeperSchema = new mongoose.Schema({
       },
       message: 'Invalid contact number. Please enter a 10-digit phone number.'
     }
-  },
+  }],
   products: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'
-  }]
+  }],
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+
+  following: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ]
+
 });
 
 const Shopkeeper = mongoose.model('Shopkeeper', shopkeeperSchema);
