@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
   productName: {
-    type: String
+    type: String,
   },
   caption: {
-    type: String
+    type: String,
   },
   imageUrls: {
     type: Array,
@@ -14,6 +14,7 @@ const productSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Shopkeeper",
+    required: true,
   },
   price: {
     type: Number,
@@ -25,7 +26,7 @@ const productSchema = new mongoose.Schema({
     min: [0, "wrong min discount"],
     max: [99, "wrong max discount"],
   },
-  category: { type: String},
+  category: { type: String },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -48,6 +49,15 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  ratings: [
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      rating: { type: Number, required: true },
+    },
+  ],
+  overallRating : {
+    type: Number,
+  }
 });
 
 const Product = mongoose.model("Product", productSchema);

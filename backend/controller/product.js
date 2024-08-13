@@ -1,7 +1,7 @@
 import Product from "../model/product.js";
 import Shopkeeper from "../model/shopkeeper.js";
 
-export const createProduct = async (req, res , next) => {
+export const createProduct = async (req, res, next) => {
   try {
     const {
       productName,
@@ -13,13 +13,13 @@ export const createProduct = async (req, res , next) => {
       category,
     } = req.body;
 
-    const validUser = await Shopkeeper.findOne({userId : owner}).populate();
-    console.log(validUser._id)
+    const validUser = await Shopkeeper.findOne({ userId: owner }).populate();
+    console.log(validUser._id);
     if (!validUser) {
       const error = {
-        statusCode : 400,
-        message: 'Not valid user'
-      }
+        statusCode: 400,
+        message: "Not valid user",
+      };
       return next(error);
     }
 
@@ -27,7 +27,7 @@ export const createProduct = async (req, res , next) => {
       productName,
       caption,
       imageUrls,
-      owner : validUser._id,
+      owner: validUser._id,
       price,
       discountPercentage,
       category,
@@ -44,9 +44,28 @@ export const createProduct = async (req, res , next) => {
 
 export const getAllProducts = async (req, res, next) => {
   try {
-    const products = await Product.find().populate('owner');
+    const searchTerm = req.query.searchTerm || "";
+    const category = req.query.category || "";
+    const city = req.query.city || "";
+    const rating = req.query.rating || "";
 
-    res.status(200).json(products);
+    let query = {
+      productName: { $regex: searchTerm, $options: "i" },
+      category: { $regex: category, $options: "i" },
+    };
+
+    if (rating) {
+      query.overallRating = { $gte: rating };
+    }
+
+    const products = await Product.find(query).populate({
+      path: 'owner',
+      match: city ? { 'shopAddress.city': { $regex: city, $options: "i" } } : {}
+    });
+
+    const filteredProducts = products.filter(product => product.owner !== null);
+
+    res.status(200).json(filteredProducts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error retrieving products" });
@@ -56,13 +75,25 @@ export const getAllProducts = async (req, res, next) => {
 export const getProductById = async (req, res, next) => {
   try {
     const productId = req.params.productId;
-    const product = await Product.findById(productId).populate('owner');
+    const product = await Product.findById(productId)
+      .populate({
+        path: "likes",
+        select: "name role",
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          select: "name role",
+        },
+      })
+      .populate("owner");
 
     if (!product) {
       const error = {
         statusCode: 404,
-        message: 'Product not found'
-      }
+        message: "Product not found",
+      };
       return next(error);
     }
 
@@ -116,7 +147,7 @@ export const likeAndUnlikeProduct = async (req, res) => {
 export const commentOnProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    console.log(product)
+    console.log(product);
 
     if (!product) {
       return res.status(404).json({
@@ -161,5 +192,38 @@ export const commentOnProduct = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+
+// rating systemm
+export const ratingOnProduct =  async (req, res) => {
+  const { productId } = req.params;
+  const { rating , userId } = req.body;
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).send({ message: 'Product not found' });
+    }
+
+    const existingRating = product.ratings.find((rating) => rating.userId.toString() === userId.toString());
+    if (existingRating) {
+      existingRating.rating = rating;
+    } else {
+      product.ratings.push({ userId, rating });
+    }
+
+    // Calculate the overall rating
+    const totalRating = product.ratings.reduce((acc, curr) => acc + curr.rating, 0);
+    const overallRating = (totalRating / product.ratings.length).toFixed(1);
+    // Update the product document with the new overall rating
+    product.overallRating = overallRating;
+
+    await product.save();
+    res.send({ message: 'Rating submitted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Error submitting rating' });
   }
 };

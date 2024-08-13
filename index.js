@@ -21,9 +21,9 @@ app.use(cookieParser());
 app.use(cors({ origin: '*' }));
 
 
-dotenv.config(); 
+dotenv.config();
 // Connect to MongoDB using Mongoose
-mongoose 
+mongoose
   .connect(process.env.MONGO_DB)
   .then(() => {
     console.log('Connected to MongoDB');

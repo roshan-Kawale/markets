@@ -5,8 +5,17 @@ module.exports = {
   ],
   theme: {
     extend: {
-      boxShadow: {
-        neu: '10px 10px 20px #d9d9d9, -10px -10px 20px #ffffff',
+      colors: {
+        gray: {
+          100: '#f7f7f7',
+          200: '#e5e5e5',
+          300: '#ccc',
+          400: '#aaa',
+          500: '#666',
+          600: '#444',
+          700: '#333',
+          800: '#222',
+        },
       },
     },
   },

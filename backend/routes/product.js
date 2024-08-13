@@ -6,6 +6,7 @@ import {
   getAllProducts,
   getProductById,
   likeAndUnlikeProduct,
+  ratingOnProduct,
 } from "../controller/product.js";
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router
   .get("/getall", getAllProducts)
   .get("/get/:productId", getProductById)
   .post("/like/:id", likeAndUnlikeProduct)
-  .post("/comment/:id", commentOnProduct);
+  .post("/comment/:id", commentOnProduct)
+  .post("/rate/:productId", ratingOnProduct)
 
 export default router;

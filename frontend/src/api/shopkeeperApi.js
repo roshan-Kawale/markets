@@ -1,6 +1,6 @@
 export const updateShopkeeper = async (Data) => {
     try {
-        const res = await fetch("/api/shopkeeper/update", {
+        const res = await fetch("http://localhost:5000/api/shopkeeper/update", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

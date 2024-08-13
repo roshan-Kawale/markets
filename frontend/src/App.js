@@ -8,6 +8,7 @@ import DetailPage from './pages/DetailPage';
 import Protected from './auth/protected';
 import ProductCreatePage from './pages/ProductCreatePage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import EmployeeprofilePage from './pages/EmployeeprofilePage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
        <Router>
       <Routes>
       <Route path="/" element={<Protected><HomePage></HomePage></Protected>} />
+      <Route path="/profile" element={<EmployeeprofilePage/>} />
       <Route path="/login" element={<LoginPage/>} />
       <Route path="/signup" element={<SignUpPage/>} />
       <Route path="/profile/:userId" element={<ProfilePage/>} />

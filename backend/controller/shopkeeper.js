@@ -142,7 +142,13 @@ export const getShopkeeper = async (req, res, next) => {
       return res.status(404).json({ message: "Shopkeeper not found" });
     }
 
-    res.status(200).json(shopkeeper);
+    const validUser = await User.findById(id);
+    if (!validUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const { password: pass, ...userData } = validUser._doc;
+
+    res.status(200).json({shopkeeper , userData});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error retrieving shopkeeper" });

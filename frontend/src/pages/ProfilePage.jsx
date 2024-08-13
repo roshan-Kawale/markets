@@ -7,7 +7,7 @@ import CustomerProfile from '../components/CustomerProfile';
 function ProfilePage() {
   const [user] = useAtom(userAtom);
   return (
-    <div>
+    <div className='bg-[#272629] h-screen'>
       { user.role=== "shopkeeper" && <ShopProfileCard/> }
     </div>
   )

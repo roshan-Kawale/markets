@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaApple } from "react-icons/fa";
 import { FaGooglePlay } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
@@ -13,6 +13,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   const [user] = useAtom(userAtom);
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -21,9 +22,21 @@ const Header = () => {
     setProfileMenuOpen(!profileMenuOpen);
   };
 
-  const handleSubmit = () => {
-    // Your search logic here
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/?${searchQuery}`);
+  };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [window.location.search]);
 
   return (
     <header className="bg-white border-2 z-10 fixed w-full text-white py-2 px-2">
@@ -102,7 +115,7 @@ const Header = () => {
         </div> */}
 
         <div className="sm:flex items-center">
-          <h1 className="text-3xl font-bold text-black">RopBop</h1>
+          <h1 className="text-3xl font-bold text-black">Market</h1>
         </div>
         {/* <div className="flex gap-2 mr-2">
           <Link to="https://play.google.com/store/apps/details?id=com.ropbop">
@@ -131,7 +144,7 @@ const Header = () => {
           <input
             type="text"
             placeholder="Search..."
-            className="bg-transparent focus:outline-none w-36 sm:w-80"
+            className="bg-transparent focus:outline-none w-36 sm:w-80 text-black"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

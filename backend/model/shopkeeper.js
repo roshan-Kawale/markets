@@ -37,20 +37,6 @@ const shopkeeperSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'
   }],
-  followers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
-
-  following: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ]
-
 });
 
 const Shopkeeper = mongoose.model('Shopkeeper', shopkeeperSchema);

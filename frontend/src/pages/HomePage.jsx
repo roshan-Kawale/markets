@@ -14,7 +14,7 @@ function HomePage() {
        </div>
         <div className="flex justify-start">
         <ProductCard className="p-4" />
-        <CommentCard/>
+        {/* <CommentCard/> */}
         </div>
       </div>
     </div>
