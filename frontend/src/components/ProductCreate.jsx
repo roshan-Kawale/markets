@@ -101,7 +101,7 @@ console.log(files[0]?.name)
         return setError("Discount price must be lower than regular price");
       setLoading(true);
       setError(false);
-      const res = await fetch("http://localhost:5000/api/product/create", {
+      const res = await fetch("/api/product/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
