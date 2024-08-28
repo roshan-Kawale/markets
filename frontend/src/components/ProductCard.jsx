@@ -13,12 +13,22 @@ import CommentCard from "./CommentCard";
 import Slider from "./Slider";
 import LikeCard from "./LikeCard";
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
+import { X } from "lucide-react";
+
 const ProductCard = () => {
   const [products, setProducts] = useAtom(productAtom);
   const [likeToggle, setLikeToggle] = useState(false);
   const [likesValue, setLikesValue] = useState("");
   const [likeProductId, setLikeProductId] = useState(null);
-  const [commentValue, setCommentValue] = useState("");
   const [commentsValue, setCommentsValue] = useState([]);
   const [commentToggle, setCommentToggle] = useState(false);
   const [productId, setProductId] = useState(null);
@@ -28,7 +38,6 @@ const ProductCard = () => {
   const [user] = useAtom(userAtom);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [rating, setRating] = useState(0);
   const [ratingForm, setRatingForm] = useState({});
   const [ratingId, setRatingId] = useState(false);
 
@@ -61,36 +70,6 @@ const ProductCard = () => {
         },
         body: JSON.stringify({ userId: user._id }),
       });
-      const data = await res.json();
-      if (data.success === false) {
-        setLoading(false);
-        setError(data.message);
-        return;
-      }
-      setLoading(false);
-      setError(null);
-    } catch (error) {
-      setLoading(false);
-      setError(error.message);
-    } finally {
-      fetchData(); // Call fetchData again to re-fetch the product data
-    }
-  };
-
-  const addCommentHandler = async ({ e, id }) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `/api/product/comment/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user._id, comment: commentValue }),
-        }
-      );
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
@@ -214,7 +193,7 @@ const ProductCard = () => {
 
   return (
     <>
-      <div className="lg:absolute left-1/4 md:w-2/3 lg:w-1/2 lg:mt-14 md:mt-28 flex flex-wrap justify-center mb-4">
+      <div className="lg:absolute left-1/4 md:w-2/3 lg:w-1/2 lg:mt-14 mt-28 flex flex-wrap justify-center mb-4">
         {products?.map((product, index) => (
           <div
             key={index}
@@ -288,7 +267,7 @@ const ProductCard = () => {
                     <FaRegHeart />
                   )}
                 </div>
-                <div className="flex justify-center items-center gap-1">
+                <div className="hidden sm:flex justify-center items-center gap-1">
                   <p className="text-gray-500 text-sm font-semibold">
                     {product?.likes.length ? product.likes.length : ""}
                   </p>{" "}
@@ -299,11 +278,40 @@ const ProductCard = () => {
                     Like
                   </span>
                   {likeToggle && <LikeCard Likes={likesValue} />}
+                 
                 </div>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild onTouchStart={(e) =>handleLikeToggle({ e, id: product._id })}>
+                    <div className="flex justify-center items-center gap-1 sm:hidden">
+                    <p className="text-gray-500 text-sm font-semibold">
+                    {product?.likes.length ? product.likes.length : ""}
+                  </p>{" "}
+                      <div
+                      >
+                        Like
+                      </div>
+                    </div>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="block sm:hidden ">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="flex justify-end">
+                      <AlertDialogCancel>
+                      <X />
+                      </AlertDialogCancel>
+                      </AlertDialogTitle>
+                      
+                        <AlertDialogDescription className="overflow-scroll max-h-[600px]">
+                          
+                        {product?.likes.length ? <LikeCard Likes={likesValue} /> : <span className="font-bold text-xl text-black">Not like yet</span>}
+                        </AlertDialogDescription>
+                     
+                    </AlertDialogHeader>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
               <button className="flex gap-1 items-center text-gray-500 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 <FaRegCommentDots />
-                <div className="flex justify-center items-center gap-1">
+                <div className="sm:flex justify-center items-center gap-1 hidden">
                   <p className="text-gray-500 text-sm font-semibold">
                     {product?.comments.length ? product.comments.length : ""}
                   </p>{" "}
@@ -319,6 +327,40 @@ const ProductCard = () => {
                     />
                   )}
                 </div>
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild onTouchStart={(e) => handleCommentToggle({ e, id: product._id })}>
+                    <div className="flex justify-center items-center gap-1 sm:hidden">
+                      <p className="text-gray-500 text-sm font-semibold">
+                        {product?.comments.length
+                          ? product.comments.length
+                          : ""}
+                      </p>{" "}
+                      <div
+                      >
+                        comment
+                      </div>
+                    </div>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="block sm:hidden ">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="flex justify-end">
+                      <AlertDialogCancel>
+                      <X />
+                      </AlertDialogCancel>
+                      </AlertDialogTitle>
+                      
+                        <AlertDialogDescription className="overflow-scroll max-h-[600px]">
+                          
+                         { product?.comments.length ? <CommentCard
+                      Comments={commentsValue}
+                      productId={productId}
+                    /> : <span className="font-bold text-xl text-black">Not comment yet</span> }
+                        </AlertDialogDescription>
+                     
+                    </AlertDialogHeader>
+                  </AlertDialogContent>
+                </AlertDialog>
               </button>
               <button className="flex gap-1 items-center text-gray-500 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 <FaRegShareFromSquare />

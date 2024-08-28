@@ -8,6 +8,7 @@ import DetailPage from './pages/DetailPage';
 import Protected from './auth/protected';
 import ProductCreatePage from './pages/ProductCreatePage';
 import ProductDetailPage from './pages/ProductDetailPage';
+import CommentPage from './pages/CommentPage'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/detail" element={<DetailPage/>} />
       <Route path="/productcreate" element={<ProductCreatePage/>} />
       <Route path="/productdetail" element={<ProductDetailPage/>} />
+      <Route path="/comment/:id" element={<CommentPage/>} />
       </Routes>
     </Router>
     </div>

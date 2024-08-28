@@ -2,12 +2,10 @@ import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { productAtom } from "../atoms/store";
+import { FaBars } from "react-icons/fa";
+import { RxCross1 } from "react-icons/rx";
 
-const FilterCard = () => {
-  const [city, setCity] = useState("");
-  const [category, setCategory] = useState("");
-  const [likes, setLikes] = useState("");
-  const [rating, setRating] = useState("");
+const FilterCardInput = ({ setOpen = () => {} }) => {
   const [filterData, setFilterData] = useState("");
   const [ratingToggle, setRatingToggle] = useState(false);
   const [products, setProducts] = useAtom(productAtom);
@@ -65,8 +63,7 @@ const FilterCard = () => {
     "file003",
     "File002",
   ];
-  const likesOptions = ["1-10", "11-20", "21-30", "31-40", "41-50"];
-
+  
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
       setFilterData({ ...filterData, searchTerm: e.target.value });
@@ -98,85 +95,104 @@ const FilterCard = () => {
       urlParams.set("rating", filterData.rating);
     }
     const searchQuery = urlParams.toString();
+    setOpen(false);
     navigate(`/?${searchQuery}`);
   };
 
   return (
-    <div>
-      <div className="lg:hidden md:fixed w-full bg-white z-10  border-b-2 border-gray-950 py-2 mt-[53px]">
-        <h2 className="text-xl font-bold mb-2 tracking-wide">Filter xyz</h2>
+    <>
+      <div className="border-b-2 border-gray-950 mb-2">
+        <h2 className="text-xl font-bold mb-2 tracking-wide">Filter</h2>
       </div>
+      <div className="flex flex-wrap gap-2 flex-col mx-4">
+        <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
+          <label className="text-sm font-bold">City</label>
+          <select
+            id="city"
+            value={filterData.city}
+            onChange={handleChange}
+            className="w-full text-sm text-gray-700 border-2 p-2 my-2"
+          >
+            <option value="">Select City</option>
+            {cities.map((city, index) => (
+              <option key={index} value={city}>
+                {city}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
+          <label className="block text-sm font-bold mb-2">Category</label>
+          <select
+            value={filterData.category}
+            id="category"
+            onChange={handleChange}
+            className="block w-full text-sm text-gray-700 border-2 p-2 my-2"
+          >
+            <option value="">Select Category</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
+          <label className="block text-sm font-bold mb-2">Rating</label>
+          <div className="flex p-2 justify-between border-2 rounded-xl shadow-lg w-full">
+            <div
+              onMouseOver={() => setRatingToggle(true)}
+              className="flex flex-col justify-center items-center w-full"
+            >
+              <input
+                type="range"
+                id="rating"
+                value={filterData.rating}
+                min="1"
+                max="5"
+                step="0.1"
+                onChange={handleChange}
+                className="w-full"
+              />
+
+              {ratingToggle && (
+                <span className="text-lg font-bold ml-2">
+                  {filterData.rating}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        className="bg-gray-700 w-full hover:bg-gray-900 text-white font-bold py-2 px-4 my-2 rounded"
+        onClick={handleSubmit}
+      >
+        Apply Filter
+      </button>
+    </>
+  );
+};
+
+const FilterCard = () => {
+  const [open , setOpen] = useState(false)
+  return (
+    <div>
+      <div className="lg:hidden fixed w-full z-10 bg-white border-b-2 border-gray-950 py-2 mt-[53px] flex items-center gap-2">
+        <div className=""> {open ? <RxCross1 onClick={()=>setOpen(false)} /> : <FaBars onClick={()=>setOpen(true)} /> }</div>
+        <h2 className="text-xl font-bold tracking-wide">Filter</h2>
+      </div>
+
+    {open && <div className="lg:hidden">
+      <div className="fixed md:w-1/3 w-2/3 mt-9 bg-white shadow-xl rounded px-4 py-6 left-0">
+        <FilterCardInput setOpen={setOpen} />
+      </div>
+    </div>}
+
+      {/* filter for large screen */}
       <div className="hidden md:hidden lg:block">
         <div className="lg:fixed lg:w-1/4 w-full lg:h-screen mt-14 bg-white shadow-xl border-2 rounded px-4 py-6">
-          <div className="border-b-2 border-gray-950 mb-2">
-            <h2 className="text-xl font-bold mb-2 tracking-wide">Filter</h2>
-          </div>
-          <div className="flex flex-wrap gap-2 flex-col mx-4">
-            <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
-              <label className="text-sm font-bold">City</label>
-              <select
-                id="city"
-                value={filterData.city}
-                onChange={handleChange}
-                className="w-full text-sm text-gray-700 border-2 p-2 my-2"
-              >
-                <option value="">Select City</option>
-                {cities.map((city, index) => (
-                  <option key={index} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
-              <label className="block text-sm font-bold mb-2">Category</label>
-              <select
-                value={filterData.category}
-                id="category"
-                onChange={handleChange}
-                className="block w-full text-sm text-gray-700 border-2 p-2 my-2"
-              >
-                <option value="">Select Category</option>
-                {categories.map((category, index) => (
-                  <option key={index} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
-            <label className="block text-sm font-bold mb-2">Rating</label>
-              <div className="flex p-2 justify-between border-2 rounded-xl shadow-lg w-full">
-                <div
-                  onMouseOver={()=> setRatingToggle(true)}
-                  className="flex flex-col justify-center items-center w-full"
-                >
-                  <input
-                    type="range"
-                    id="rating"
-                    value={filterData.rating}
-                    min="1"
-                    max="5"
-                    step="0.1"
-                    onChange={handleChange}
-                    className="w-full"
-                  />
-
-                  {ratingToggle && (
-                    <span className="text-lg font-bold ml-2">
-                      {filterData.rating}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          <button
-            className="bg-gray-700 w-full hover:bg-gray-900 text-white font-bold py-2 px-4 my-2 rounded"
-            onClick={handleSubmit}
-          >
-            Apply Filter
-          </button>
+          <FilterCardInput />
         </div>
       </div>
     </div>
