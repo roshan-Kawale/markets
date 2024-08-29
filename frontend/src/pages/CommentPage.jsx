@@ -12,7 +12,7 @@ function CommentPage() {
         e.preventDefault();
         try {
           setLoading(true);
-          const res = await fetch(`/api/product/get/${id}`);
+          const res = await fetch(`http://localhost:5000/api/product/get/${id}`);
           const data = await res.json();
           if (data.success === false) {
             setLoading(false);

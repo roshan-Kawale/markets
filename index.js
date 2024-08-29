@@ -20,7 +20,6 @@ app.use(express.static(path.join(__dirname, "./frontend/build")));
 app.use(cookieParser());
 app.use(cors({ origin: '*' }));
 
-
 dotenv.config();
 // Connect to MongoDB using Mongoose
 mongoose

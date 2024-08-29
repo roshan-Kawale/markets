@@ -4,7 +4,7 @@ import { CgMoreVerticalO } from "react-icons/cg";
 const LikeCardData = ({Likes}) => {
   return (
     <>
-    { Likes.map((Like , index) => (
+    { Likes && Likes.map((Like , index) => (
         <div key={index} className="bg-slate-200 border-2 rounded-md p-4 mb-4">
         <div className="flex items-center mb-2">
           <img
@@ -38,7 +38,9 @@ function LikeCard({Likes}) {
 
 <div className="relative overflow-scroll sm:hidden flex flex-col right-0">   
 <LikeCardData Likes={Likes}/>
+
 </div>
+
 </>
   )
 }

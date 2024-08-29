@@ -1,6 +1,6 @@
 export const createCustomer = async (Data) => {
     try {
-        const res = await fetch("/api/customer/create", {
+        const res = await fetch("http://localhost:5000/api/customer/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
