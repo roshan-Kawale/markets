@@ -57,3 +57,23 @@ export const signOut = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const {
+      userId,
+      name
+    } = req.body;
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    existingUser.name = name || existingUser.name;
+    await existingUser.save();
+
+    res.status(200).json({ message: 'user updated successfully' });
+
+  } catch (error) {
+    next(error);
+  }
+};

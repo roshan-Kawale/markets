@@ -9,6 +9,7 @@ import Protected from './auth/protected';
 import ProductCreatePage from './pages/ProductCreatePage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CommentPage from './pages/CommentPage'
+import ShopkeeperProfileEdit from './components/ShopkeeperProfileEdit';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path="/productcreate" element={<ProductCreatePage/>} />
       <Route path="/productdetail" element={<ProductDetailPage/>} />
       <Route path="/comment/:id" element={<CommentPage/>} />
+      <Route path="/profileEdit" element={<ShopkeeperProfileEdit/>} />
       </Routes>
     </Router>
     </div>

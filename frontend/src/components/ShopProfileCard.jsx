@@ -18,7 +18,7 @@ const ShopProfileCard = () => {
     const fetchShopkeeperData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/shopkeeper/get/${userId}`
+          `/api/shopkeeper/get/${userId}`
         );
         const data = await res.json();
         console.log(data);
@@ -68,8 +68,8 @@ const ShopProfileCard = () => {
                   </div>
                 </div>
               </div>
-              {user._id === userId &&<div className="absolute right-8 top-10 sm:top-6 cursor-pointer hover:text-green-300">
-                <CiEdit size={25} />
+              {user._id === userId &&<div asChild className="absolute right-8 top-10 sm:top-6 cursor-pointer hover:text-green-300">
+                <Link to="/profileEdit"><CiEdit size={25} /></Link>
               </div>}
             </div>
             <div className="flex flex-wrap gap-2 sm:gap-4 mt-4 sm:px-4">

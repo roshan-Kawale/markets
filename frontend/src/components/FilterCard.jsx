@@ -31,7 +31,7 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
       try {
         const searchQuery = urlParams.toString();
         const res = await fetch(
-          `http://localhost:5000/api/product/getall?${searchQuery}`
+          `/api/product/getall?${searchQuery}`
         );
         const data = await res.json();
         console.log(data);

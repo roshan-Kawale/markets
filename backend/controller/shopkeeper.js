@@ -80,16 +80,16 @@ export const updateShopkeeper = async (req, res, next) => {
       }
       return next(error);
     }
-
-    const validProduct = await Product.findById(product)
-    if(!validProduct) {
-      const error = {
-        statusCode: 400,
-        message: 'Product not found'
+   
+    if(product) {
+      const validProduct = await Product.findById(product)
+      if(!validProduct) {
+        const error = {
+          statusCode: 400,
+          message: 'Product not found'
+        }
+        return next(error);
       }
-      return next(error);
-    }
-
 
     if((validProduct.owner).toString() !== (validShopkeeper._id).toString()) {
       const error = {
@@ -98,9 +98,7 @@ export const updateShopkeeper = async (req, res, next) => {
       }
       return next(error);
     }
-
-    console.log((validShopkeeper.products).toString())
-    console.log((product).toString())
+  
 
     // Check if product already exists in shopkeeper's products
     if (((validShopkeeper.products).toString()).includes((product).toString())) {
@@ -110,6 +108,7 @@ export const updateShopkeeper = async (req, res, next) => {
       }
       return next(error);
     }
+  }
 
     // Update shopkeeper details
     validShopkeeper.shopName = shopName || validShopkeeper.shopName;

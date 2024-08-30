@@ -46,7 +46,7 @@ const ProductCard = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.toString();
       const res = await fetch(
-        `http://localhost:5000/api/product/getall?${searchQuery}`
+        `/api/product/getall?${searchQuery}`
       );
       const data = await res.json();
       setProducts(data);
@@ -63,7 +63,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/product/like/${id}`, {
+      const res = await fetch(`/api/product/like/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/product/get/${id}`);
+      const res = await fetch(`/api/product/get/${id}`);
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
@@ -113,7 +113,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/product/get/${id}`);
+      const res = await fetch(`/api/product/get/${id}`);
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
@@ -136,7 +136,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/product/get/${id}`);
+      const res = await fetch(`/api/product/get/${id}`);
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
@@ -159,7 +159,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:5000/api/product/rate/${id}`,
+        `/api/product/rate/${id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
