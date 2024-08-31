@@ -1,24 +1,24 @@
 import React from 'react'
 import { CgMoreVerticalO } from "react-icons/cg";
+import { Link } from 'react-router-dom';
 
 const LikeCardData = ({Likes}) => {
   return (
     <>
     { Likes && Likes.map((Like , index) => (
-        <div key={index} className="bg-slate-200 border-2 rounded-md p-4 mb-4">
+        <div key={index} className=" border-y-2 rounded-md p-4 py-2 mb-4">
         <div className="flex items-center mb-2">
           <img
             src="https://placehold.co/64"
             alt="profile"
             className="w-8 h-8 rounded-full mr-2"
           />
-          <div>
+          <div className='flex gap-2 items-center'>
             <h3 className="font-medium text-gray-800">{Like?.name}</h3>
 
-            {Like?.role=== "shopkeeper" && <p className="text-gray-600 text-sm">{Like?.role}</p>}
-          </div>
-          <div className="ml-auto">
-            <CgMoreVerticalO className="text-xl" />
+            {Like?.role=== "shopkeeper" && <Link to={`/profile/${Like?._id}`} className="text-gray-600 text-sm cursor-pointer">
+              ({Like?.role})
+              </Link>}
           </div>
         </div>
       </div>

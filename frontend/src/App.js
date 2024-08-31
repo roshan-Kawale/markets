@@ -22,7 +22,7 @@ function App() {
       <Route path="/profile/:userId" element={<ProfilePage/>} />
       <Route path="/detail" element={<DetailPage/>} />
       <Route path="/productcreate" element={<ProductCreatePage/>} />
-      <Route path="/productdetail" element={<ProductDetailPage/>} />
+      <Route path="/productdetail/:productId" element={<ProductDetailPage/>} />
       <Route path="/comment/:id" element={<CommentPage/>} />
       <Route path="/profileEdit" element={<ShopkeeperProfileEdit/>} />
       </Routes>

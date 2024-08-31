@@ -107,19 +107,19 @@ const ShopProfileCard = () => {
             <div className="flex px-8 py-4 gap-2 justify-start items-center sm:fixed w-[95vw] rounded-tl-3xl bg-gray-950">
               <div className="w-2 h-9 rounded-md bg-[#2cb6bd]"></div>
               <h2 className="text-xl">Posts</h2>
-              <Link to="/productcreate" className="text-xl cursor-pointer">
+              {user._id === userId && <Link to="/productcreate" className="text-xl cursor-pointer">
                 <MdOutlinePostAdd />
-              </Link>
+              </Link>}
             </div>
             <div className="rounded-md sm:p-8 flex flex-wrap justify-center items-center sm:justify-normal gap-3 sm:mt-12">
               {shopkeeperData?.shopkeeper.products.map((product, index) => (
-                <div>
+                <Link  to={`/productdetail/${product._id}`} key={product._id}>
                   <img
                     src={`${product.imageUrls}`}
                     alt="Employee Profile"
                     className="w-32 h-32 sm:h-40 sm:w-40 rounded-xl mx-auto mb-4"
                   />
-                </div>
+                </Link>
               ))}
             </div>
           </div>

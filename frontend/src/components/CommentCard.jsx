@@ -4,6 +4,7 @@ import { FaImage } from "react-icons/fa";
 import { fetchData } from "./ProductCard";
 import { useAtom } from "jotai";
 import { productAtom, userAtom } from "../atoms/store";
+import { Link } from "react-router-dom";
 
 const CommentCardData = ({ Comments, productId }) => {
   const [commentValue, setCommentValue] = useState("");
@@ -71,13 +72,13 @@ const CommentCardData = ({ Comments, productId }) => {
               alt="Profile Picture"
               className="w-8 h-8 rounded-full mr-2"
             />
-            <div>
+            <div className='flex flex-wrap items-center'>
               <h3 className="font-medium text-gray-800">
                 {comment?.user.name}
               </h3>
 
               {comment?.user.role === "shopkeeper" && (
-                <p className="text-gray-600 text-sm">{comment?.user.role}</p>
+                <Link  to={`/profile/${comment?.user._id}`} className="text-gray-600 ml-1 text-sm">({comment?.user.role})</Link>
               )}
             </div>
             <div className="ml-auto">

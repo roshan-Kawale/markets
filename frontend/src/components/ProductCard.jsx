@@ -22,10 +22,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
-import { X } from "lucide-react";
+import { Heart, MessageCircle, Share2, X } from "lucide-react";
 
 const ProductCard = () => {
+  
+  const [user] = useAtom(userAtom);
   const [products, setProducts] = useAtom(productAtom);
+
   const [likeToggle, setLikeToggle] = useState(false);
   const [likesValue, setLikesValue] = useState("");
   const [likeProductId, setLikeProductId] = useState(null);
@@ -35,7 +38,6 @@ const ProductCard = () => {
   const [sliderToggle, setSliderToggle] = useState(false);
   const [imageUrlValue, setImageUrlValue] = useState([]);
   const [sliderId, setSliderId] = useState(null);
-  const [user] = useAtom(userAtom);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [ratingForm, setRatingForm] = useState({});
@@ -196,7 +198,7 @@ const ProductCard = () => {
       <div className="lg:absolute left-1/4 md:w-2/3 lg:w-1/2 lg:mt-14 mt-28 flex flex-wrap justify-center mb-4">
         {products?.map((product, index) => (
           <div
-            key={index}
+            key={product._id}
             className="w-full rounded-xl border-2 overflow-hidden mx-4 mb-4 p-2 shadow-lg bg-white"
           >
             <div className="flex justify-between items-center">
@@ -256,15 +258,16 @@ const ProductCard = () => {
               </div>
             </div>
             <div className="flex justify-between border-t-2 shadow-xl-2 py-1">
+        
               <div className="flex gap-1 justify-center items-center text-gray-500 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 <div
                   onClick={(e) => handleLike({ e, id: product._id })}
                   className="cursor-pointer"
                 >
                   {product?.likes.includes(user._id) ? (
-                    <FaHeart />
+                    <Heart className="text-red-600 fill-red-600" />
                   ) : (
-                    <FaRegHeart />
+                    <Heart />
                   )}
                 </div>
                 <div className="hidden sm:flex justify-center items-center gap-1">
@@ -310,7 +313,7 @@ const ProductCard = () => {
                 </AlertDialog>
               </div>
               <button className="flex gap-1 items-center text-gray-500 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                <FaRegCommentDots />
+                 <MessageCircle />
                 <div className="sm:flex justify-center items-center gap-1 hidden">
                   <p className="text-gray-500 text-sm font-semibold">
                     {product?.comments.length ? product.comments.length : ""}
@@ -363,28 +366,10 @@ const ProductCard = () => {
                 </AlertDialog>
               </button>
               <button className="flex gap-1 items-center text-gray-500 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                <FaRegShareFromSquare />
-                <div>Share</div>
+              <Share2 />
+                <Link to={`/productdetail/${product._id}`}>Share</Link>
               </button>
             </div>
-            {/* <div className="flex items-center justify-center">
-              <form
-                className="flex justify-between p-1 items-center border-2 rounded-lg w-3/4"
-                onSubmit={(e) => addCommentHandler({ e, id: product._id })}
-              >
-                <input
-                  type="text"
-                  onChange={(e) => setCommentValue(e.target.value)}
-                  placeholder="Comment Here..."
-                  required
-                  className="focus:outline-none"
-                />
-
-                <button type="submit" variant="contained" className="mr-2">
-                  Add
-                </button>
-              </form>
-            </div> */}
             <div>
               <form
                 onSubmit={(e) => handleRatingSubmit({ e, id: product._id })}
@@ -422,7 +407,6 @@ const ProductCard = () => {
           </div>
         ))}
       </div>
-      {/* {commentToggle && <CommentCard Comments={commentsValue} />} */}
     </>
   );
 };
