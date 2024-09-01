@@ -24,7 +24,7 @@ function ProductEdit() {
         return setError("Discount price must be lower than regular price");
       setLoading(true);
       setError(false);
-      const res = await fetch(`http://localhost:5000/api/product/update/${productId}`, {
+      const res = await fetch(`/api/product/update/${productId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

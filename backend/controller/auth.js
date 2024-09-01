@@ -179,14 +179,14 @@ export const verifyEmailToken = async (req, res) => {
   try {
     // Find the user by ID
     const user = await User.findById(id);
-    if (!user) return res.status(400).send({ message: "Invalid link" });
+    if (!user) return res.status(400).send({success: false, message: "Invalid link" });
 
     // Find the token associated with the user
     const userToken = await Token.findOne({
       userId: user._id,
       token: token,
     });
-    if (!userToken) return res.status(400).send({ message: "Invalid link" });
+    if (!userToken) return res.status(400).send({success: false, message: "Invalid link" });
 
     // Update the user's verified status
     user.verified = true;
@@ -211,6 +211,6 @@ export const verifyEmailToken = async (req, res) => {
       .json(rest);
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Internal Server Error ....." });
+    res.status(500).send({success: false, message: "Internal Server Error ....." });
   }
 };

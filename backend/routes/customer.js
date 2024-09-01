@@ -4,6 +4,6 @@ import { createCustomer } from '../controller/customer.js';
 
 const router = express.Router();
 
-router.post("/create" , authMiddleware , createCustomer)
+router.post("/create" , createCustomer)
 
 export default router;

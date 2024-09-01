@@ -26,7 +26,7 @@ function LoginCard() {
     event.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/auth/signin", {
+      const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,13 +39,24 @@ function LoginCard() {
         setError(data.message);
         return;
       }
-
-      if(data.isVerified) {
-        setUser(data);
-      navigate("/")
+      
+      if(!data.verified) {
+        console.log("verify your email");
+        setLoading(false);
+        setError(null);
+        return;
       }
+
+      setUser(data);
+      if (data.role === "shopkeeper") {
+        setLoading(false);
+        setError(null);
+        navigate("/detail");
+      } 
       setLoading(false);
       setError(null);
+      navigate("/")
+
     } catch (error) {
       setLoading(false);
       setError(error.message);

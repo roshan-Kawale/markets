@@ -32,7 +32,7 @@ function SignUpCard() {
     event.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/auth/signup", {
+      const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,15 +45,16 @@ function SignUpCard() {
         setError(data.message);
         return;
       }
+      console.log(data);
+      setMsg(data.message);
       setLoading(false);
       setError(null);
-      if (data.role === "consumer") {
+      if (data.role !== "shopkeeper") {
         const value = await createCustomer(data._id);
         if (value) {
           console.log(value , "consumer create successfully");
         }
       }
-      setMsg(data.message);
       // setUser(data);
       // if (data.role === "shopkeeper") {
       //   navigate("/detail");

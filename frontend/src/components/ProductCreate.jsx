@@ -36,7 +36,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
   const fetchProductData = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/product/get/${productId}`
+        `/api/product/get/${productId}`
       );
       const data = await res.json();
       console.log(data);
@@ -321,7 +321,7 @@ function ProductCreate() {
         return setError("Discount price must be lower than regular price");
       setLoading(true);
       setError(false);
-      const res = await fetch("http://localhost:5000/api/product/create", {
+      const res = await fetch("/api/product/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

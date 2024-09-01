@@ -20,7 +20,7 @@ export default function ShopkeeperProfileEdit() {
     const fetchShopkeeperData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/shopkeeper/get/${user._id}`
+          `/api/shopkeeper/get/${user._id}`
         );
         const data = await res.json();
         console.log(data);
@@ -78,7 +78,7 @@ export default function ShopkeeperProfileEdit() {
     console.log("Form submitted with data:", userData)
     try {
       setLoading(true);
-      const resUser = await fetch("http://localhost:5000/api/auth/update", {
+      const resUser = await fetch("/api/auth/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export default function ShopkeeperProfileEdit() {
         return;
       }
 
-      const resShopkeeper = await fetch("http://localhost:5000/api/shopkeeper/update", {
+      const resShopkeeper = await fetch("/api/shopkeeper/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
