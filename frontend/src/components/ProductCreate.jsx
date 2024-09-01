@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   getDownloadURL,
   getStorage,
@@ -11,10 +11,12 @@ import { IoMdAdd } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/store";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { updateShopkeeper } from "../api/shopkeeperApi";
-function ProductCreate() {
-  const [formData, setFormData] = useState({
+
+export const ProductForm = ({ handleSubmit ,  setFormData}) => {
+
+  const [formData, setFormDataState] = useState({
     imageUrls: [],
   });
   const [files, setFiles] = useState([]);
@@ -22,8 +24,40 @@ function ProductCreate() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [user] = useAtom(userAtom);
-  const navigate = useNavigate();
+
+  //product when edit the product
+  const { productId } = useParams();
+
+  useEffect(() => {
+    setFormData(formData);
+  }, [formData, setFormData]);
+
+
+  const fetchProductData = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/product/get/${productId}`
+      );
+      const data = await res.json();
+      console.log(data);
+      setFormDataState({
+       productName: data.productName,
+       caption: data.caption,
+       price: data.price,
+       imageUrls: data.imageUrls,
+       discount: data.discount,
+       category: data.category
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if(productId){
+      fetchProductData();
+    }
+  }, []);
 
   const handleImageSubmit = (element) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -36,7 +70,7 @@ function ProductCreate() {
       }
       Promise.all(promises)
         .then((urls) => {
-          setFormData({
+          setFormDataState({
             ...formData,
             imageUrls: formData.imageUrls.concat(urls),
           });
@@ -79,69 +113,30 @@ function ProductCreate() {
   };
 
   const handleRemoveImage = (index) => {
-    setFormData({
+    setFormDataState({
       ...formData,
       imageUrls: formData.imageUrls.filter((_, i) => i !== index),
     });
   };
 
   const handleChange = (e) => {
-    setFormData({
+    setFormDataState({
       ...formData,
       [e.target.id]: e.target.value,
     });
   };
-console.log(files[0]?.name)
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (formData.imageUrls.length < 1)
-        return setError("You must upload at least one image");
-      if (+formData.regularPrice < +formData.discountPrice)
-        return setError("Discount price must be lower than regular price");
-      setLoading(true);
-      setError(false);
-      const res = await fetch("/api/product/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          owner: user._id,
-        }),
-      });
-      const data = await res.json();
-      console.log(data);
-      setLoading(false);
-      if (data.success === false) {
-        setError(data.message);
-        return;
-      }
-      const value = await updateShopkeeper({shopkeeperId: data.product.owner , product: data.product._id})
-      if(!value) {
-        setError("product not added in your list")
-        return;
-      }
-      navigate(`/`);
-    } catch (error) {
-      setError(error.message);
-      setLoading(false);
-    }
-  };
 
   return (
-    <div className="p-5 mt-10">
+    <>
       <form onSubmit={handleSubmit}>
         <div className="flex justify-between my-5 px-4">
-          <h1 className="text-2xl font-bold">Add New Product</h1>
           <div className="flex justify-end">
             <button
               disabled={loading || uploading}
               type="submit"
-              className="bg-green-500 mb-2 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="absolute right-10 top-14 bg-green-500 mb-2 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              {loading ? "Add Product..." : "Add Product"}
+              {loading ? "Add Product..." : "ADD"}
             </button>
           </div>
           {error && <p className="text-red-700 text-sm">{error}</p>}
@@ -187,133 +182,58 @@ console.log(files[0]?.name)
                 />
               </div>
             </div>
-            {/* <div className="flex gap-4 flex-col lg:flex-row sm:justify-center mt-4">
-              <div className=" p-4 border-2 shadow-lg rounded-md">
-                <label
-                  htmlFor="size"
-                  className="block text-gray-700 font-bold mb-2"
-                >
-                  Size
-                </label>
-                <div className="flex gap-2">
-                  <div className="bg-gray-200 w-10 h-10 border rounded flex justify-center items-center">
-                    <span className="text-md">S</span>
-                  </div>
-                  <div className="bg-gray-200 w-10 h-10 border rounded flex justify-center items-center">
-                    <span className="text-md">M</span>
-                  </div>
-                  <div className="bg-gray-200 w-10 h-10 border rounded flex justify-center items-center">
-                    <span className="text-md">L</span>
-                  </div>
-                  <div className="bg-gray-200 w-10 h-10 border rounded flex justify-center items-center">
-                    <span className="text-md">XL</span>
-                  </div>
-                  <div className="bg-gray-200 w-10 h-10 border rounded flex justify-center items-center">
-                    <span className="text-md">XXL</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className=" p-4 border-2 shadow-lg rounded-md ">
-                <label
-                  htmlFor="gender"
-                  className="block text-gray-700 font-bold mb-2"
-                >
-                  Gender
-                </label>
-                <div className="flex gap-6">
-                  <div className="flex items-center">
-                    <input
-                      type="radio"
-                      id="men"
-                      name="gender"
-                      className="form-radio h-4 w-4 text-blue-600 focus:ring-blue-500"
-                      value="Men"
-                      checked={gender === "Men"}
-                      onChange={(e) => setGender(e.target.value)}
-                    />
-                    <label htmlFor="men" className="ml-2 text-gray-700">
-                      Men
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      type="radio"
-                      id="woman"
-                      name="gender"
-                      className="form-radio h-4 w-4 text-blue-600 focus:ring-blue-500"
-                      value="Woman"
-                      checked={gender === "Woman"}
-                      onChange={(e) => setGender(e.target.value)}
-                    />
-                    <label htmlFor="woman" className="ml-2 text-gray-700">
-                      Woman
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      type="radio"
-                      id="unisex"
-                      name="gender"
-                      className="form-radio h-4 w-4 text-blue-600 focus:ring-blue-500"
-                      value="Unisex"
-                      checked={gender === "Unisex"}
-                      onChange={(e) => setGender(e.target.value)}
-                    />
-                    <label htmlFor="unisex" className="ml-2 text-gray-700">
-                      Unisex
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
           <div className="p-4 border-2 shadow-lg rounded-md">
             <h2 className="text-lg font-semibold mb-2">Upload Img</h2>
             <div className="flex gap-4">
-            {formData.imageUrls.length > 0 &&
-              formData.imageUrls.map((url, index) => (
-                <div
-                  key={url}
-                  className="flex w-28 h-24 justify-center items-center gap-1"
-                >
-                  <img
-                    src={url}
-                    alt="listing image"
-                    className="w-20 h-20 object-contain border-2 rounded-lg"
-                  />
-                   <MdDelete
-                    type="button"
-                    onClick={() => handleRemoveImage(index)}
-                    className="flex text-red-700 hover:opacity-75"
-                  />
-                  
-                </div>
-              ))}
-            <div className="flex justify-center items-center mb-4 border-2 border-dashed h-24 w-28 border-cyan-300">
-              <input
-                onChange={(e) => setFiles(e.target.files)}
-                type="file"
-                id="images"
-                accept="image/*"
-                multiple
-                hidden
-                className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-             {files[0] ? 
-             <div className="flex flex-col justify-center items-center gap-2">
-               <h1>{files[0]?.name}</h1>
-               <div className="flex gap-2">
-              <label for="images"><IoMdAdd /></label>
-              <FaUpload 
-                onClick={handleImageSubmit}
-                disabled={loading || uploading}
-                className="p-1 cursor-pointer text-xl text-black-700 border border-zinc-700 rounded uppercase hover:shadow-lg" /> 
-                </div>
-                </div>
-              : 
-              <label for="images"><IoMdAdd /></label>}
-            </div>
+              {formData.imageUrls.length > 0 &&
+                formData.imageUrls.map((url, index) => (
+                  <div
+                    key={url}
+                    className="flex w-28 h-24 justify-center items-center gap-1"
+                  >
+                    <img
+                      src={url}
+                      alt="listing image"
+                      className="w-20 h-20 object-contain border-2 rounded-lg"
+                    />
+                    <MdDelete
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="flex text-red-700 hover:opacity-75"
+                    />
+                  </div>
+                ))}
+              <div className="flex justify-center items-center mb-4 border-2 border-dashed h-24 w-28 border-cyan-300">
+                <input
+                  onChange={(e) => setFiles(e.target.files)}
+                  type="file"
+                  id="images"
+                  accept="image/*"
+                  multiple
+                  hidden
+                  className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
+                {files[0] ? (
+                  <div className="flex flex-col justify-center items-center gap-2">
+                    <h1 className="flex truncate w-20">{files[0]?.name}</h1>
+                    <div className="flex gap-2">
+                      <label for="images">
+                        <IoMdAdd />
+                      </label>
+                      <FaUpload
+                        onClick={handleImageSubmit}
+                        disabled={loading || uploading}
+                        className="p-1 cursor-pointer text-xl text-black-700 border border-zinc-700 rounded uppercase hover:shadow-lg"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <label for="images">
+                    <IoMdAdd />
+                  </label>
+                )}
+              </div>
             </div>
             <p className="text-red-700 text-sm">
               {imageUploadError && imageUploadError}
@@ -379,6 +299,64 @@ console.log(files[0]?.name)
           </div>
         </div>
       </form>
+    </>
+  );
+};
+
+function ProductCreate() {
+  const [user] = useAtom(userAtom);
+  const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  
+  const [formData, setFormData] = useState({});
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (formData.imageUrls.length < 1)
+        return setError("You must upload at least one image");
+      if (+formData.regularPrice < +formData.discountPrice)
+        return setError("Discount price must be lower than regular price");
+      setLoading(true);
+      setError(false);
+      const res = await fetch("http://localhost:5000/api/product/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          owner: user._id,
+        }),
+      });
+      const data = await res.json();
+      console.log(data);
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+        return;
+      }
+      const value = await updateShopkeeper({
+        shopkeeperId: data.product.owner,
+        product: data.product._id,
+      });
+      if (!value) {
+        setError("product not added in your list");
+        return;
+      }
+      navigate(`/`);
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="p-5 mt-10">
+      <div className="text-2xl font-bold" >Add New Product</div>
+      <ProductForm handleSubmit={handleSubmit} setFormData={setFormData} />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { userAtom } from "../atoms/store";
 import { CiEdit } from "react-icons/ci";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
+import { ScrollArea } from "./ui/scroll-area";
 
 const ShopProfileCard = () => {
   const [shopkeeperData, setShopkeeperData] = useState();
@@ -18,7 +19,7 @@ const ShopProfileCard = () => {
     const fetchShopkeeperData = async () => {
       try {
         const res = await fetch(
-          `/api/shopkeeper/get/${userId}`
+          `http://localhost:5000/api/shopkeeper/get/${userId}`
         );
         const data = await res.json();
         console.log(data);
@@ -103,15 +104,15 @@ const ShopProfileCard = () => {
             </div>
           </div>
           {/* second div */}
-          <div className="bg-gray-950 rounded-3xl sm:mt-[34vh] h-[62vh] w-[96vw] relative overflow-y-scroll">
-            <div className="flex px-8 py-4 gap-2 justify-start items-center sm:fixed w-[95vw] rounded-tl-3xl bg-gray-950">
+          <ScrollArea className="bg-gray-950 rounded-3xl sm:mt-[34vh] h-[62vh] w-[96vw] relative">
+            <div className="flex px-8 py-4 gap-2 justify-start items-center sm:fixed absolute w-[95vw] rounded-tl-3xl bg-gray-950">
               <div className="w-2 h-9 rounded-md bg-[#2cb6bd]"></div>
               <h2 className="text-xl">Posts</h2>
               {user._id === userId && <Link to="/productcreate" className="text-xl cursor-pointer">
                 <MdOutlinePostAdd />
               </Link>}
             </div>
-            <div className="rounded-md sm:p-8 flex flex-wrap justify-center items-center sm:justify-normal gap-3 sm:mt-12">
+            <div className="rounded-md sm:p-8 flex flex-wrap justify-center items-center sm:justify-normal gap-3 mt-20 sm:mt-12">
               {shopkeeperData?.shopkeeper.products.map((product, index) => (
                 <Link  to={`/productdetail/${product._id}`} key={product._id}>
                   <img
@@ -122,7 +123,7 @@ const ShopProfileCard = () => {
                 </Link>
               ))}
             </div>
-          </div>
+          </ScrollArea>
         </div>
       </div>
     </>

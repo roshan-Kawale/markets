@@ -9,12 +9,11 @@ export const createProduct = async (req, res, next) => {
       imageUrls,
       owner,
       price,
-      discountPercentage,
+      discount,
       category,
     } = req.body;
 
     const validUser = await Shopkeeper.findOne({ userId: owner }).populate();
-    console.log(validUser._id);
     if (!validUser) {
       const error = {
         statusCode: 400,
@@ -29,7 +28,7 @@ export const createProduct = async (req, res, next) => {
       imageUrls,
       owner: validUser._id,
       price,
-      discountPercentage,
+      discount,
       category,
     });
 
@@ -39,6 +38,43 @@ export const createProduct = async (req, res, next) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error creating product" });
+  }
+};
+
+export const updateProduct = async (req, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const {
+      productName,
+      caption,
+      imageUrls,
+      price,
+      discount,
+      category,
+    } = req.body;
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      const error = {
+        statusCode: 404,
+        message: "Product not found",
+      };
+      return next(error);
+    }
+
+    product.productName = productName || product.productName;
+    product.caption = caption || product.caption;
+    product.imageUrls = imageUrls || product.imageUrls;
+    product.price = price || product.price;
+    product.discount = discount || product.discount;
+    product.category = category || product.category;
+
+    await product.save();
+
+    res.status(200).json({ message: "Product updated successfully", product });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating product" });
   }
 };
 

@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['shopkeeper', 'consumer'],
     default: 'consumer'
+  },
+  verified: {
+    type: Boolean,
+    default:false
   }
 });
 

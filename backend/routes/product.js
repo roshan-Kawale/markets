@@ -7,6 +7,7 @@ import {
   getProductById,
   likeAndUnlikeProduct,
   ratingOnProduct,
+  updateProduct,
 } from "../controller/product.js";
 
 const router = express.Router();
@@ -18,5 +19,6 @@ router
   .post("/like/:id", likeAndUnlikeProduct)
   .post("/comment/:id", commentOnProduct)
   .post("/rate/:productId", ratingOnProduct)
+  .post("/update/:productId", updateProduct)
 
 export default router;

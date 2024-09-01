@@ -38,7 +38,7 @@ function ShopkeeperDetailCard() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("/api/shopkeeper/create", {
+      const res = await fetch("http://localhost:5000/api/shopkeeper/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -194,7 +194,8 @@ function ShopkeeperDetailCard() {
           <div>
             <div className="flex flex-col ">
               <input
-                type="text"
+                type="tel"
+                maxLength="10"
                 id="contactNumber"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Phone number"
@@ -203,8 +204,9 @@ function ShopkeeperDetailCard() {
             </div>
             {[...Array(count)].map((_, index) => (
               <input
-                type="text"
+                type="tel"
                 key={index}
+                maxLength="10"
                 id="contactNumber"
                 className="shadow mt-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="Phone number"

@@ -8,8 +8,9 @@ import DetailPage from './pages/DetailPage';
 import Protected from './auth/protected';
 import ProductCreatePage from './pages/ProductCreatePage';
 import ProductDetailPage from './pages/ProductDetailPage';
-import CommentPage from './pages/CommentPage'
 import ShopkeeperProfileEdit from './components/ShopkeeperProfileEdit';
+import ProductEditPage from './pages/ProductEditPage';
+import EmailVerify from './components/EmailVerify';
 
 function App() {
   return (
@@ -23,8 +24,9 @@ function App() {
       <Route path="/detail" element={<DetailPage/>} />
       <Route path="/productcreate" element={<ProductCreatePage/>} />
       <Route path="/productdetail/:productId" element={<ProductDetailPage/>} />
-      <Route path="/comment/:id" element={<CommentPage/>} />
       <Route path="/profileEdit" element={<ShopkeeperProfileEdit/>} />
+      <Route path="/productEdit/:productId" element={<ProductEditPage/>} />
+      <Route path="/api/auth/:id/verify/:token" element={<EmailVerify/>} />
       </Routes>
     </Router>
     </div>

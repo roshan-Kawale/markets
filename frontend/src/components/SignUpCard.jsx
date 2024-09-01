@@ -10,6 +10,7 @@ function SignUpCard() {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [user, setUser] = useAtom(userAtom);
+  const [msg , setMsg] = useState("");
   const navigate = useNavigate();
 
   const handleShowPassword = () => setShowPassword(!showPassword);
@@ -31,7 +32,7 @@ function SignUpCard() {
     event.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch("http://localhost:5000/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,17 +45,25 @@ function SignUpCard() {
         setError(data.message);
         return;
       }
-      setUser(data);
       setLoading(false);
       setError(null);
-      if (data.role === "shopkeeper") {
-        navigate("/detail");
-      } else {
+      if (data.role === "consumer") {
         const value = await createCustomer(data._id);
         if (value) {
-          navigate("/", { replace: true });
+          console.log(value , "consumer create successfully");
         }
       }
+      setMsg(data.message);
+      // setUser(data);
+      // if (data.role === "shopkeeper") {
+      //   navigate("/detail");
+      // } else {
+      //   const value = await createCustomer(data._id);
+      //   if (value) {
+      //     navigate("/", { replace: true });
+      //   }
+      // }
+      
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -153,6 +162,7 @@ function SignUpCard() {
         </div>
       </div>
       {error && <p className="text-red-500 mt-5">{error}</p>}
+      {msg && <p className="text-green-500 mt-5">{msg}</p>}
     </div>
   );
 }
