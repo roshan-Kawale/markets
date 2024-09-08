@@ -223,8 +223,9 @@ const ProductCard = () => {
                 </div>
               </Link>
             </div>
-            <div className="px-10 py-4">
-              <p className="text-gray-800 text-base">{product.caption}</p>
+            <div className="flex justify-between items-center px-10 py-4">
+            <p className="text-gray-800 text-base">{product.caption}</p>
+            <p className="text-gray-800 text-base">RS. {product.price}</p>
             </div>
             {sliderId !== product._id && (
               <img
