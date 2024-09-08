@@ -38,7 +38,7 @@ function ShopkeeperDetailCard() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("/api/shopkeeper/create", {
+      const res = await fetch("http://localhost:5000/api/shopkeeper/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
