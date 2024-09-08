@@ -5,6 +5,8 @@ import { productAtom } from "../atoms/store";
 import { FaBars } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 
+import { Slider } from "./ui/slider";
+
 const FilterCardInput = ({ setOpen = () => {} }) => {
   const [filterData, setFilterData] = useState("");
   const [ratingToggle, setRatingToggle] = useState(false);
@@ -63,7 +65,7 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
     "file003",
     "File002",
   ];
-  
+
   const handleChange = (e) => {
     if (e.target.id === "searchTerm") {
       setFilterData({ ...filterData, searchTerm: e.target.value });
@@ -78,6 +80,10 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
       setFilterData({ ...filterData, rating: e.target.value });
     }
   };
+
+  const handleRatingChange = (value) => {
+    setFilterData({ ...filterData, rating:value });
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -154,6 +160,16 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
                 onChange={handleChange}
                 className="w-full"
               />
+              {/* onValueChange={(newValue)=> handleRatingChange({newValue , id: ratingId})} */}
+
+              {/* <Slider
+                defaultValue={[1]}
+                value={filterData?.rating}
+                max={5}
+                step={0.1}
+                id="rating"
+                onValueChange={(value) => handleRatingChange(value)}
+              /> */}
 
               {ratingToggle && (
                 <span className="text-lg font-bold ml-2">
@@ -175,19 +191,28 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
 };
 
 const FilterCard = () => {
-  const [open , setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   return (
     <div>
       <div className="lg:hidden fixed w-full z-10 bg-white border-b-2 border-gray-950 py-2 mt-[53px] flex items-center gap-2">
-        <div className=""> {open ? <RxCross1 onClick={()=>setOpen(false)} /> : <FaBars onClick={()=>setOpen(true)} /> }</div>
+        <div className="">
+          {" "}
+          {open ? (
+            <RxCross1 onClick={() => setOpen(false)} />
+          ) : (
+            <FaBars onClick={() => setOpen(true)} />
+          )}
+        </div>
         <h2 className="text-xl font-bold tracking-wide">Filter</h2>
       </div>
 
-    {open && <div className="lg:hidden">
-      <div className="fixed md:w-1/3 w-2/3 mt-9 bg-white shadow-xl rounded px-4 py-6 left-0">
-        <FilterCardInput setOpen={setOpen} />
-      </div>
-    </div>}
+      {open && (
+        <div className="lg:hidden">
+          <div className="fixed md:w-1/3 w-2/3 mt-9 bg-white shadow-xl rounded px-4 py-6 left-0">
+            <FilterCardInput setOpen={setOpen} />
+          </div>
+        </div>
+      )}
 
       {/* filter for large screen */}
       <div className="hidden md:hidden lg:block">

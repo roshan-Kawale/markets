@@ -138,7 +138,7 @@ export const getShopkeeper = async (req, res, next) => {
 
     const shopkeeper = await Shopkeeper.findOne({ userId: id }).populate("products" , "imageUrls");
     if (!shopkeeper) {
-      return res.status(404).json({ message: "Shopkeeper not found" });
+      return res.status(404).json({success:false , message: "Shopkeeper not found" });
     }
 
     const validUser = await User.findById(id);
@@ -152,4 +152,37 @@ export const getShopkeeper = async (req, res, next) => {
     console.error(error);
     res.status(500).json({ message: "Error retrieving shopkeeper" });
 }
+};
+
+export const deleteShopkeeper = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    if (!id) {
+      return res.status(400).json({ message: "Shopkeeper ID is required" });
+    }
+
+    const shopkeeper = await Shopkeeper.findById(id);
+    if (!shopkeeper) {
+      return res.status(404).json({ message: "Shopkeeper not found" });
+    }
+
+    // Check if the user is the owner of the shopkeeper
+    if (userId.toString() !== shopkeeper.userId.toString()) {
+      return res.status(403).json({ message: "You are not authorized to delete this shopkeeper" });
+    }
+
+    // Delete products associated with the shopkeeper
+    await Product.deleteMany({ owner: shopkeeper._id });
+
+    // Delete the shopkeeper
+    await Shopkeeper.findByIdAndDelete(id);
+
+    // Delete the user associated with the shopkeeper
+    await User.findByIdAndDelete(shopkeeper.userId);
+
+    res.status(200).json({ message: "Shopkeeper deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
 };

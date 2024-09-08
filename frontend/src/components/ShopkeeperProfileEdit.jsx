@@ -73,9 +73,6 @@ export default function ShopkeeperProfileEdit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Form submitted with data:", formData)
-    console.log("Form submitted with data:", shopkeeperData)
-    console.log("Form submitted with data:", userData)
     try {
       setLoading(true);
       const resUser = await fetch("/api/auth/update", {

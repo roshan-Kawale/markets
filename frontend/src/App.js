@@ -17,7 +17,8 @@ function App() {
     <div>
        <Router>
       <Routes>
-      <Route path="/" element={<Protected><HomePage></HomePage></Protected>} />
+      {/* <Route path="/" element={<Protected><HomePage></HomePage></Protected>} /> */}
+      <Route path="/" element={<HomePage></HomePage>} />
       <Route path="/login" element={<LoginPage/>} />
       <Route path="/signup" element={<SignUpPage/>} />
       <Route path="/profile/:userId" element={<ProfilePage/>} />

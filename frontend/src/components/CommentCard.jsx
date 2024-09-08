@@ -65,7 +65,7 @@ const CommentCardData = ({ Comments, productId }) => {
   return (
     <>
       {Comments.map((comment, index) => (
-        <div className="bg-slate-200 border-2 rounded-md p-4 mb-4 cursor-text">
+        <div className="border-y-2 rounded-md p-4 mb-4 cursor-text">
           <div className="flex items-center mb-2">
             <img
               src="https://placehold.co/64"
@@ -81,9 +81,9 @@ const CommentCardData = ({ Comments, productId }) => {
                 <Link  to={`/profile/${comment?.user._id}`} className="text-gray-600 ml-1 text-sm">({comment?.user.role})</Link>
               )}
             </div>
-            <div className="ml-auto">
+            {/* <div className="ml-auto">
               <CgMoreVerticalO className="text-xl" />
-            </div>
+            </div> */}
           </div>
           <p className="text-gray-700 flex flex-wrap">{comment?.comment}</p>
         </div>

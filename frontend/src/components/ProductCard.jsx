@@ -10,8 +10,9 @@ import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
 import { productAtom, userAtom } from "../atoms/store";
 import CommentCard from "./CommentCard";
-import Slider from "./Slider";
+import Carousel from "./Carousel";
 import LikeCard from "./LikeCard";
+import { Slider } from "./ui/slider";
 
 import {
   AlertDialog,
@@ -25,7 +26,6 @@ import {
 import { Heart, MessageCircle, Share2, X } from "lucide-react";
 
 const ProductCard = () => {
-  
   const [user] = useAtom(userAtom);
   const [products, setProducts] = useAtom(productAtom);
 
@@ -186,10 +186,11 @@ const ProductCard = () => {
     setRatingId(id);
   };
 
-  const handleRatingChange = (e) => {
+  const handleRatingChange = ({newValue , id}) => {
+    const numericValue = Object.values(newValue)[0];
     setRatingForm({
       ...ratingForm,
-      [e.target.id]: e.target.value,
+      [id]: numericValue,
     });
   };
 
@@ -199,9 +200,9 @@ const ProductCard = () => {
         {products?.map((product, index) => (
           <div
             key={product._id}
-            className="w-full rounded-xl border-2 overflow-hidden mx-4 mb-4 p-2 shadow-lg bg-white"
+            className="w-full rounded-xl border-2 overflow-hidden mx-4 mb-4 shadow-lg bg-white"
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center pl-8 pt-4">
               <Link
                 to={`/profile/${product?.owner.userId}`}
                 className="flex items-center cursor-pointer gap-4"
@@ -209,18 +210,20 @@ const ProductCard = () => {
                 <img
                   src="https://picsum.photos/200"
                   alt="Profile"
-                  className="w-8 h-8 rounded-full"
+                  className="w-9 h-9 rounded-full"
                 />
 
                 <div>
                   <h2 className="text-lg font-bold text-gray-800">
                     {product.owner.shopName}
                   </h2>
-                  <p className="text-sm text-gray-600">2 hours ago</p>
+                  <p className="text-sm text-gray-600">
+                    {product?.owner?.shopDescription}
+                  </p>
                 </div>
               </Link>
             </div>
-            <div className="px-2 py-4">
+            <div className="px-10 py-4">
               <p className="text-gray-800 text-base">{product.caption}</p>
             </div>
             {sliderId !== product._id && (
@@ -235,11 +238,11 @@ const ProductCard = () => {
               />
             )}
             {sliderToggle && sliderId === product._id && (
-              <Slider imageUrls={imageUrlValue} />
+              <Carousel imageUrls={imageUrlValue} />
             )}
-            <div className="px-2 py-4">
+            <div className="px-10 py-4">
               <div className="flex justify-between items-center">
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
                   <FaLocationDot />
                   <p className="text-gray-500 text-sm font-semibold">
                     {`${product.owner.shopAddress.area} , ${product.owner.shopAddress.city} , ${product.owner.shopAddress.state}`}
@@ -257,8 +260,7 @@ const ProductCard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between border-t-2 shadow-xl-2 py-1">
-        
+            <div className="flex justify-between border-t-2 shadow-xl-2 py-1 px-8">
               <div className="flex gap-1 justify-center items-center text-gray-500 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 <div
                   onClick={(e) => handleLike({ e, id: product._id })}
@@ -281,39 +283,44 @@ const ProductCard = () => {
                     Like
                   </span>
                   {likeToggle && <LikeCard Likes={likesValue} />}
-                 
                 </div>
                 <AlertDialog>
-                  <AlertDialogTrigger asChild onTouchStart={(e) =>handleLikeToggle({ e, id: product._id })}>
+                  <AlertDialogTrigger
+                    asChild
+                    onTouchStart={(e) =>
+                      handleLikeToggle({ e, id: product._id })
+                    }
+                  >
                     <div className="flex justify-center items-center gap-1 sm:hidden">
-                    <p className="text-gray-500 text-sm font-semibold">
-                    {product?.likes.length ? product.likes.length : ""}
-                  </p>{" "}
-                      <div
-                      >
-                        Like
-                      </div>
+                      <p className="text-gray-500 text-sm font-semibold">
+                        {product?.likes.length ? product.likes.length : ""}
+                      </p>{" "}
+                      <div>Like</div>
                     </div>
                   </AlertDialogTrigger>
                   <AlertDialogContent className="block sm:hidden ">
                     <AlertDialogHeader>
                       <AlertDialogTitle className="flex justify-end">
-                      <AlertDialogCancel>
-                      <X />
-                      </AlertDialogCancel>
+                        <AlertDialogCancel>
+                          <X />
+                        </AlertDialogCancel>
                       </AlertDialogTitle>
-                      
-                        <AlertDialogDescription className="overflow-scroll max-h-[600px]">
-                          
-                        {product?.likes.length ? <LikeCard Likes={likesValue} /> : <span className="font-bold text-xl text-black">Not like yet</span>}
-                        </AlertDialogDescription>
-                     
+
+                      <AlertDialogDescription className="overflow-scroll max-h-[600px]">
+                        {product?.likes.length ? (
+                          <LikeCard Likes={likesValue} />
+                        ) : (
+                          <span className="font-bold text-xl text-black">
+                            Not like yet
+                          </span>
+                        )}
+                      </AlertDialogDescription>
                     </AlertDialogHeader>
                   </AlertDialogContent>
                 </AlertDialog>
               </div>
               <button className="flex gap-1 items-center text-gray-500 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                 <MessageCircle />
+                <MessageCircle />
                 <div className="sm:flex justify-center items-center gap-1 hidden">
                   <p className="text-gray-500 text-sm font-semibold">
                     {product?.comments.length ? product.comments.length : ""}
@@ -332,45 +339,51 @@ const ProductCard = () => {
                 </div>
 
                 <AlertDialog>
-                  <AlertDialogTrigger asChild onTouchStart={(e) => handleCommentToggle({ e, id: product._id })}>
+                  <AlertDialogTrigger
+                    asChild
+                    onTouchStart={(e) =>
+                      handleCommentToggle({ e, id: product._id })
+                    }
+                  >
                     <div className="flex justify-center items-center gap-1 sm:hidden">
                       <p className="text-gray-500 text-sm font-semibold">
                         {product?.comments.length
                           ? product.comments.length
                           : ""}
                       </p>{" "}
-                      <div
-                      >
-                        comment
-                      </div>
+                      <div>comment</div>
                     </div>
                   </AlertDialogTrigger>
                   <AlertDialogContent className="block sm:hidden ">
                     <AlertDialogHeader>
                       <AlertDialogTitle className="flex justify-end">
-                      <AlertDialogCancel>
-                      <X />
-                      </AlertDialogCancel>
+                        <AlertDialogCancel>
+                          <X />
+                        </AlertDialogCancel>
                       </AlertDialogTitle>
-                      
-                        <AlertDialogDescription className="overflow-scroll max-h-[600px]">
-                          
-                         { product?.comments.length ? <CommentCard
-                      Comments={commentsValue}
-                      productId={productId}
-                    /> : <span className="font-bold text-xl text-black">Not comment yet</span> }
-                        </AlertDialogDescription>
-                     
+
+                      <AlertDialogDescription className="overflow-scroll max-h-[600px]">
+                        {product?.comments.length ? (
+                          <CommentCard
+                            Comments={commentsValue}
+                            productId={productId}
+                          />
+                        ) : (
+                          <span className="font-bold text-xl text-black">
+                            Not comment yet
+                          </span>
+                        )}
+                      </AlertDialogDescription>
                     </AlertDialogHeader>
                   </AlertDialogContent>
                 </AlertDialog>
               </button>
               <button className="flex gap-1 items-center text-gray-500 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              <Share2 />
+                <Share2 />
                 <Link to={`/productdetail/${product._id}`}>Share</Link>
               </button>
             </div>
-            <div>
+            <div className="">
               <form
                 onSubmit={(e) => handleRatingSubmit({ e, id: product._id })}
                 className="flex p-2 justify-between border-2 rounded-xl shadow-lg w-full"
@@ -381,7 +394,7 @@ const ProductCard = () => {
                   }
                   className="flex flex-col justify-center items-center w-1/2"
                 >
-                  <input
+                  {/* <input
                     type="range"
                     id={ratingId}
                     min="0"
@@ -389,7 +402,17 @@ const ProductCard = () => {
                     step="0.1"
                     onChange={handleRatingChange}
                     className="w-full"
-                  />
+                  /> */}
+
+                 
+                    <Slider
+                      defaultValue={[1]}
+                      max={5}
+                      step={0.1}
+                      id="rating"
+                      onValueChange={(newValue)=> handleRatingChange({newValue , id: ratingId})}
+                    />
+
                   {ratingId === product._id && (
                     <span className="text-lg font-bold ml-2">
                       {ratingForm[product._id]}

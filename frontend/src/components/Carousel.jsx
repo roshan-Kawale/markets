@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { BsChevronLeft } from "react-icons/bs";
 import { BsChevronRight } from "react-icons/bs";
 
-function Slider({imageUrls}) {
+function Carousel({imageUrls}) {
     const [currentIndex , setCurrentIndex] = useState(0);
 
     const prevSlide = () => {
@@ -36,4 +36,4 @@ function Slider({imageUrls}) {
   )
 }
 
-export default Slider
+export default Carousel

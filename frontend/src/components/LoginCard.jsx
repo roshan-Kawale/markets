@@ -47,12 +47,12 @@ function LoginCard() {
         return;
       }
 
-      setUser(data);
-      if (data.role === "shopkeeper") {
+      if (data.role ==="shopkeeper") {
         setLoading(false);
         setError(null);
         navigate("/detail");
       } 
+      setUser(data);
       setLoading(false);
       setError(null);
       navigate("/")
