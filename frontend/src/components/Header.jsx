@@ -35,21 +35,21 @@ const Header = () => {
   }, [window.location.search]);
 
   return (
-    <header className="bg-white border-2 z-10 fixed w-full text-white py-2 px-2">
+    <header className="bg-black border-b-2 border-gray-800 z-10 fixed w-full text-white py-2 px-2">
       <div className="mx-auto flex justify-between items-center">
 
         <div className="sm:flex items-center">
-          <h1 className="text-3xl font-bold text-black">Market</h1>
+          <h1 className="text-3xl font-bold ">Market</h1>
         </div>
        
         <form
           onSubmit={handleSubmit}
-          className="bg-slate-100 p-3 rounded-lg flex items-center"
+          className="bg-black border-2 border-gray-800 p-3 rounded-lg flex items-center"
         >
           <input
             type="text"
             placeholder="Search..."
-            className="bg-transparent focus:outline-none w-36 sm:w-80 text-black"
+            className="bg-transparent focus:outline-none w-36 sm:w-80"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

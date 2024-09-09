@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { AlertTriangle, EllipsisVertical, TrashIcon } from "lucide-react";
+import { AlertTriangle, EllipsisVertical, Pencil, TrashIcon } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -91,9 +91,9 @@ const ShopProfileCard = () => {
   return (
     <>
       {isShopkeeper ? (
-        <div className="bg-zinc-700 text-white p-4 sm:h-screen">
+        <div className=" p-4 sm:h-screen">
           <div className="flex flex-col gap-4 sm:fixed justify-start items-center">
-            <div className="bg-gray-950  sm:fixed sm:w-[96vw] sm:h-[33vh] rounded-3xl p-4 flex flex-col">
+            <div className="bg-black border-2 border-gray-800  sm:fixed sm:w-[96vw] sm:h-[33vh] rounded-3xl p-4 flex flex-col">
               <div className="flex sm:flex-row gap-8 p-4">
                 <div>
                   <img
@@ -145,6 +145,7 @@ const ShopProfileCard = () => {
 
                         <Link to="/profileEdit">
                           <DropdownMenuItem className="py-2 text-white">
+                            <Pencil className="w-4 h-4 mr-2"/>
                             Edit
                           </DropdownMenuItem>
                         </Link>
@@ -154,7 +155,7 @@ const ShopProfileCard = () => {
                             <TrashIcon className="w-4 h-4 mr-2" />
                             Delete
                           </AlertDialogTrigger>
-                          <AlertDialogContent>
+                          <AlertDialogContent className="bg-black">
                             <AlertDialogHeader>
                               <AlertDialogTitle>
                                 Are you absolutely sure?
@@ -166,7 +167,7 @@ const ShopProfileCard = () => {
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel className="text-black">Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={handleDeleteShopkeeper}
                               >
@@ -212,8 +213,8 @@ const ShopProfileCard = () => {
               </div>
             </div>
             {/* second div */}
-            <ScrollArea className="bg-gray-950 rounded-3xl sm:mt-[34vh] h-[62vh] w-[96vw] relative">
-              <div className="flex px-8 py-4 gap-2 justify-start items-center sm:fixed absolute w-[95vw] rounded-tl-3xl bg-gray-950">
+            <ScrollArea className="bg-black border-2 border-gray-800 rounded-3xl sm:mt-[34vh] h-[62vh] w-[96vw] relative">
+              <div className="flex px-8 py-4 gap-2 justify-start items-center sm:fixed absolute w-[95vw] rounded-tl-3xl bg-black">
                 <div className="w-2 h-9 rounded-md bg-[#2cb6bd]"></div>
                 <h2 className="text-xl">Posts</h2>
                 {user._id === userId && (

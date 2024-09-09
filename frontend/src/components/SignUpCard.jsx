@@ -72,11 +72,11 @@ function SignUpCard() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-md rounded-xl shadow-md bg-white p-6 space-y-6">
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="max-w-md rounded-xl shadow-md border-gray-800 border-2  p-6 space-y-6">
         <div className="flex flex-col justify-center items-center gap-2">
-          <h2 className="text-2xl font-bold text-gray-800">Sign Up</h2>
-          <p className="flex flex-col justify-center items-center text-gray-600 text-md font-semibold">
+          <h2 className="text-2xl font-bold ">Sign Up</h2>
+          <p className="flex flex-col justify-center items-center  text-md font-semibold">
             Hey, Enter your details to get sign Up <br />
             <span>to your account</span>
           </p>
@@ -87,7 +87,7 @@ function SignUpCard() {
               type="text"
               id="name"
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none  bg-gray-600/20 rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Name"
             />
           </div>
@@ -96,68 +96,68 @@ function SignUpCard() {
               type="text"
               id="email"
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none bg-gray-600/20 rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Email"
             />
           </div>
-          <div className="flex mb-6 shadow rounded border w-full">
+          <div className="flex mb-6 shadow rounded bg-gray-600/20 w-full">
             <input
               type={showPassword ? "text" : "password"}
               id="password"
               onChange={handleChange}
-              className="focus:outline-none appearance-none w-full px-3 py-2  text-gray-700"
+              className="focus:outline-none appearance-none bg-gray-600/20 w-full px-3 py-2  "
               placeholder="Password"
             />
             <button
               type="button"
               onClick={handleShowPassword}
-              className="mx-2 text-gray-600 text-sm hover:text-gray-800 transition duration-300 ease-in-out"
+              className="mx-2 text-sm hover: transition duration-300 ease-in-out"
             >
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
           <div className=" flex justify-evenly mb-4">
-            <div onClick={()=>handleRoleChange("shopkeeper")} id="role" value="shopkeeper" className={` cursor-pointer text-center font-semibold ${formData.role === "shopkeeper" ? "bg-orange-200" : ""} shadow appearance-none border rounded w-5/12 py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline`}>
+            <div onClick={()=>handleRoleChange("shopkeeper")} id="role" value="shopkeeper" className={` cursor-pointer text-center font-semibold ${formData.role === "shopkeeper" ? "bg-gray-800" : ""} shadow appearance-none border border-gray-800 rounded w-5/12 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline`}>
                Shopkeeper
             </div>
-            <div onClick={()=>handleRoleChange("consumer")} id="role" value="shopkeeper" className={` cursor-pointer text-center font-semibold ${formData.role === "consumer" ? "bg-orange-200" : ""} shadow appearance-none border rounded w-5/12 py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline`}>
+            <div onClick={()=>handleRoleChange("consumer")} id="role" value="shopkeeper" className={` cursor-pointer text-center font-semibold ${formData.role === "consumer" ? "bg-gray-800" : ""} shadow appearance-none border border-gray-800  rounded w-5/12 py-2 px-3 leading-tight focus:outline-none focus:shadow-outline`}>
                Consumer
             </div>
           </div>
           <button
             disabled={loading}
             type="submit"
-            className="w-full bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {loading ? "Loading..." : "Sign Up"}
           </button>
         </form>
-        <p className="text-center text-gray-900 text-sm font-semibold mt-4">
+        <p className="text-center  text-sm font-semibold mt-4">
           -- Or Sign Up with? --
         </p>
         <div className="flex justify-center space-x-4">
           <button
             type="button"
-            className="border hover:bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="border border-gray-800 text-gray-800 hover:bg-gray-200  font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             Google
           </button>
           <button
             type="button"
-            className="border hover:bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="border border-gray-800 text-gray-800 hover:bg-gray-200  font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             Apple ID
           </button>
           <button
             type="button"
-            className="border hover:bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="border border-gray-800 text-gray-800 hover:bg-gray-200  font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             Facebook
           </button>
         </div>
-        <div className="text-center text-gray-600 text-sm font-semibold">
+        <div className="text-center text-sm font-semibold">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:text-blue-700">
+          <Link to="/login" className="text-gray-600 hover:text-gray-400">
             Request Now
           </Link>
         </div>

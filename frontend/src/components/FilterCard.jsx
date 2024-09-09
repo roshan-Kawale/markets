@@ -107,17 +107,17 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
 
   return (
     <>
-      <div className="border-b-2 border-gray-950 mb-2">
-        <h2 className="text-xl font-bold mb-2 tracking-wide">Filter</h2>
+      <div className="border-b-2 border-black bg-black mb-2">
+        <h2 className="text-xl font-bold mb-2 tracking-wide bg-black text-white">Filter</h2>
       </div>
-      <div className="flex flex-wrap gap-2 flex-col mx-4">
-        <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
-          <label className="text-sm font-bold">City</label>
+      <div className="flex flex-wrap gap-2 bg-black flex-col mx-4">
+        <div className="w-full px-4 py-2 mb-4 border-y-2 bg-black border-gray-800">
+          <label className="text-sm font-bold text-white">City</label>
           <select
             id="city"
             value={filterData.city}
             onChange={handleChange}
-            className="w-full text-sm text-gray-700 border-2 p-2 my-2"
+            className="w-full text-sm text-gray-700 bg-black border-2 border-gray-800 outline-none p-2 my-2"
           >
             <option value="">Select City</option>
             {cities.map((city, index) => (
@@ -127,13 +127,13 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
             ))}
           </select>
         </div>
-        <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
-          <label className="block text-sm font-bold mb-2">Category</label>
+        <div className="w-full px-4 py-2 mb-4 bg-black border-y-2 border-gray-800">
+          <label className="block text-sm font-bold mb-2 text-white bg-black">Category</label>
           <select
             value={filterData.category}
             id="category"
             onChange={handleChange}
-            className="block w-full text-sm text-gray-700 border-2 p-2 my-2"
+            className="block w-full text-sm text-gray-700 border-gray-800 outline-none bg-black border-2 p-2 my-2"
           >
             <option value="">Select Category</option>
             {categories.map((category, index) => (
@@ -143,12 +143,12 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
             ))}
           </select>
         </div>
-        <div className="w-full px-4 py-2 mb-4 border-y-2 border-gray-300">
-          <label className="block text-sm font-bold mb-2">Rating</label>
-          <div className="flex p-2 justify-between border-2 rounded-xl shadow-lg w-full">
+        <div className="w-full bg-black px-4 py-2 mb-4 border-y-2 border-gray-800 ">
+          <label className="block text-sm font-bold mb-2 text-white bg-black">Rating</label>
+          <div className="flex p-2 justify-between border-2 border-gray-800 rounded-xl  shadow-lg w-full">
             <div
               onMouseOver={() => setRatingToggle(true)}
-              className="flex flex-col justify-center items-center w-full"
+              className="flex flex-col justify-center items-center bg-black w-full"
             >
               <input
                 type="range"
@@ -172,7 +172,7 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
               /> */}
 
               {ratingToggle && (
-                <span className="text-lg font-bold ml-2">
+                <span className="text-lg text-white font-bold ml-2">
                   {filterData.rating}
                 </span>
               )}
@@ -181,7 +181,7 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
         </div>
       </div>
       <button
-        className="bg-gray-700 w-full hover:bg-gray-900 text-white font-bold py-2 px-4 my-2 rounded"
+        className="bg-gray-700 w-full  hover:bg-gray-900 text-white font-bold py-2 px-4 my-2 rounded"
         onClick={handleSubmit}
       >
         Apply Filter
@@ -194,8 +194,8 @@ const FilterCard = () => {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <div className="lg:hidden fixed w-full z-10 bg-white border-b-2 border-gray-950 py-2 mt-[53px] flex items-center gap-2">
-        <div className="">
+      <div className="lg:hidden fixed w-full z-10 bg-black border-b-2 border-black py-2 mt-[53px] flex items-center gap-2">
+        <div className="text-white">
           {" "}
           {open ? (
             <RxCross1 onClick={() => setOpen(false)} />
@@ -203,12 +203,12 @@ const FilterCard = () => {
             <FaBars onClick={() => setOpen(true)} />
           )}
         </div>
-        <h2 className="text-xl font-bold tracking-wide">Filter</h2>
+        <h2 className="text-xl text-white font-bold tracking-wide">Filter</h2>
       </div>
 
       {open && (
         <div className="lg:hidden">
-          <div className="fixed md:w-1/3 w-2/3 mt-9 bg-white shadow-xl rounded px-4 py-6 left-0">
+          <div className="fixed md:w-1/3 w-2/3 mt-9 bg-black shadow-xl rounded px-4 py-6 left-0">
             <FilterCardInput setOpen={setOpen} />
           </div>
         </div>
@@ -216,7 +216,7 @@ const FilterCard = () => {
 
       {/* filter for large screen */}
       <div className="hidden md:hidden lg:block">
-        <div className="lg:fixed lg:w-1/4 w-full lg:h-screen mt-14 bg-white shadow-xl border-2 rounded px-4 py-6">
+        <div className="lg:fixed lg:w-1/4 w-full lg:h-screen mt-14 bg-black shadow-xl border-r-2 border-gray-900 rounded px-4 py-6">
           <FilterCardInput />
         </div>
       </div>

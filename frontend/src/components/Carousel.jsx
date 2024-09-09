@@ -27,10 +27,10 @@ function Carousel({imageUrls}) {
           />
       </div>
       {imageUrls.length > 1 && <div className = "absolute hidden group-hover:block top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-        <BsChevronLeft onClick={prevSlide} size={30}/>
+        <BsChevronLeft className='bg-transparent' onClick={prevSlide} size={30}/>
       </div>}
       {imageUrls.length > 1 && <div className = "absolute hidden group-hover:block top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-       <BsChevronRight onClick={nextSlide} size={30}/>
+       <BsChevronRight className='bg-transparent' onClick={nextSlide} size={30}/>
       </div>}
     </div>
   )

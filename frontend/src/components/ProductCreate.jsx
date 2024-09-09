@@ -143,21 +143,21 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <div className="p-4 border-2 shadow-lg rounded-md">
+            <div className="p-4 border-2 border-gray-800 shadow-lg rounded-md">
               <h2 className="text-lg font-semibold mb-2">
                 General Information
               </h2>
               <div className="mb-4">
                 <label
                   htmlFor="nameProduct"
-                  className="block text-gray-500 font-semibold mb-2"
+                  className="block  font-semibold mb-2"
                 >
                   Product Name
                 </label>
                 <input
                   type="text"
                   id="productName"
-                  className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none rounded-md w-full py-2 px-3 bg-gray-600/20 leading-tight focus:outline-none focus:shadow-outline"
                   value={formData.productName}
                   maxLength="62"
                   minLength="5"
@@ -168,13 +168,13 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
               <div className="mb-4">
                 <label
                   htmlFor="descriptionProduct"
-                  className="block text-gray-500 font-semibold mb-2"
+                  className="block  font-semibold mb-2"
                 >
                   Description Product
                 </label>
                 <textarea
                   id="caption"
-                  className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none  rounded-md w-full py-2 px-3 bg-gray-600/20 leading-tight focus:outline-none focus:shadow-outline"
                   value={formData.caption}
                   minLength="5"
                   required
@@ -183,7 +183,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
               </div>
             </div>
           </div>
-          <div className="p-4 border-2 shadow-lg rounded-md">
+          <div className="p-4 border-2 border-gray-800 shadow-lg rounded-md">
             <h2 className="text-lg font-semibold mb-2">Upload Img</h2>
             <div className="flex gap-4">
               {formData.imageUrls.length > 0 &&
@@ -212,7 +212,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
                   accept="image/*"
                   multiple
                   hidden
-                  className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
                 />
                 {files[0] ? (
                   <div className="flex flex-col justify-center items-center gap-2">
@@ -224,7 +224,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
                       <FaUpload
                         onClick={handleImageSubmit}
                         disabled={loading || uploading}
-                        className="p-1 cursor-pointer text-xl text-black-700 border border-zinc-700 rounded uppercase hover:shadow-lg"
+                        className="p-1 cursor-pointer text-xl border border-zinc-700 rounded uppercase hover:shadow-lg"
                       />
                     </div>
                   </div>
@@ -241,13 +241,13 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div className="p-4 border-2 shadow-lg rounded-md my-2">
+          <div className="p-4 border-2 border-gray-800 shadow-lg rounded-md my-2">
             <h2 className="text-lg font-semibold mb-2">Pricing</h2>
             <div className="flex gap-6 justify-center items-center">
               <div className="mb-4 w-2/5">
                 <label
                   htmlFor="basePricing"
-                  className="block text-gray-500 font-semibold mb-2"
+                  className="block  font-semibold mb-2"
                 >
                   Base Pricing
                 </label>
@@ -255,7 +255,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
                   type="number"
                   id="price"
                   required
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none  rounded w-full py-2 px-3 bg-gray-600/20 leading-tight focus:outline-none focus:shadow-outline"
                   value={formData.price}
                   onChange={handleChange}
                 />
@@ -263,34 +263,34 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
               <div className="mb-4 w-2/5">
                 <label
                   htmlFor="discount"
-                  className="block text-gray-500 font-semibold mb-2"
+                  className="block  font-semibold mb-2"
                 >
                   Discount
                 </label>
                 <input
                   type="number"
                   id="discount"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none  rounded w-full py-2 px-3 bg-gray-600/20 leading-tight focus:outline-none focus:shadow-outline"
                   value={formData.discount}
                   onChange={handleChange}
                 />
               </div>
             </div>
           </div>
-          <div className="p-4 border-2 shadow-lg rounded-md my-2">
+          <div className="p-4 border-2 border-gray-800 shadow-lg rounded-md my-2">
             <h2 className="text-lg font-semibold mb-2">Category</h2>
 
             <div className="mb-4">
               <label
                 htmlFor="productCategory"
-                className="block text-gray-500 font-semibold mb-2"
+                className="block  font-semibold mb-2"
               >
                 Product Category
               </label>
               <input
                 type="text"
                 id="category"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none rounded w-full py-2 px-3 bg-gray-600/20 leading-tight focus:outline-none focus:shadow-outline"
                 value={formData.category}
                 onChange={handleChange}
                 required
