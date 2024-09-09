@@ -50,7 +50,7 @@ const ShopProfileCard = () => {
     const fetchShopkeeperData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/shopkeeper/get/${userId}`
+          `/api/shopkeeper/get/${userId}`
         );
         const data = await res.json();
         if (data.success === false) {
@@ -70,7 +70,7 @@ const ShopProfileCard = () => {
   const handleDeleteShopkeeper = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/shopkeeper/delete/${shopkeeperData.shopkeeper._id}`,
+        `/api/shopkeeper/delete/${shopkeeperData.shopkeeper._id}`,
         {
           method: "DELETE",
           headers: {

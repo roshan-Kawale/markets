@@ -95,7 +95,7 @@ function EmailVerify() {
   useEffect(() => {
     const verifyEmailUrl = async () => {
       try {
-        const url = `http://localhost:5000/api/auth/user/${id}/verify/${token}`;
+        const url = `/api/auth/user/${id}/verify/${token}`;
         const res = await fetch(url);
         const data = await res.json();
         if (data.success !== false) {
