@@ -50,7 +50,7 @@ const ShopProfileCard = () => {
     const fetchShopkeeperData = async () => {
       try {
         const res = await fetch(
-          `/api/shopkeeper/get/${userId}`
+          `${process.env.REACT_APP_BASE_URL}api/shopkeeper/get/${userId}`
         );
         const data = await res.json();
         if (data.success === false) {
@@ -70,7 +70,7 @@ const ShopProfileCard = () => {
   const handleDeleteShopkeeper = async () => {
     try {
       const res = await fetch(
-        `/api/shopkeeper/delete/${shopkeeperData.shopkeeper._id}`,
+        `${process.env.REACT_APP_BASE_URL}api/shopkeeper/delete/${shopkeeperData.shopkeeper._id}`,
         {
           method: "DELETE",
           headers: {

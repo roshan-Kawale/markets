@@ -45,7 +45,7 @@ export default function Component() {
   const fetchProductData = async () => {
     try {
       const res = await fetch(
-        `/api/product/get/${productId}`
+        `${process.env.REACT_APP_BASE_URL}api/product/get/${productId}`
       );
       const data = await res.json();
       console.log(data);
@@ -63,7 +63,7 @@ export default function Component() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/product/like/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/product/like/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ export default function Component() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `/api/product/rate/${id}`,
+        `${process.env.REACT_APP_BASE_URL}api/product/rate/${id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

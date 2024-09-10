@@ -1,6 +1,6 @@
 export const createCustomer = async (Data) => {
     try {
-        const res = await fetch("/api/customer/create", {
+        const res = await fetch("${process.env.REACT_APP_BASE_URL}api/customer/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

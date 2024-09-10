@@ -19,7 +19,7 @@ const CommentCardData = ({ Comments, productId }) => {
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.toString();
       const res = await fetch(
-        `/api/product/getall?${searchQuery}`
+        `${process.env.REACT_APP_BASE_URL}api/product/getall?${searchQuery}`
       );
       const data = await res.json();
       setProducts(data);
@@ -37,7 +37,7 @@ const CommentCardData = ({ Comments, productId }) => {
     try {
       setLoading(true);
       const res = await fetch(
-        `/api/product/comment/${id}`,
+        `${process.env.REACT_APP_BASE_URL}api/product/comment/${id}`,
         {
           method: "POST",
           headers: {

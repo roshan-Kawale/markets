@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
-import { FaRegHeart } from "react-icons/fa";
 import { IoIosStar } from "react-icons/io";
-import { FaHeart } from "react-icons/fa";
-import { FaRegCommentDots } from "react-icons/fa";
-import { FaRegShareFromSquare } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
 import { productAtom, userAtom } from "../atoms/store";
@@ -48,7 +44,7 @@ const ProductCard = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const searchQuery = urlParams.toString();
       const res = await fetch(
-        `/api/product/getall?${searchQuery}`
+        `${process.env.REACT_APP_BASE_URL}api/product/getall?${searchQuery}`
       );
       const data = await res.json();
       setProducts(data);
@@ -65,7 +61,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/product/like/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/product/like/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +88,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/product/get/${id}`);
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/product/get/${id}`);
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
@@ -115,7 +111,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/product/get/${id}`);
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/product/get/${id}`);
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
@@ -138,7 +134,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch(`/api/product/get/${id}`);
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/product/get/${id}`);
       const data = await res.json();
       if (data.success === false) {
         setLoading(false);
@@ -161,7 +157,7 @@ const ProductCard = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `/api/product/rate/${id}`,
+        `${process.env.REACT_APP_BASE_URL}api/product/rate/${id}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

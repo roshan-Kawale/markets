@@ -2,11 +2,11 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import authRouter from "./backend/routes/auth.js";
-import shopkeeperRouter from "./backend/routes/shopkeeper.js"
-import customerRouter from "./backend/routes/customer.js"
-import productRouter from "./backend/routes/product.js"
-import { errormiddleware } from "./backend/utils/error.js";
+import authRouter from "./routes/auth.js";
+import shopkeeperRouter from "./routes/shopkeeper.js"
+import customerRouter from "./routes/customer.js"
+import productRouter from "./routes/product.js"
+import { errormiddleware } from "./utils/error.js";
 import path from "path";
 import cors from "cors";
 
@@ -16,7 +16,7 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "./frontend/build")));
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 app.use(cookieParser());
 app.use(cors({ origin: '*' }));
 
