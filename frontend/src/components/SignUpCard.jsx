@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { userAtom } from "../atoms/store";
 import { useAtom } from "jotai";
 import { createCustomer } from "../api/customer";
+import { useToast } from "../hooks/use-toast"
 
 function SignUpCard() {
   const [formData, setFormData] = useState({role : "consumer"});
@@ -12,6 +13,8 @@ function SignUpCard() {
   const [user, setUser] = useAtom(userAtom);
   const [msg , setMsg] = useState("");
   const navigate = useNavigate();
+
+  const { toast } = useToast()
 
   const handleShowPassword = () => setShowPassword(!showPassword);
 
@@ -52,9 +55,10 @@ function SignUpCard() {
       if (data.role !== "shopkeeper") {
         const value = await createCustomer(data._id);
         if (value) {
-          console.log(value , "consumer create successfully");
+          console.log("consumer create successfully");
         }
       }
+      return data.message || "Verification email sent! Please check your inbox to verify your account.";
       // setUser(data);
       // if (data.role === "shopkeeper") {
       //   navigate("/detail");
@@ -81,7 +85,15 @@ function SignUpCard() {
             <span>to your account</span>
           </p>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form 
+        onSubmit={async (e) => {
+          const reply = await handleSubmit(e);
+          toast({
+            className: 'bg-black border-gray-800 text-white capitalize font-semibold text-lg',
+            title: `${reply}`,
+          });
+        }}
+        >
           <div className="flex flex-col mb-4">
             <input
               type="text"

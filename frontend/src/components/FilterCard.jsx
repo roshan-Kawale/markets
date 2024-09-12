@@ -215,8 +215,8 @@ const FilterCard = () => {
       )}
 
       {/* filter for large screen */}
-      <div className="hidden md:hidden lg:block">
-        <div className="lg:fixed lg:w-1/4 w-full lg:h-screen mt-14 bg-black shadow-xl border-r-2 border-gray-900 rounded px-4 py-6">
+      <div className="hidden md:hidden lg:block absolute left-20">
+        <div className="lg:fixed lg:w-1/4 w-full lg:h-screen mt-14 bg-black shadow-xl border-x-2 border-gray-900 rounded px-4 py-6">
           <FilterCardInput />
         </div>
       </div>

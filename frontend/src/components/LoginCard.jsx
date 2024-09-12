@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userAtom } from "../atoms/store";
+import { useToast } from "../hooks/use-toast"
 
 function LoginCard() {
   const [formData, setFormData] = useState({});
@@ -10,6 +11,7 @@ function LoginCard() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [user, setUser] = useAtom(userAtom);
+  const { toast } = useToast()
 
   const navigate = useNavigate();
 
@@ -37,14 +39,13 @@ function LoginCard() {
       if (data.success === false) {
         setLoading(false);
         setError(data.message);
-        return;
+        return data.message;
       }
       
       if(!data.verified) {
-        console.log("verify your email");
         setLoading(false);
         setError(null);
-        return;
+        return "Verification email sent! Please check your inbox to verify your account.";
       }
 
       if (data.role ==="shopkeeper") {
@@ -56,6 +57,7 @@ function LoginCard() {
       setLoading(false);
       setError(null);
       navigate("/")
+      return data.message || "Login successful";
 
     } catch (error) {
       setLoading(false);
@@ -73,7 +75,15 @@ function LoginCard() {
             <span>to your account</span>
           </p>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form 
+          onSubmit={async (e) => {
+            const reply = await handleSubmit(e);
+            toast({
+              className: 'bg-black border-gray-800 text-white capitalize font-semibold text-lg',
+              title: `${reply}`,
+            });
+          }}
+        >
           <div className="flex flex-col mb-4">
             <input
               type="text"
@@ -137,7 +147,6 @@ function LoginCard() {
           </Link>
         </div>
       </div>
-      {error && <p className="text-red-500 mt-5">{error}</p>}
     </div>
   );
 }

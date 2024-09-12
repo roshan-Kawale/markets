@@ -9,6 +9,8 @@ import CommentCard from "./CommentCard";
 import Carousel from "./Carousel";
 import LikeCard from "./LikeCard";
 import { Slider } from "./ui/slider";
+import { useToast } from "../hooks/use-toast"
+
 
 import {
   AlertDialog,
@@ -24,6 +26,7 @@ import { Heart, MessageCircle, Share2, X } from "lucide-react";
 const ProductCard = () => {
   const [user] = useAtom(userAtom);
   const [products, setProducts] = useAtom(productAtom);
+  const { toast } = useToast()
 
   const [likeToggle, setLikeToggle] = useState(false);
   const [likesValue, setLikesValue] = useState("");
@@ -76,6 +79,7 @@ const ProductCard = () => {
       }
       setLoading(false);
       setError(null);
+      return data.message;
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -260,7 +264,13 @@ const ProductCard = () => {
             <div className="flex justify-between border-t-2 border-gray-800 shadow-xl-2 py-1 px-8">
               <div className="flex gap-1 justify-center items-center text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 <div
-                  onClick={(e) => handleLike({ e, id: product._id })}
+                 onClick={async (e) => {
+                  const reply = await handleLike({ e, id: product._id });
+                  toast({
+                    className: 'bg-black/20 border-gray-800 text-[#32de84] capitalize font-semibold text-lg',
+                    title: `${reply}`,
+                  });
+                }}
                   className="cursor-pointer"
                 >
                   {product?.likes.includes(user._id) ? (

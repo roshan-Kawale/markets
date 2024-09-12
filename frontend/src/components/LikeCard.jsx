@@ -32,7 +32,7 @@ function LikeCard({Likes}) {
 
   return (
     <>
-    <div className="relative md:flex flex-col h-screen p-2 right-0 lg:right-10 md:fixed md:w-1/2 lg:w-1/4 border-2 border-gray-800 lg:mt-14 md:mt-28 hidden">   
+    <div className="relative md:flex flex-col p-2 h-screen max-h-[620px] right-0 lg:right-20 md:fixed md:w-1/2 lg:w-1/4 border-2 border-gray-800 lg:mt-14 md:mt-28 hidden">   
        <LikeCardData Likes={Likes}/>
       </div>
 

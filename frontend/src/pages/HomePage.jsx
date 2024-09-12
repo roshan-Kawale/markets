@@ -7,7 +7,7 @@ function HomePage() {
   return (
     <div>
       <Header />
-      <div className=" flex flex-col p-2 gap-2">
+      <div className=" flex flex-col p-2">
        <div>
        <FilterCard/>
        </div>
