@@ -94,7 +94,7 @@ const CommentCardData = ({ Comments, productId }) => {
       <div className="hidden sm:block"> 
         <form
           onSubmit={(e) => addCommentHandler({ e, id: productId })}
-          className="fixed md:bottom-0 lg:bottom-0 md:w-1/2 md:right-4 lg:w-1/4 lg:right-20 bg-black rounded-md"
+          className="fixed md:bottom-0 lg:bottom-0 md:w-1/2 md:right-2 lg:w-1/4 lg:right-20 bg-black rounded-md"
         >
           <div className="border-2 border-gray-800 p-2">
             <div className="flex items-center mb-2">
@@ -169,7 +169,7 @@ const CommentCardData = ({ Comments, productId }) => {
 function CommentCard({ Comments, productId }) {
   return (
     <>
-      <div className="relative  md:flex flex-col h-screen max-h-[620px] p-2 right-0 lg:right-20 md:fixed md:w-1/2 lg:w-1/4 border-2 border-gray-800 lg:mt-14 md:mt-28 hidden">
+      <div className="relative  md:flex flex-col h-screen max-h-[620px] p-2 right-2 lg:right-20 md:fixed md:w-1/2 lg:w-1/4 border-2 border-gray-800 lg:mt-14 md:mt-28 hidden">
 
         <CommentCardData Comments={Comments} productId={productId} />
         

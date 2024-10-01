@@ -35,12 +35,12 @@ const Header = () => {
   }, [window.location.search]);
 
   return (
-    <header className="bg-black border-b-2 border-gray-800 z-10 fixed w-full text-white py-2 px-2">
-      <div className="mx-auto flex justify-between items-center">
+    <header className="bg-zinc-800/40 z-10 fixed w-full text-white py-2 px-2">
+      <div className="mx-auto flex justify-center items-center">
 
-        <div className="sm:flex items-center">
+        {/* <div className="sm:flex items-center">
           <h1 className="text-3xl font-bold ">Market</h1>
-        </div>
+        </div> */}
        
         <form
           onSubmit={handleSubmit}
@@ -57,7 +57,7 @@ const Header = () => {
             <FaSearch className="text-slate-600" />
           </button>
         </form>
-        <nav className="flex space-x-8 sm:flex items-center">
+        {/* <nav className="flex space-x-8 sm:flex items-center">
           {user.role === "shopkeeper" && (
             <Link to={`/profile/${user._id}`} className="hover:text-gray-400 pr-2">
               <div className="flex items-center cursor-pointer">
@@ -82,22 +82,9 @@ const Header = () => {
                 />
               </div>
             </div>
-          )}
-        
-       {/* {<div className="relative">
-              <div
-                className="flex items-center cursor-pointer text-black"
-              >
-                <Link to="/login">
-                <button>
-                Sign In
-                </button>
-                </Link>
-              </div>
-            </div>} */}
-         
+          )} 
           {profileMenuOpen && <CustomerProfile />}
-        </nav>
+        </nav> */}
       </div>
     </header>
   );

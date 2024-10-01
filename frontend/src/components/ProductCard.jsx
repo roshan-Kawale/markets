@@ -196,7 +196,7 @@ const ProductCard = () => {
 
   return (
     <>
-      <div className="lg:absolute left-1/3 md:w-1/2 lg:w-1/3 lg:mt-14 mt-28 flex flex-wrap justify-center mb-4">
+      <div className="lg:absolute left-1/3 md:w-1/2 lg:w-1/3 mt-4 flex flex-wrap justify-center mb-4">
         {products?.map((product, index) => (
           <div
             key={product._id}
