@@ -86,8 +86,8 @@ export const getAllProducts = async (req, res, next) => {
     const rating = req.query.rating || "";
 
     let query = {
-      productName: { $regex: searchTerm, $options: "i" },
-      category: { $regex: category, $options: "i" },
+      productName: { $regex: searchTerm, $options: "" },
+      category: { $regex: category, $options: "" },
     };
 
     if (rating) {
