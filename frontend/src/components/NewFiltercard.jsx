@@ -18,6 +18,7 @@ import { ScrollArea } from './ui/scroll-area'
 
 export default function NewFilterCard({ onClose }) {
   const [filterType, setFilterType] = useState('product')
+  const [rating, setRating] = useState(0)
 
   return (
     <ScrollArea >
@@ -45,10 +46,10 @@ export default function NewFilterCard({ onClose }) {
                 <SelectValue placeholder="Select a city" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="new-york">New York</SelectItem>
-                <SelectItem value="london">London</SelectItem>
-                <SelectItem value="paris">Paris</SelectItem>
-                <SelectItem value="tokyo">Tokyo</SelectItem>
+                <SelectItem value="new-york">Chandrapur</SelectItem>
+                <SelectItem value="london">Gadchiroli</SelectItem>
+                <SelectItem value="paris">Nagpur</SelectItem>
+                <SelectItem value="tokyo">Mumbai</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -96,24 +97,22 @@ export default function NewFilterCard({ onClose }) {
           </Accordion>
 
           <div className="space-y-2">
-            <Label>Rating</Label>
-            <RadioGroup defaultValue="any">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="any" id="rating-any" />
-                <Label htmlFor="rating-any">Any</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="4plus" id="rating-4plus" />
-                <Label htmlFor="rating-4plus">4+ Stars</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="3plus" id="rating-3plus" />
-                <Label htmlFor="rating-3plus">3+ Stars</Label>
-              </div>
-            </RadioGroup>
+                <Label>Rating</Label>
+                <Slider
+                  id="rating-slider"
+                  min={0}
+                  max={5}
+                  step={0.1}
+                  value={[rating]}
+                  onValueChange={(value) => setRating(value[0])}
+                  className="mt-2"
+                />
+                <div className="text-sm text-muted-foreground mt-1">
+                  {rating.toFixed(1)} stars and above
+                </div>
           </div>
 
-          <div className="space-y-2">
+         { filterType === 'product' && <div className="space-y-2">
             <Label>Price Range</Label>
             <div className="flex items-center space-x-2">
               <Input type="number" placeholder="Min" className="w-20" />
@@ -126,25 +125,9 @@ export default function NewFilterCard({ onClose }) {
               step={1}
               className="mt-2"
             />
-          </div>
+          </div>}
 
-          {filterType === 'product' && (
-            <div className="space-y-2">
-              <Label htmlFor="availability">Availability</Label>
-              <Select>
-                <SelectTrigger id="availability">
-                  <SelectValue placeholder="Select availability" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="in-stock">In Stock</SelectItem>
-                  <SelectItem value="out-of-stock">Out of Stock</SelectItem>
-                  <SelectItem value="pre-order">Pre-order</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-
-          {filterType === 'shop' && (
+          {/* {filterType === 'shop' && (
             <div className="space-y-2">
               <Label>Shop Type</Label>
               <RadioGroup defaultValue="all">
@@ -162,7 +145,7 @@ export default function NewFilterCard({ onClose }) {
                 </div>
               </RadioGroup>
             </div>
-          )}
+          )} */}
         </form>
       </CardContent>
       <CardFooter>

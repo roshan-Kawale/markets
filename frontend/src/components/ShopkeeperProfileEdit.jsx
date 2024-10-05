@@ -75,7 +75,7 @@ export default function ShopkeeperProfileEdit() {
     e.preventDefault()
     try {
       setLoading(true);
-      const resUser = await fetch("${process.env.REACT_APP_BASE_URL}api/auth/update", {
+      const resUser = await fetch(`${process.env.REACT_APP_BASE_URL}api/auth/update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export default function ShopkeeperProfileEdit() {
         return;
       }
 
-      const resShopkeeper = await fetch("${process.env.REACT_APP_BASE_URL}api/shopkeeper/update", {
+      const resShopkeeper = await fetch(`${process.env.REACT_APP_BASE_URL}api/shopkeeper/update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

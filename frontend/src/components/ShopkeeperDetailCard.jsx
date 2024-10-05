@@ -38,7 +38,7 @@ function ShopkeeperDetailCard() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("${process.env.REACT_APP_BASE_URL}api/shopkeeper/create", {
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/shopkeeper/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

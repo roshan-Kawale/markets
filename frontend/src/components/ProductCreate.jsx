@@ -321,7 +321,7 @@ function ProductCreate() {
         return setError("Discount price must be lower than regular price");
       setLoading(true);
       setError(false);
-      const res = await fetch("${process.env.REACT_APP_BASE_URL}api/product/create", {
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/product/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

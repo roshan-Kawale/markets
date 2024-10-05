@@ -4,42 +4,50 @@ import {
   Filter,
   Bell,
   User,
-  ShoppingBag,
   Heart,
-  Map,
-  Settings,
   Menu,
   X,
+  EllipsisVertical,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
 import NewFilterCard from "./NewFiltercard";
 import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/store";
+import { RESET } from "jotai/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const SidebarData = () => {
-  const [user] = useAtom(userAtom);
+  const [user , setUser] = useAtom(userAtom);
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
+  const handleSignOut = (e) => {
+    e.preventDefault();
+    setUser(RESET);
+  };
+
   const menuItems = [
-    { icon: Home, label: "Home" },
-    { icon: Filter, label: "Filter" },
-    { icon: Bell, label: "Notifications" },
-    { icon: ShoppingBag, label: "Products" },
-    { icon: Heart, label: "Favorites" },
-    { icon: Map, label: "Local Shops" },
-    { icon: Settings, label: "Settings" },
+    { icon: Home, label: "Home" , link:"/" },
+    { icon: Filter, label: "Filter" , link:"#" },
+    { icon: Bell, label: "Notifications" , link:"/notifications" },
+    // { icon: ShoppingBag, label: "Products" },
+    { icon: Heart, label: "Saved" , link:"/saved" },
+    // { icon: Map, label: "Local Shops" },
+    // { icon: Settings, label: "Settings" },
   ];
 
   return (
@@ -54,7 +62,7 @@ const SidebarData = () => {
         <span className="sr-only">Toggle Sidebar</span>
       </Button>
       <div
-        className={`fixed inset-y-0 lg:left-48 left-0 bg-black z-50  w-64 bg-background shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 xl:left-48 left-0 bg-black z-50 w-64  bg-background shadow-lg transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
@@ -66,8 +74,8 @@ const SidebarData = () => {
             <ul className="space-y-2 px-2">
               {menuItems.map((item, index) => (
                 <li key={index}>
-                  <a
-                    href="#"
+                  <Link
+                    to={`${item.link}`}
                     className="flex items-center text-white space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-gray-900"
                   >
                     <item.icon className="h-5 w-5" />
@@ -84,25 +92,18 @@ const SidebarData = () => {
                     ) : (
                       <span>{item.label}</span>
                     )}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
           {user.role == null && (
             <div className="p-2 border-t">
-              <div className="flex items-center gap-2 hover:bg-zinc-800/60 rounded-3xl py-2 px-4">
-                <User className="h-8 w-8 rounded-full bg-gray-200 p-1" />
-                <div>
-                  <p className="font-medium">John doe</p>
-                  <Link
-                    
-                    className="flex items-center space-x-3"
-                  >
-                    <span className="text-sm text-gray-500">View Profile</span>
-                  </Link>
-                </div>
+              <Link to="/login">
+              <div className="flex justify-center items-center gap-2 hover:bg-zinc-800/60 rounded-3xl py-2 px-4">
+                Sign In
               </div>
+              </Link>
             </div>
           )}
           {user.role === "shopkeeper" && (
@@ -118,7 +119,23 @@ const SidebarData = () => {
                     <span className="text-sm text-gray-500">View Profile</span>
                   </Link>
                 </div>
+              <div className="absolute right-4 flex justify-end">
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="outline-none">
+                    <EllipsisVertical />
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent align="end" className="bg-[#2e2d2d] border-none">
+                    <DropdownMenuSeparator />
+
+                    <Link>
+                    <DropdownMenuItem onClick={handleSignOut} className="py-2 text-white">Sign Out</DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
+              </div>
+              
             </div>
           )}
           {user.role === "consumer" && (
@@ -151,10 +168,10 @@ const SidebarData = () => {
 
 export default function Sidebar() {
   return (
-    <div className="">
-      <div className=" bg-black shadow-xl border-gray-900 rounded px-4 py-6">
+    
+      <div className=" bg-black relative shadow-xl rounded  px-4 py-6">
         <SidebarData />
       </div>
-    </div>
+  
   );
 }

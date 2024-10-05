@@ -1,6 +1,6 @@
 export const updateShopkeeper = async (Data) => {
     try {
-        const res = await fetch("${process.env.REACT_APP_BASE_URL}api/shopkeeper/update", {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/shopkeeper/update`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
