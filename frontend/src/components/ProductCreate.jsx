@@ -13,11 +13,134 @@ import { useAtom } from "jotai";
 import { userAtom } from "../atoms/store";
 import {  useNavigate, useParams } from "react-router-dom";
 import { updateShopkeeper } from "../api/shopkeeperApi";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { Label } from "./ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion";
+import { ScrollArea } from "./ui/scroll-area";
+
+const productCategories = {
+  all: ["All"],
+
+  MensClothing: [
+    "T-shirts",
+    "Shirts",
+    "Pants & Trousers",
+    "Jeans",
+    "Jackets & Coats",
+    "Traditional Wear",
+    "Innerwear & Socks",
+  ],
+  WomenClothing: [
+    "Kurtis & Tunics",
+    "Sarees",
+    "Tops & T-shirts",
+    "Dresses",
+    "Jeans & Leggings",
+    "Jackets & Sweaters",
+    "Ethnic Wear",
+  ],
+  KidsClothing: [
+    "T-shirts & Tops",
+    "Pants & Shorts",
+    "Dresses",
+    "School Uniforms",
+    "Ethnic Wear",
+  ],
+  Footwear: ["Men's Footwear", "Women's Footwear", "Kids' Footwear"],
+  Accessories: ["Belts", "Caps & Hats", "Bags", "Scarves & Stoles"],
+
+  MobilePhones: [
+    "Smartphones",
+    "Phone Cases & Covers",
+    "Chargers & Cables",
+    "Power Banks",
+    "Screen Protectors",
+  ],
+  LaptopsComputers: [
+    "Laptops",
+    "Desktops",
+    "Keyboards & Mice",
+    "Laptop Bags",
+    "Printers & Scanners",
+  ],
+  HomeAppliances: [
+    "Televisions",
+    "Refrigerators",
+    "Washing Machines",
+    "Air Conditioners",
+    "Water Purifiers",
+  ],
+  AudioHeadphones: ["Headphones", "Speakers", "Earbuds"],
+  PersonalGadgets: [
+    "Smartwatches",
+    "Fitness Bands",
+    "Cameras & Accessories",
+    "Tablets",
+  ],
+
+  HandTools: [
+    "Hammers",
+    "Screwdrivers",
+    "Wrenches",
+    "Pliers",
+    "Measuring Tools",
+  ],
+  PowerTools: [
+    "Drills & Drivers",
+    "Saws",
+    "Grinders",
+    "Sanders",
+    "Power Tool Accessories",
+  ],
+  ElectricalSupplies: [
+    "Cables & Wires",
+    "Switches & Sockets",
+    "Extension Cords",
+    "Electrical Tapes",
+    "Lighting",
+  ],
+  PlumbingSupplie: [
+    "Pipes & Fittings",
+    "Faucets",
+    "Bathroom Fixtures",
+    "Showers & Taps",
+    "Water Pumps",
+  ],
+  BuildingMaterials: [
+    "Cement",
+    "Bricks & Blocks",
+    "Paints & Primers",
+    "Wall Finishes",
+    "Adhesives & Sealants",
+  ],
+};
 
 export const ProductForm = ({ handleSubmit ,  setFormData}) => {
+  const [selectedProductCategory, setSelectedProductCategory] = useState('all')
+  const [selectedProductSubcategory, setSelectedProductSubcategory] = useState('')
+
+  const handleProductCategoryChange = (value) => {
+    setSelectedProductCategory(value)
+    setSelectedProductSubcategory('')
+  }
+
 
   const [formData, setFormDataState] = useState({
     imageUrls: [],
+    productCategory: selectedProductCategory,
+    productSubcategory: selectedProductSubcategory,
   });
   const [files, setFiles] = useState([]);
   const [imageUploadError, setImageUploadError] = useState(false);
@@ -27,6 +150,15 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
 
   //product when edit the product
   const { productId } = useParams();
+
+  // Update formData when product category or subcategory changes
+  useEffect(() => {
+    setFormDataState((prevFormData) => ({
+      ...prevFormData,
+      productCategory: selectedProductCategory,
+      productSubcategory: selectedProductSubcategory,
+    }));
+  }, [selectedProductCategory, selectedProductSubcategory]);
 
   useEffect(() => {
     setFormData(formData);
@@ -46,7 +178,9 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
        price: data.price,
        imageUrls: data.imageUrls,
        discount: data.discount,
-       category: data.category
+       category: data.category,
+       productCategory: data.productCategory,
+       productSubcategory: data.productSubcategory,
       });
     } catch (error) {
       console.log(error.message);
@@ -59,7 +193,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
     }
   }, []);
 
-  const handleImageSubmit = (element) => {
+  const handleImageSubmit = () => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
       setImageUploadError(false);
@@ -280,7 +414,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
           <div className="p-4 border-2 border-gray-800 shadow-lg rounded-md my-2">
             <h2 className="text-lg font-semibold mb-2">Category</h2>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="productCategory"
                 className="block  font-semibold mb-2"
@@ -295,7 +429,42 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
                 onChange={handleChange}
                 required
               />
-            </div>
+            </div> */}
+            <Accordion type="single" collapsible className="w-full flex gap-4">             
+                  <AccordionItem value="product-category" className="w-1/2">
+                    <AccordionTrigger>Product Category</AccordionTrigger>
+                    <AccordionContent>
+                    <ScrollArea className="h-24">
+                      <RadioGroup value={formData.productCategory} onValueChange={handleProductCategoryChange}>
+                        {Object.keys(productCategories).map((category) => (
+                          <div key={category} className="flex items-center space-x-2">
+                            <RadioGroupItem value={category} id="productCategory" className="text-white"/>
+                            <Label htmlFor="productCategory">{category.charAt(0).toUpperCase() + category.slice(1)}</Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
+                    </ScrollArea>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="productSubcategory" className="w-1/2 text-black">
+                    <AccordionTrigger className="text-white">Product Subcategory</AccordionTrigger>
+                    <AccordionContent>
+                      <Select value={formData.productSubcategory} onValueChange={setSelectedProductSubcategory}>
+                        <SelectTrigger id="productSubcategory">
+                          <SelectValue placeholder="Select a subcategory" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {productCategories[formData.productCategory || selectedProductCategory]?.map((subcategory) => (
+                            <SelectItem key={subcategory} value={subcategory.toLowerCase()}>
+                              {subcategory}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </AccordionContent>
+                  </AccordionItem>      
+            </Accordion>
           </div>
         </div>
       </form>

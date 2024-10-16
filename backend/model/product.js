@@ -26,7 +26,8 @@ const productSchema = new mongoose.Schema({
     min: [0, "wrong min discount"],
     max: [99, "wrong max discount"],
   },
-  category: { type: String },
+  productCategory: { type: String , required: true },
+  productSubcategory: { type: String , required: true },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -55,9 +56,9 @@ const productSchema = new mongoose.Schema({
       rating: { type: Number, required: true },
     },
   ],
-  overallRating : {
+  overallRating: {
     type: Number,
-  }
+  },
 });
 
 const Product = mongoose.model("Product", productSchema);

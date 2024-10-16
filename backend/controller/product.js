@@ -10,7 +10,8 @@ export const createProduct = async (req, res, next) => {
       owner,
       price,
       discount,
-      category,
+      productCategory,
+      productSubcategory,
     } = req.body;
 
     const validUser = await Shopkeeper.findOne({ userId: owner }).populate();
@@ -29,7 +30,8 @@ export const createProduct = async (req, res, next) => {
       owner: validUser._id,
       price,
       discount,
-      category,
+      productCategory,
+      productSubcategory,
     });
 
     await product.save();
@@ -50,7 +52,8 @@ export const updateProduct = async (req, res, next) => {
       imageUrls,
       price,
       discount,
-      category,
+      productCategory,
+      productSubcategory,
     } = req.body;
 
     const product = await Product.findById(productId);
@@ -67,7 +70,8 @@ export const updateProduct = async (req, res, next) => {
     product.imageUrls = imageUrls || product.imageUrls;
     product.price = price || product.price;
     product.discount = discount || product.discount;
-    product.category = category || product.category;
+    product.productCategory = productCategory || product.productCategory;
+    product.productSubcategory = productSubcategory || product.productSubcategory;
 
     await product.save();
 
@@ -81,13 +85,12 @@ export const updateProduct = async (req, res, next) => {
 export const getAllProducts = async (req, res, next) => {
   try {
     const searchTerm = req.query.searchTerm || "";
-    const category = req.query.category || "";
+    // const category = req.query.category || "";
     const city = req.query.city || "";
     const rating = req.query.rating || "";
 
     let query = {
       productName: { $regex: searchTerm, $options: "" },
-      category: { $regex: category, $options: "" },
     };
 
     if (rating) {
