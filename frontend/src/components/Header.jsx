@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
-import CustomerProfile from "./CustomerProfile";
-import { useAtom } from "jotai";
-import { userAtom } from "../atoms/store";
 
 const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const [user] = useAtom(userAtom);
-  const handleMobileMenuToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-  const handleProfileMenuToggle = () => {
-    setProfileMenuOpen(!profileMenuOpen);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,10 +25,6 @@ const Header = () => {
   return (
     <header className="bg-zinc-800/40 z-10 fixed w-full text-white py-2 px-2">
       <div className="mx-auto flex justify-center items-center">
-
-        {/* <div className="sm:flex items-center">
-          <h1 className="text-3xl font-bold ">Market</h1>
-        </div> */}
        
         <form
           onSubmit={handleSubmit}
@@ -57,34 +41,6 @@ const Header = () => {
             <FaSearch className="text-slate-600" />
           </button>
         </form>
-        {/* <nav className="flex space-x-8 sm:flex items-center">
-          {user.role === "shopkeeper" && (
-            <Link to={`/profile/${user._id}`} className="hover:text-gray-400 pr-2">
-              <div className="flex items-center cursor-pointer">
-                <img
-                  src="https://picsum.photos/200"
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full"
-                />
-              </div>
-            </Link>
-          )}
-          {user.role === "consumer" && (
-            <div className="relative">
-              <div
-                className="flex items-center cursor-pointer"
-                onClick={handleProfileMenuToggle}
-              >
-                <img
-                  src="https://picsum.photos/200"
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full"
-                />
-              </div>
-            </div>
-          )} 
-          {profileMenuOpen && <CustomerProfile />}
-        </nav> */}
       </div>
     </header>
   );

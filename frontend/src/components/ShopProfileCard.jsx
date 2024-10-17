@@ -182,7 +182,7 @@ const ShopProfileCard = () => {
                   </div>
                 )}
               </div>
-              <div className="flex flex-wrap gap-2 sm:gap-4 mt-4 sm:px-4">
+              <div className="flex flex-wrap gap-2 sm:gap-4 sm:px-4">
                 <div className="flex items-center px-5 py-3 gap-2 rounded-2xl bg-[#2e2d2d]/70">
                   <MdOutlinePostAdd className="text-xl" />
 

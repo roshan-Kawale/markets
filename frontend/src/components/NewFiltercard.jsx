@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -27,13 +26,9 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import { ScrollArea } from "./ui/scroll-area";
-
-// const categorySubcategories = {
-//   all: ['All'],
-//   electronics: ['Smartphones', 'Laptops', 'Accessories', 'Cameras', 'Audio'],
-//   clothing: ['Men\'s Wear', 'Women\'s Wear', 'Kids\' Wear', 'Shoes', 'Accessories'],
-//   home: ['Furniture', 'Decor', 'Kitchen', 'Bedding', 'Garden'],
-// }
+import { useNavigate } from "react-router-dom";
+import { productAtom } from "../atoms/store";
+import { useAtom } from "jotai";
 
 const productCategories = {
   all: ["All"],
@@ -132,24 +127,96 @@ const productCategories = {
   ],
 };
 
-const shopCategories = [
-  'All',
-  'Clothes',
-  'Electronics',
-  'Hardware'
-]
+const shopCategories = ["All", "Clothes", "Electronics", "Hardware"];
 
 export default function NewFilterCard() {
-  const [filterType, setFilterType] = useState('product')
-  const [rating, setRating] = useState(0)
-  const [selectedProductCategory, setSelectedProductCategory] = useState('all')
-  const [selectedProductSubcategory, setSelectedProductSubcategory] = useState('')
-  const [selectedShopCategory, setSelectedShopCategory] = useState('All')
+  const [filterType, setFilterType] = useState("product");
+  const [rating, setRating] = useState(0);
+  const [selectedProductCategory, setSelectedProductCategory] = useState("all");
+  const [selectedProductSubcategory, setSelectedProductSubcategory] =
+    useState("");
+  const [selectedShopCategory, setSelectedShopCategory] = useState("All");
+
+  const [filterData, setFilterData] = useState("");
+  const [_, setProducts] = useAtom(productAtom);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    const cityFromUrl = urlParams.get("city");
+    const ratingFromUrl = urlParams.get("rating");
+
+    if (searchTermFromUrl || cityFromUrl || ratingFromUrl) {
+      setFilterData({
+        searchTerm: searchTermFromUrl || "",
+        city: cityFromUrl || "",
+        rating: ratingFromUrl || "",
+      });
+    }
+
+    const fetchProducts = async () => {
+      try {
+        const searchQuery = urlParams.toString();
+        const res = await fetch(
+          `${process.env.REACT_APP_BASE_URL}api/product/getall?${searchQuery}`
+        );
+        const data = await res.json();
+        console.log(data);
+        setProducts(data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    fetchProducts();
+  }, [window.location.search]);
+
+  const handleChange = (id, value) => {
+    console.log(filterData);
+    if (id === "searchTerm") {
+      setFilterData({ ...filterData, searchTerm: value });
+    }
+    if (id === "city") {
+      setFilterData({ ...filterData, city: value });
+    }
+    if (id === "rating") {
+      setFilterData({ ...filterData, rating: value });
+    }
+    if (id === "productCategory") {
+      setFilterData({ ...filterData, productCategory: value });
+    }
+    if (id === "productSubcategory") {
+      setFilterData({ ...filterData, productSubcategory: value });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams();
+    if (filterData.searchTerm !== undefined) {
+      urlParams.set("searchTerm", filterData.searchTerm);
+    }
+    if (filterData.city !== undefined) {
+      urlParams.set("city", filterData.city);
+    }
+    if (filterData.rating !== undefined) {
+      urlParams.set("rating", filterData.rating);
+    }
+    if (filterData.productCategory !== undefined) {
+      urlParams.set("productCategory", filterData.productCategory);
+    }
+    if (filterData.productSubcategory !== undefined) {
+      urlParams.set("productSubcategory", filterData.productSubcategory);
+    }
+    const searchQuery = urlParams.toString();
+    navigate(`/?${searchQuery}`);
+  };
 
   const handleProductCategoryChange = (value) => {
-    setSelectedProductCategory(value)
-    setSelectedProductSubcategory('')
-  }
+    setSelectedProductCategory(value);
+    setSelectedProductSubcategory("");
+  };
 
   return (
     <ScrollArea>
@@ -174,31 +241,49 @@ export default function NewFilterCard() {
 
             <div className="space-y-2">
               <Label htmlFor="city">City</Label>
-              <Select>
-                <SelectTrigger id="city">
+              <Select
+                id="city"
+                value={filterData.city}
+                onValueChange={(value) => handleChange("city", value)}
+              >
+                <SelectTrigger>
                   <SelectValue placeholder="Select a city" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="new-york">Chandrapur</SelectItem>
-                  <SelectItem value="london">Gadchiroli</SelectItem>
-                  <SelectItem value="paris">Nagpur</SelectItem>
-                  <SelectItem value="tokyo">Mumbai</SelectItem>
+                  <SelectItem value="Chandrapur">Chandrapur</SelectItem>
+                  <SelectItem value="Gadchiroli">Gadchiroli</SelectItem>
+                  <SelectItem value="Nagpur">Nagpur</SelectItem>
+                  <SelectItem value="Mumbai">Mumbai</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            
             <Accordion type="single" collapsible className="w-full">
-              {filterType === 'product' ? (
+              {filterType === "product" ? (
                 <>
                   <AccordionItem value="product-category">
                     <AccordionTrigger>Product Category</AccordionTrigger>
                     <AccordionContent>
-                      <RadioGroup value={selectedProductCategory} onValueChange={handleProductCategoryChange}>
+                      <RadioGroup
+                        value={filterData.productCategory}
+                        onValueChange={(value) => {
+                          handleProductCategoryChange(value);
+                          handleChange("productCategory", value);
+                        }}
+                      >
                         {Object.keys(productCategories).map((category) => (
-                          <div key={category} className="flex items-center space-x-2">
-                            <RadioGroupItem value={category} id={`product-category-${category}`} />
-                            <Label htmlFor={`product-category-${category}`}>{category.charAt(0).toUpperCase() + category.slice(1)}</Label>
+                          <div
+                            key={category}
+                            className="flex items-center space-x-2"
+                          >
+                            <RadioGroupItem
+                              value={category}
+                              id={`product-category-${category}`}
+                            />
+                            <Label htmlFor={`product-category-${category}`}>
+                              {category.charAt(0).toUpperCase() +
+                                category.slice(1)}
+                            </Label>
                           </div>
                         ))}
                       </RadioGroup>
@@ -207,16 +292,26 @@ export default function NewFilterCard() {
                   <AccordionItem value="product-subcategory">
                     <AccordionTrigger>Product Subcategory</AccordionTrigger>
                     <AccordionContent>
-                      <Select value={selectedProductSubcategory} onValueChange={setSelectedProductSubcategory}>
+                      <Select
+                        value={filterData.productSubcategory}
+                        onValueChange={(value) =>
+                          handleChange("productSubcategory", value)
+                        }
+                      >
                         <SelectTrigger id="product-subcategory">
                           <SelectValue placeholder="Select a subcategory" />
                         </SelectTrigger>
                         <SelectContent>
-                          {productCategories[selectedProductCategory].map((subcategory) => (
-                            <SelectItem key={subcategory} value={subcategory.toLowerCase()}>
-                              {subcategory}
-                            </SelectItem>
-                          ))}
+                          {productCategories[selectedProductCategory].map(
+                            (subcategory) => (
+                              <SelectItem
+                                key={subcategory}
+                                value={subcategory.toLowerCase()}
+                              >
+                                {subcategory}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
                     </AccordionContent>
@@ -226,11 +321,22 @@ export default function NewFilterCard() {
                 <AccordionItem value="shop-category">
                   <AccordionTrigger>Shop Category</AccordionTrigger>
                   <AccordionContent>
-                    <RadioGroup value={selectedShopCategory} onValueChange={setSelectedShopCategory}>
+                    <RadioGroup
+                      value={selectedShopCategory}
+                      onValueChange={setSelectedShopCategory}
+                    >
                       {shopCategories.map((category) => (
-                        <div key={category} className="flex items-center space-x-2">
-                          <RadioGroupItem value={category} id={`shop-category-${category}`} />
-                          <Label htmlFor={`shop-category-${category}`}>{category}</Label>
+                        <div
+                          key={category}
+                          className="flex items-center space-x-2"
+                        >
+                          <RadioGroupItem
+                            value={category}
+                            id={`shop-category-${category}`}
+                          />
+                          <Label htmlFor={`shop-category-${category}`}>
+                            {category}
+                          </Label>
                         </div>
                       ))}
                     </RadioGroup>
@@ -238,18 +344,20 @@ export default function NewFilterCard() {
                 </AccordionItem>
               )}
             </Accordion>
-          
 
             {filterType === "product" && (
               <div className="space-y-2">
                 <Label>Rating</Label>
                 <Slider
-                  id="rating-slider"
+                  id="rating"
                   min={0}
                   max={5}
                   step={0.1}
-                  value={[rating]}
-                  onValueChange={(value) => setRating(value[0])}
+                  value={[filterData.rating]}
+                  onValueChange={(value) => {
+                    setRating(value[0]);
+                    handleChange("rating", value[0]);
+                  }}
                   className="mt-2"
                 />
                 <div className="text-sm text-muted-foreground mt-1">
@@ -291,7 +399,9 @@ export default function NewFilterCard() {
           </form>
         </CardContent>
         <CardFooter>
-          <Button className="w-full">Apply Filters</Button>
+          <Button onClick={handleSubmit} className="w-full">
+            Apply Filters
+          </Button>
         </CardFooter>
       </Card>
     </ScrollArea>

@@ -86,11 +86,15 @@ export const getAllProducts = async (req, res, next) => {
   try {
     const searchTerm = req.query.searchTerm || "";
     // const category = req.query.category || "";
+    const productCategory = req.query.productCategory || "";
+    const productSubcategory = req.query.productSubcategory || "";
     const city = req.query.city || "";
     const rating = req.query.rating || "";
 
     let query = {
-      productName: { $regex: searchTerm, $options: "" },
+      productName: { $regex: searchTerm, $options: "i" },
+      productCategory : { $regex: productCategory, $options: "i" },
+      productSubcategory : { $regex: productSubcategory, $options: "i" }
     };
 
     if (rating) {

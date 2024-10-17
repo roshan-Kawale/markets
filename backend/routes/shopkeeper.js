@@ -4,6 +4,6 @@ import authMiddleware from '../utils/authMiddleware.js';
 
 const router = express.Router();
 
-router.post("/create" , authMiddleware , createShopkeeper).post("/update" , updateShopkeeper).get("/get/:id" , getShopkeeper).delete("/delete/:id" , deleteShopkeeper)
+router.post("/create" ,createShopkeeper).post("/update" , updateShopkeeper).get("/get/:id" , getShopkeeper).delete("/delete/:id" , deleteShopkeeper)
 
 export default router;

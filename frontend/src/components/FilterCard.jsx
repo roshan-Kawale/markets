@@ -81,10 +81,6 @@ const FilterCardInput = ({ setOpen = () => {} }) => {
     }
   };
 
-  const handleRatingChange = (value) => {
-    setFilterData({ ...filterData, rating:value });
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();

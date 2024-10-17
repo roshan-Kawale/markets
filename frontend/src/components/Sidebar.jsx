@@ -10,11 +10,7 @@ import {
   EllipsisVertical,
 } from "lucide-react";
 import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "./ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import NewFilterCard from "./NewFiltercard";
 import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
@@ -29,7 +25,7 @@ import {
 } from "./ui/dropdown-menu";
 
 const SidebarData = () => {
-  const [user , setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,11 +37,11 @@ const SidebarData = () => {
   };
 
   const menuItems = [
-    { icon: Home, label: "Home" , link:"/" },
-    { icon: Filter, label: "Filter" , link:"#" },
-    { icon: Bell, label: "Notifications" , link:"/notifications" },
+    { icon: Home, label: "Home", link: "/" },
+    { icon: Filter, label: "Filter" },
+    { icon: Bell, label: "Notifications", link: "/notifications" },
     // { icon: ShoppingBag, label: "Products" },
-    { icon: Heart, label: "Saved" , link:"/saved" },
+    { icon: Heart, label: "Saved", link: "/saved" },
     // { icon: Map, label: "Local Shops" },
     // { icon: Settings, label: "Settings" },
   ];
@@ -74,10 +70,7 @@ const SidebarData = () => {
             <ul className="space-y-2 px-2">
               {menuItems.map((item, index) => (
                 <li key={index}>
-                  <Link
-                    to={`${item.link}`}
-                    className="flex items-center text-white space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-gray-900"
-                  >
+                  <div className="flex items-center text-white space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-gray-900">
                     <item.icon className="h-5 w-5" />
 
                     {item.label == "Filter" ? (
@@ -90,9 +83,11 @@ const SidebarData = () => {
                         </DialogContent>
                       </Dialog>
                     ) : (
-                      <span>{item.label}</span>
+                      <Link to={`${item.link}`}>
+                        <span>{item.label}</span>
+                      </Link>
                     )}
-                  </Link>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -100,9 +95,9 @@ const SidebarData = () => {
           {user.role == null && (
             <div className="p-2 border-t">
               <Link to="/login">
-              <div className="flex justify-center items-center gap-2 hover:bg-zinc-800/60 rounded-3xl py-2 px-4">
-                Sign In
-              </div>
+                <div className="flex justify-center items-center gap-2 hover:bg-zinc-800/60 rounded-3xl py-2 px-4">
+                  Sign In
+                </div>
               </Link>
             </div>
           )}
@@ -119,23 +114,30 @@ const SidebarData = () => {
                     <span className="text-sm text-gray-500">View Profile</span>
                   </Link>
                 </div>
-              <div className="absolute right-4 flex justify-end">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="outline-none">
-                    <EllipsisVertical />
-                  </DropdownMenuTrigger>
+                <div className="absolute right-4 flex justify-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="outline-none">
+                      <EllipsisVertical />
+                    </DropdownMenuTrigger>
 
-                  <DropdownMenuContent align="end" className="bg-[#2e2d2d] border-none">
-                    <DropdownMenuSeparator />
+                    <DropdownMenuContent
+                      align="end"
+                      className="bg-[#2e2d2d] border-none"
+                    >
+                      <DropdownMenuSeparator />
 
-                    <Link>
-                    <DropdownMenuItem onClick={handleSignOut} className="py-2 text-white">Sign Out</DropdownMenuItem>
-                    </Link>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      <Link>
+                        <DropdownMenuItem
+                          onClick={handleSignOut}
+                          className="py-2 text-white"
+                        >
+                          Sign Out
+                        </DropdownMenuItem>
+                      </Link>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
-              </div>
-              
             </div>
           )}
           {user.role === "consumer" && (
@@ -168,10 +170,8 @@ const SidebarData = () => {
 
 export default function Sidebar() {
   return (
-    
-      <div className=" bg-black relative shadow-xl rounded  px-4 py-6">
-        <SidebarData />
-      </div>
-  
+    <div className=" bg-black relative shadow-xl rounded  px-4 py-6">
+      <SidebarData />
+    </div>
   );
 }

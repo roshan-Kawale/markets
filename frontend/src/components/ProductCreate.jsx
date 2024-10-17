@@ -268,7 +268,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
             <button
               disabled={loading || uploading}
               type="submit"
-              className="absolute right-10 top-14 bg-green-500 mb-2 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="absolute right-10 top-14 bg-white mb-2 hover:underline text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               {loading ? "Add Product..." : "ADD"}
             </button>

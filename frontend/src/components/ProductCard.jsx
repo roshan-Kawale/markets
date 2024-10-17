@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosStar } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link , useParams } from "react-router-dom";
 import { useAtom } from "jotai";
 import { productAtom, userAtom } from "../atoms/store";
 import CommentCard from "./CommentCard";
@@ -27,6 +27,7 @@ const ProductCard = () => {
   const [user] = useAtom(userAtom);
   const [products, setProducts] = useAtom(productAtom);
   const { toast } = useToast()
+  const { search } = useParams();
 
   const [likeToggle, setLikeToggle] = useState(false);
   const [likesValue, setLikesValue] = useState("");
@@ -58,7 +59,7 @@ const ProductCard = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [window.location.search]);
 
   const handleLike = async ({ e, id }) => {
     e.preventDefault();
