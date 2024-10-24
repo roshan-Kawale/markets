@@ -70,7 +70,7 @@ const ProductCard = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: user._id }),
+        body: JSON.stringify({ userId: user._id , name : user.name }),
       });
       const data = await res.json();
       if (data.success === false) {

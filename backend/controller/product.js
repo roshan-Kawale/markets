@@ -1,5 +1,11 @@
 import Product from "../model/product.js";
 import Shopkeeper from "../model/shopkeeper.js";
+import dotenv from "dotenv";
+import { Knock } from "@knocklabs/node";
+
+dotenv.config();
+
+const knock = new Knock(process.env.KNOCK_Secret_KEY);
 
 export const createProduct = async (req, res, next) => {
   try {
@@ -149,7 +155,10 @@ export const getProductById = async (req, res, next) => {
 
 export const likeAndUnlikeProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate({
+      path: "owner",
+      select: "userId",
+    })
 
     if (!product) {
       return res.status(404).json({
@@ -164,6 +173,7 @@ export const likeAndUnlikeProduct = async (req, res) => {
       product.likes.splice(index, 1);
 
       await product.save();
+     
 
       return res.status(200).json({
         success: true,
@@ -173,6 +183,18 @@ export const likeAndUnlikeProduct = async (req, res) => {
       product.likes.push(req.body.userId);
 
       await product.save();
+
+      await knock.workflows.trigger("like-unlike", {
+        data: {
+          productName: product.productName,
+          userName: req.body.name || req.body.userId
+        },
+        recipients: [
+          {
+            id: product.owner.userId          
+          }
+        ]
+      })
 
       return res.status(200).json({
         success: true,
@@ -190,7 +212,7 @@ export const likeAndUnlikeProduct = async (req, res) => {
 export const commentOnProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    console.log(product);
+    
 
     if (!product) {
       return res.status(404).json({

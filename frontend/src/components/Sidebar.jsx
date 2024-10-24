@@ -23,6 +23,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import NotificationFeed from './NotificationFeed';
 
 const SidebarData = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -39,9 +40,9 @@ const SidebarData = () => {
   const menuItems = [
     { icon: Home, label: "Home", link: "/" },
     { icon: Filter, label: "Filter" },
-    { icon: Bell, label: "Notifications", link: "/notifications" },
-    // { icon: ShoppingBag, label: "Products" },
     { icon: Heart, label: "Saved", link: "/saved" },
+    { icon: NotificationFeed, label: "Notifications", link: "/" },
+    // { icon: ShoppingBag, label: "Products" },
     // { icon: Map, label: "Local Shops" },
     // { icon: Settings, label: "Settings" },
   ];
@@ -71,7 +72,7 @@ const SidebarData = () => {
               {menuItems.map((item, index) => (
                 <li key={index}>
                   <div className="flex items-center text-white space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-gray-900">
-                    <item.icon className="h-5 w-5" />
+                    <item.icon className="h-5 w-5 ml-1" />
 
                     {item.label == "Filter" ? (
                       <Dialog>

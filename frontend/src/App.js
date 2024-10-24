@@ -11,6 +11,7 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import ShopkeeperProfileEdit from './components/ShopkeeperProfileEdit';
 import ProductEditPage from './pages/ProductEditPage';
 import EmailVerify from './components/EmailVerify';
+import NotificationFeed from './components/NotificationFeed';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/profileEdit" element={<ShopkeeperProfileEdit/>} />
       <Route path="/productEdit/:productId" element={<ProductEditPage/>} />
       <Route path="/api/auth/:id/verify/:token" element={<EmailVerify/>} />
+      <Route path="/notifications" element={<NotificationFeed/>} />
       </Routes>
     </Router>
     </div>
