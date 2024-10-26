@@ -12,6 +12,7 @@ import ShopkeeperProfileEdit from './components/ShopkeeperProfileEdit';
 import ProductEditPage from './pages/ProductEditPage';
 import EmailVerify from './components/EmailVerify';
 import NotificationFeed from './components/NotificationFeed';
+import GoogleMap from './components/GoogleMap';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
       <Route path="/productEdit/:productId" element={<ProductEditPage/>} />
       <Route path="/api/auth/:id/verify/:token" element={<EmailVerify/>} />
       <Route path="/notifications" element={<NotificationFeed/>} />
+      <Route path="/map" element={<GoogleMap/>} />
       </Routes>
     </Router>
     </div>

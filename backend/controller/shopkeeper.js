@@ -7,8 +7,11 @@ export const createShopkeeper = async (req, res, next) => {
     const {
       userId,
       shopName,
-      shopAddress,
       shopDescription,
+      shopAddress,
+      location,
+      businessType,
+      businessLicense,
       contactNumber
     } = req.body;
 
@@ -41,8 +44,11 @@ export const createShopkeeper = async (req, res, next) => {
     const shopkeeper = new Shopkeeper({
       userId,
       shopName,
-      shopAddress,
       shopDescription,
+      shopAddress,
+      location,
+      businessType,
+      businessLicense,
       contactNumber
     });
 

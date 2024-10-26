@@ -20,10 +20,24 @@ const shopkeeperSchema = new mongoose.Schema({
     },
     required: true
   },
+  location: {
+    type : {
+      lat: {type: Number},
+      lng: {type: Number}
+    }
+  },
   shopDescription: {
     type: String
   },
-  contactNumber: [{
+  businessType: {
+    type: String,
+    required: true
+  },
+  businessLicense: {
+    type: String,
+    required: true
+  },
+  contactNumber: {
     type: String,
     required: true,
     validate: {
@@ -32,7 +46,7 @@ const shopkeeperSchema = new mongoose.Schema({
       },
       message: 'Invalid contact number. Please enter a 10-digit phone number.'
     }
-  }],
+  },
   products: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'
