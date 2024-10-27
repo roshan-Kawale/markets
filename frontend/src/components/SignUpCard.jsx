@@ -48,27 +48,18 @@ function SignUpCard() {
         setError(data.message);
         return;
       }
-      console.log(data);
+      
       setMsg(data.message);
       setLoading(false);
       setError(null);
       if (data.role !== "shopkeeper") {
         const value = await createCustomer(data._id);
         if (value) {
-          console.log("consumer create successfully");
+          console.log("costomer create successfully");
         }
       }
       return data.message || "Verification email sent! Please check your inbox to verify your account.";
-      // setUser(data);
-      // if (data.role === "shopkeeper") {
-      //   navigate("/detail");
-      // } else {
-      //   const value = await createCustomer(data._id);
-      //   if (value) {
-      //     navigate("/", { replace: true });
-      //   }
-      // }
-      
+     
     } catch (error) {
       setLoading(false);
       setError(error.message);

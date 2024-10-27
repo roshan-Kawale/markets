@@ -25,6 +25,7 @@ import {
 } from "./ui/dropdown-menu";
 import NotificationFeed from './NotificationFeed';
 
+
 const SidebarData = () => {
   const [user, setUser] = useAtom(userAtom);
 
@@ -42,9 +43,6 @@ const SidebarData = () => {
     { icon: Filter, label: "Filter" },
     { icon: Heart, label: "Saved", link: "/saved" },
     { icon: NotificationFeed, label: "Notifications", link: "/" },
-    // { icon: ShoppingBag, label: "Products" },
-    // { icon: Map, label: "Local Shops" },
-    // { icon: Settings, label: "Settings" },
   ];
 
   return (
@@ -102,14 +100,14 @@ const SidebarData = () => {
               </Link>
             </div>
           )}
-          {user.role === "shopkeeper" && (
+          {user.role !== null && (
             <div className="p-2 border-t">
               <div className="flex items-center gap-2 hover:bg-zinc-800/60 rounded-3xl py-2 px-4">
                 <User className="h-8 w-8 rounded-full bg-gray-200 p-1" />
                 <div>
                   <p className="font-medium">{user.name}</p>
                   <Link
-                    to={`/profile/${user._id}`}
+                    to={`/${user.role === "shopkeeper" ? "profile" : "customer"}/${user._id}`}
                     className="flex items-center space-x-3"
                   >
                     <span className="text-sm text-gray-500">View Profile</span>
@@ -138,19 +136,6 @@ const SidebarData = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-              </div>
-            </div>
-          )}
-          {user.role === "consumer" && (
-            <div className="p-2 border-t">
-              <div className="hover:bg-zinc-800/40 rounded-3xl py-2 px-4">
-                <a href="#" className="flex items-center space-x-3">
-                  <User className="h-8 w-8 rounded-full bg-gray-200 p-1" />
-                  <div>
-                    <p className="font-medium">{user.name}</p>
-                    <p className="text-sm text-gray-500">View Profile</p>
-                  </div>
-                </a>
               </div>
             </div>
           )}

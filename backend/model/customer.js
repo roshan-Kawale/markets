@@ -6,34 +6,15 @@ const customerSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  addresses: { type: [mongoose.Schema.Types.Mixed] },
-  contactNumber: {
+  Avatar : {
     type: String,
-    validate: {
-      validator: function (v) {
-        return /\d{10}/.test(v);
-      },
-      message: "Invalid contact number. Please enter a 10-digit phone number.",
-    },
   },
-  orders: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-    },
-  ],
-  cart: [
-    {
-      product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-      quantity: {
-        type: Number,
-        required: true,
-      },
-    },
-  ],
+  categories : [{
+    type: String
+  }],
+  cities : [{
+    type: String
+  }]
 });
 
 const Customer = mongoose.model("Customer", customerSchema);

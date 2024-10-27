@@ -3,7 +3,7 @@ import { BrowserRouter as Router , Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/HomePage';
-import ProfilePage from './pages/ProfilePage';
+import ProfilePage from './pages/ShopkeeperProfilePage';
 import DetailPage from './pages/DetailPage';
 import Protected from './auth/protected';
 import ProductCreatePage from './pages/ProductCreatePage';
@@ -13,6 +13,8 @@ import ProductEditPage from './pages/ProductEditPage';
 import EmailVerify from './components/EmailVerify';
 import NotificationFeed from './components/NotificationFeed';
 import GoogleMap from './components/GoogleMap';
+import CustomerProfile from './components/CustomerProfile';
+import ShopkeeperProfilePage from './pages/ShopkeeperProfilePage';
 
 function App() {
   return (
@@ -23,7 +25,8 @@ function App() {
       <Route path="/" element={<HomePage></HomePage>} />
       <Route path="/login" element={<LoginPage/>} />
       <Route path="/signup" element={<SignUpPage/>} />
-      <Route path="/profile/:userId" element={<ProfilePage/>} />
+      <Route path="/profile/:userId" element={<ShopkeeperProfilePage/>} />
+      <Route path="/customer/:userId" element={<CustomerProfile/>} />
       <Route path="/detail" element={<DetailPage/>} />
       <Route path="/productcreate" element={<ProductCreatePage/>} />
       <Route path="/productdetail/:productId" element={<ProductDetailPage/>} />

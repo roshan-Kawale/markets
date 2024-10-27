@@ -135,7 +135,7 @@ export const updateShopkeeper = async (req, res, next) => {
   }
 };
 
-export const getShopkeeper = async (req, res, next) => {
+export const getShopkeeper = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
