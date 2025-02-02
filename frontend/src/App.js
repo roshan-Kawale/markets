@@ -15,6 +15,8 @@ import GoogleMap from './components/GoogleMap';
 import CustomerProfile from './components/CustomerProfile';
 import ShopkeeperProfilePage from './pages/ShopkeeperProfilePage';
 import AdminPage from './pages/AdminPage';
+import NewProductCardPage from './pages/NewProductCardPage';
+import ProductCard from './components/NewProductCard';
 
 function App() {
   return (
@@ -36,6 +38,7 @@ function App() {
       <Route path="/api/auth/:id/verify/:token" element={<EmailVerify/>} />
       <Route path="/notifications" element={<NotificationFeed/>} />
       <Route path="/map" element={<GoogleMap/>} />
+      <Route path="/new" element={<NewProductCardPage />} />
       </Routes>
     </Router>
     </div>

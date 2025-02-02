@@ -85,7 +85,7 @@ const ProductCard = () => {
       setLoading(false);
       setError(error.message);
     } finally {
-      fetchData(); // Call fetchData again to re-fetch the product data
+      fetchData();
     }
   };
 
@@ -436,6 +436,7 @@ const ProductCard = () => {
               </form>
             </div>
           </div>
+          
         ))}
       </div>
     </>

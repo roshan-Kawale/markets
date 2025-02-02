@@ -20,6 +20,14 @@ const shopkeeperSchema = new mongoose.Schema({
     },
     required: true
   },
+  isShopkeeper : {
+    type: Boolean,
+    default : false
+  },
+  status : {
+    type : String,
+    default : "pending"
+  },
   location: {
     type : {
       lat: {type: Number},

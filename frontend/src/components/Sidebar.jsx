@@ -57,7 +57,7 @@ const SidebarData = () => {
         <span className="sr-only">Toggle Sidebar</span>
       </Button>
       <div
-        className={`fixed inset-y-0 xl:left-48 left-0 bg-black z-50 w-64  bg-background shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 xl:left-0 left-0 bg-[#121212] dark z-50 w-64  shadow-lg transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
@@ -156,7 +156,7 @@ const SidebarData = () => {
 
 export default function Sidebar() {
   return (
-    <div className=" bg-black relative shadow-xl rounded  px-4 py-6">
+    <div className="relative shadow-xl rounded  px-4 py-6">
       <SidebarData />
     </div>
   );

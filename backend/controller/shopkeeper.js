@@ -192,3 +192,12 @@ export const deleteShopkeeper = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getShopkeepers = async(req , res) => {
+  try {
+    const shopkeepers = await Shopkeeper.find().populate("userId" , "name email");
+    res.status(200).json(shopkeepers);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving shopkeepers" });
+  }
+}

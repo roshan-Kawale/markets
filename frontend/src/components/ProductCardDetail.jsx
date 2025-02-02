@@ -29,6 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Input } from "./ui/input";
 
 export default function Component() {
   const [user] = useAtom(userAtom);
@@ -36,6 +37,7 @@ export default function Component() {
 
   const [productData, setProductData] = useState({ comments: [] });
   const [likeandCommentToggle, setLikeAndCommnetToggle] = useState(true);
+  const [comment, setComment] = useState("")
   const [rating, setRating] = useState(null);
   const [ratingId, setRatingId] = useState(false);
 
@@ -110,6 +112,43 @@ export default function Component() {
       fetchProductData(); // Call fetchData again to re-fetch the product data
     }
   };
+
+  const addCommentHandler = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}api/product/comment/${productId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user._id, comment: comment }),
+        }
+      );
+      const data = await res.json();
+      if (data.success === false) {
+        setLoading(false);
+        setError(data.message);
+        return;
+      }
+      setComment("");
+      setLoading(false);
+      setError(null);
+    } catch (error) {
+      setLoading(false);
+      setError(error.message);
+    } finally {
+      fetchProductData();
+    }
+  };
+
+  const handleKeyPressComment = (e) => {
+    if (e.key === "Enter") {
+      addCommentHandler(e);
+    }
+  }
 
   return (
     <div className=" flex justify-center items-center mt-16">
@@ -287,7 +326,7 @@ export default function Component() {
                               <AvatarFallback>{`U${index}`}</AvatarFallback>
                             </Avatar>
                             <div>
-                              <Link to={`/profile/${comment?.user._id}`}>
+                              <Link  to={`/${user.role === "shopkeeper" ? "profile" : user.role=== "consumer" ? "customer" : ""}/${comment?.user._id}`}>
                                 <p className="text-sm font-medium">
                                   {comment.user.name}
                                 </p>
@@ -329,16 +368,26 @@ export default function Component() {
                   )}
                 </div>
               </CardContent>
-              <Link to="/">
+    
                 {likeandCommentToggle && (
                   <CardFooter>
-                    <Button variant="outline" className="w-full">
+                  <form onSubmit={addCommentHandler} className="w-full flex space-x-2">
+                    <Input
+                      type="text"
+                      placeholder="Add a comment..."
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      onKeyPress={handleKeyPressComment}
+                      className="flex-grow"
+                    />
+                    <Button type="submit" variant="outline" disabled={!comment.trim()}>
                       <MessageCircle className="w-4 h-4 mr-2" />
-                      Add a comment
+                      Submit
                     </Button>
-                  </CardFooter>
+                  </form>
+                </CardFooter>
                 )}
-              </Link>
+             
             </div>
           </div>
         </Card>

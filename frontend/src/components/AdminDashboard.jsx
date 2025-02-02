@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronDown, Eye, Search } from 'lucide-react'
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
@@ -29,37 +29,53 @@ import {
 
 // Mock data for shopkeepers
 const shopkeepers = [
-  { id: 1, name: "John Doe", status: "Approved", email: "john@example.com", document: "Valid business license and tax clearance certificate." },
-  { id: 2, name: "Jane Smith", status: "Pending", email: "jane@example.com", document: "Business registration documents submitted. Awaiting verification." },
-  { id: 3, name: "Bob Johnson", status: "Rejected", email: "bob@example.com", document: "Incomplete documentation. Missing proof of address and ID." },
-  { id: 4, name: "Alice Brown", status: "Approved", email: "alice@example.com", document: "All required documents verified and approved." },
-  { id: 5, name: "Charlie Davis", status: "Pending", email: "charlie@example.com", document: "Business license submitted. Pending review of financial statements." },
+  { id: 1, name: "John Doe", status: "approved", email: "john@example.com", document: "Valid business license and tax clearance certificate." },
+  { id: 2, name: "Jane Smith", status: "pending", email: "jane@example.com", document: "Business registration documents submitted. Awaiting verification." },
+  { id: 3, name: "Bob Johnson", status: "rejected", email: "bob@example.com", document: "Incomplete documentation. Missing proof of address and ID." },
+  { id: 4, name: "Alice Brown", status: "approved", email: "alice@example.com", document: "All required documents verified and approved." },
+  { id: 5, name: "Charlie Davis", status: "pending", email: "charlie@example.com", document: "Business license submitted. pending review of financial statements." },
 ]
 
 export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [shopkeeperData, setShopkeeperData] = useState(shopkeepers)
+  const [shopkeeperData, setShopkeeperData] = useState();
   const [selectedStatus, setSelectedStatus] = useState(null)
 
-  const filteredShopkeepers = shopkeeperData.filter(
+  const getShopkeepers = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_BASE_URL}api/shopkeeper/getall`
+        );
+        const data = await res.json();
+        setShopkeeperData(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+  }
+
+  useEffect(()=> {
+     getShopkeepers();
+  },[])
+
+  const filteredShopkeepers = shopkeeperData?.filter(
     (shopkeeper) =>
       (selectedStatus === null || shopkeeper.status === selectedStatus) &&
-      (shopkeeper.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       shopkeeper.email.toLowerCase().includes(searchTerm.toLowerCase()))
+      (shopkeeper.userId.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       shopkeeper.userId.email?.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
-  const statusCounts = shopkeeperData.reduce(
+  const statusCounts = shopkeeperData?.reduce(
     (acc, shopkeeper) => {
       acc[shopkeeper.status]++
       return acc
     },
-    { Approved: 0, Pending: 0, Rejected: 0 }
+    { approved: 0, pending: 0, rejected: 0 }
   )
 
   const handleStatusChange = (shopkeeperId, newStatus) => {
     setShopkeeperData(
       shopkeeperData.map((shopkeeper) =>
-        shopkeeper.id === shopkeeperId
+        shopkeeper._id === shopkeeperId
           ? { ...shopkeeper, status: newStatus }
           : shopkeeper
       )
@@ -79,41 +95,42 @@ export default function AdminDashboard() {
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
       
-      <div className="grid gap-4 md:grid-cols-3 mb-6">
+      {shopkeeperData?.length > 0 &&  <div>
+        <div className="grid gap-4 md:grid-cols-3 mb-6">
         <Card 
-          className={`cursor-pointer transition-colors ${selectedStatus === 'Approved' ? 'ring-2 ring-primary' : ''}`}
-          onClick={() => handleStatusCardClick('Approved')}
+          className={`cursor-pointer transition-colors ${selectedStatus === 'approved' ? 'ring-2 ring-primary' : ''}`}
+          onClick={() => handleStatusCardClick('approved')}
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Approved Shopkeepers</CardTitle>
-            <Badge variant="default">{statusCounts.Approved}</Badge>
+            <CardTitle className="text-sm font-medium">approved Shopkeepers</CardTitle>
+            <Badge variant="default">{statusCounts?.approved}</Badge>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{((statusCounts.Approved / shopkeeperData.length) * 100).toFixed(1)}%</div>
+            <div className="text-2xl font-bold">{((statusCounts?.approved / shopkeeperData?.length) * 100).toFixed(1)}%</div>
           </CardContent>
         </Card>
         <Card 
-          className={`cursor-pointer transition-colors ${selectedStatus === 'Pending' ? 'ring-2 ring-primary' : ''}`}
-          onClick={() => handleStatusCardClick('Pending')}
+          className={`cursor-pointer transition-colors ${selectedStatus === 'pending' ? 'ring-2 ring-primary' : ''}`}
+          onClick={() => handleStatusCardClick('pending')}
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Shopkeepers</CardTitle>
-            <Badge variant="secondary">{statusCounts.Pending}</Badge>
+            <CardTitle className="text-sm font-medium">pending Shopkeepers</CardTitle>
+            <Badge variant="secondary">{statusCounts.pending}</Badge>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{((statusCounts.Pending / shopkeeperData.length) * 100).toFixed(1)}%</div>
+            <div className="text-2xl font-bold">{((statusCounts.pending / shopkeeperData.length) * 100).toFixed(1)}%</div>
           </CardContent>
         </Card>
         <Card 
-          className={`cursor-pointer transition-colors ${selectedStatus === 'Rejected' ? 'ring-2 ring-primary' : ''}`}
-          onClick={() => handleStatusCardClick('Rejected')}
+          className={`cursor-pointer transition-colors ${selectedStatus === 'rejected' ? 'ring-2 ring-primary' : ''}`}
+          onClick={() => handleStatusCardClick('rejected')}
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Rejected Shopkeepers</CardTitle>
-            <Badge variant="destructive">{statusCounts.Rejected}</Badge>
+            <CardTitle className="text-sm font-medium">rejected Shopkeepers</CardTitle>
+            <Badge variant="destructive">{statusCounts.rejected}</Badge>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{((statusCounts.Rejected / shopkeeperData.length) * 100).toFixed(1)}%</div>
+            <div className="text-2xl font-bold">{((statusCounts.rejected / shopkeeperData.length) * 100).toFixed(1)}%</div>
           </CardContent>
         </Card>
       </div>
@@ -153,15 +170,15 @@ export default function AdminDashboard() {
           </TableHeader>
           <TableBody>
             {filteredShopkeepers.map((shopkeeper) => (
-              <TableRow key={shopkeeper.id} className="hover:bg-white hover:text-black">
-                <TableCell className="font-medium">{shopkeeper.name}</TableCell>
-                <TableCell>{shopkeeper.email}</TableCell>
+              <TableRow key={shopkeeper._id} className="hover:bg-[#121212]">
+                <TableCell className="font-medium">{shopkeeper.userId.name}</TableCell>
+                <TableCell>{shopkeeper.userId.email}</TableCell>
                 <TableCell>
                   <Badge
                     variant={
-                      shopkeeper.status === "Approved"
+                      shopkeeper.status === "approved"
                         ? "secondary"
-                        : shopkeeper.status === "Pending"
+                        : shopkeeper.status === "pending"
                         ? "default"
                         : "destructive"
                     }
@@ -178,13 +195,13 @@ export default function AdminDashboard() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => handleStatusChange(shopkeeper.id, "Approved")}>
+                        <DropdownMenuItem onClick={() => handleStatusChange(shopkeeper._id, "approved")}>
                           Approve
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleStatusChange(shopkeeper.id, "Pending")}>
-                          Set to Pending
+                        <DropdownMenuItem onClick={() => handleStatusChange(shopkeeper._id, "pending")}>
+                          Set to pending
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleStatusChange(shopkeeper.id, "Rejected")}>
+                        <DropdownMenuItem onClick={() => handleStatusChange(shopkeeper._id, "rejected")}>
                           Reject
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -212,8 +229,9 @@ export default function AdminDashboard() {
                           </DialogHeader>
                           <div className="mt-4">
                             <p className="text-sm text-gray-500">
-                              {shopkeeper.document}
+                              {shopkeeper.businessType}
                             </p>
+                            <img className='h-64 w-64' src={`${shopkeeper.businessLicense}`} alt="businessLicense" />
                           </div>
                         </DialogContent>
                       </Dialog>
@@ -224,6 +242,7 @@ export default function AdminDashboard() {
           </TableBody>
         </Table>
       </div>
+      </div>}
     </div>
   )
 }

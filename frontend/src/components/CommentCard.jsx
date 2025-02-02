@@ -59,7 +59,7 @@ const CommentCardData = ({ Comments, productId }) => {
       setLoading(false);
       setError(error.message);
     } finally {
-      fetchData(); // Call fetchData again to re-fetch the product data
+      fetchData();
     }
   };
 

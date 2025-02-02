@@ -58,6 +58,7 @@ const ShopProfileCard = () => {
           return;
         }
         console.log(data);
+        
         setIsShopkeeper(true);
         setShopkeeperData(data);
       } catch (error) {
@@ -90,7 +91,7 @@ const ShopProfileCard = () => {
 
   return (
     <>
-      {isShopkeeper ? (
+      {isShopkeeper &&  shopkeeperData?.shopkeeper.isShopkeeper ? (
         <div className=" p-4 sm:h-screen">
           <div className="flex flex-col gap-4 sm:fixed justify-start items-center">
             <div className="bg-black border-2 border-gray-800  sm:fixed sm:w-[96vw] sm:h-[33vh] rounded-3xl p-4 flex flex-col">
