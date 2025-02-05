@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import ProductCard from "../components/NewProductCard";
 import { productAtom, userAtom } from "../atoms/store";
 import { useAtom } from "jotai";
+import ProductCardSkeleton from "../components/ProductCardSkeleton";
 
 export default function NewProductCardPage() {
   const [products, setProducts] = useAtom(productAtom);
@@ -52,11 +53,21 @@ export default function NewProductCardPage() {
 
   return (
     <main className="container mx-auto flex items-center justify-center px-4 py-8 lg:ml-64 mt-10">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        {products?.map((product, index) => (
-          <ProductCard key={index} product={product} isLiked={handleLike} />
-        ))}
-      </div>
+      {products.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          {products?.map((product, index) => (
+            <ProductCard key={index} product={product} isLiked={handleLike} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          {Array(3)
+            .fill()
+            .map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))}
+        </div>
+      )}
     </main>
   );
 }

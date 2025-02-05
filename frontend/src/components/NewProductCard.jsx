@@ -2,21 +2,45 @@ import { useEffect, useState } from "react";
 import { Star, Heart, MessageCircle, Share2, Bookmark } from "lucide-react";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { productAtom, userAtom } from "../atoms/store";
+import { userAtom } from "../atoms/store";
 import { useAtom } from "jotai";
 import { useToast } from "../hooks/use-toast";
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ product, isLiked }) {
-  const [user] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   // const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  const [userData, setUserData] = useState(user);
 
   const { toast } = useToast();
 
+  console.log(userData);
+
   const [sliderId, setSliderId] = useState(null);
+
+  const handleSavedProduct = async ({ e, id }) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}api/auth/update`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user._id, savedProduct: id }),
+        }
+      );
+      const data = await res.json();
+      if (data.success === false) {
+        return;
+      }
+      setUser({ ...user, savedProduct: [...user.savedProduct, id] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSliderToggle = async ({ e, id }) => {
     e.preventDefault();
@@ -65,7 +89,12 @@ export default function ProductCard({ product, isLiked }) {
               />
             </div>
             <div className="p-4">
-              <Link to={`/profile/${product?.owner.userId}`} className="text-sm text-gray-500">{product?.owner.shopName}</Link>
+              <Link
+                to={`/profile/${product?.owner.userId}`}
+                className="text-sm text-gray-500"
+              >
+                {product?.owner.shopName}
+              </Link>
               <h2 className="text-lg font-semibold mt-1 truncate">
                 {product?.productName}
               </h2>
@@ -73,7 +102,7 @@ export default function ProductCard({ product, isLiked }) {
                 <div className="flex items-center">
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
                   <span className="ml-1 text-sm text-gray-600">
-                  {product?.overallRating}
+                    {product?.overallRating}
                   </span>
                   <span className="ml-1 text-sm text-gray-400">
                     ({product?.ratings.length})
@@ -119,10 +148,16 @@ export default function ProductCard({ product, isLiked }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className={isSaved ? "text-primary" : ""}
-                onClick={() => setIsSaved(!isSaved)}
+                className="text-primary"
+                onClick={(e) => handleSavedProduct({ e, id: product._id })}
               >
-                <Bookmark className="h-4 w-4 fill-current" />
+                <Bookmark
+                  className={`h-4 w-4 ${
+                    user?.savedProduct?.includes(product._id)
+                      ? "fill-current"
+                      : ""
+                  }`}
+                />
               </Button>
             </div>
           </CardFooter>

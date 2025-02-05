@@ -75,7 +75,8 @@ export const updateShopkeeper = async (req, res, next) => {
       shopAddress,
       shopDescription,
       contactNumber,
-      product
+      product,
+      status
     } = req.body;
 
     const validShopkeeper = await Shopkeeper.findById(shopkeeperId);
@@ -121,6 +122,16 @@ export const updateShopkeeper = async (req, res, next) => {
     validShopkeeper.shopAddress = shopAddress || validShopkeeper.shopAddress;
     validShopkeeper.shopDescription = shopDescription || validShopkeeper.shopDescription;
     validShopkeeper.contactNumber = contactNumber || validShopkeeper.contactNumber;
+    validShopkeeper.status = status || validShopkeeper.status;
+
+    if(status == "approved") {
+      validShopkeeper.isShopkeeper = true;
+    }
+
+    if(status == "pending" || status == "rejected") {
+      validShopkeeper.isShopkeeper = false;
+    }
+
 
     // Add products to shopkeeper
     if (product) {

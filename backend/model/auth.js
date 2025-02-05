@@ -22,7 +22,11 @@ const userSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
     default:false
-  }
+  },
+  savedProduct : [{
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'Product'
+  }],
 });
 
 const User = mongoose.model('User', userSchema);

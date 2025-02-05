@@ -27,15 +27,6 @@ import {
   TableRow,
 } from "./ui/table"
 
-// Mock data for shopkeepers
-const shopkeepers = [
-  { id: 1, name: "John Doe", status: "approved", email: "john@example.com", document: "Valid business license and tax clearance certificate." },
-  { id: 2, name: "Jane Smith", status: "pending", email: "jane@example.com", document: "Business registration documents submitted. Awaiting verification." },
-  { id: 3, name: "Bob Johnson", status: "rejected", email: "bob@example.com", document: "Incomplete documentation. Missing proof of address and ID." },
-  { id: 4, name: "Alice Brown", status: "approved", email: "alice@example.com", document: "All required documents verified and approved." },
-  { id: 5, name: "Charlie Davis", status: "pending", email: "charlie@example.com", document: "Business license submitted. pending review of financial statements." },
-]
-
 export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [shopkeeperData, setShopkeeperData] = useState();
@@ -72,14 +63,30 @@ export default function AdminDashboard() {
     { approved: 0, pending: 0, rejected: 0 }
   )
 
-  const handleStatusChange = (shopkeeperId, newStatus) => {
-    setShopkeeperData(
-      shopkeeperData.map((shopkeeper) =>
-        shopkeeper._id === shopkeeperId
-          ? { ...shopkeeper, status: newStatus }
-          : shopkeeper
+  const handleStatusChange = async (shopkeeperId, newStatus) => {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}api/shopkeeper/update` , {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({shopkeeperId, status : newStatus}),
+      });
+      const data = await res.json();
+      if(data.success === false) {
+        return;
+      }
+      setShopkeeperData(
+        shopkeeperData.map((shopkeeper) =>
+          shopkeeper._id === shopkeeperId
+            ? { ...shopkeeper, status: newStatus }
+            : shopkeeper
+        )
       )
-    )
+    } catch(error) {
+      console.log(error.message)
+    }
   }
 
   const handleViewDocuments = (shopkeeperId) => {

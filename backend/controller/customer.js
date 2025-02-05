@@ -74,24 +74,6 @@ export const getCustomer = async (req, res) => {
   }
 };
 
-// {
-//   "customer": {
-//     "_id": "671e1e2c675af45ea94e2768",
-//     "userId": "671e1e26675af45ea94e2762",
-//     "categories": [],
-//     "cities": [],
-//     "__v": 0
-//   },
-//   "userData": {
-//     "_id": "671e1e26675af45ea94e2762",
-//     "name": "Gajanan jadhav",
-//     "email": "gj876773@gmail.com",
-//     "role": "consumer",
-//     "verified": true,
-//     "__v": 0
-//   }
-// }
-
 export const updateCustomer = async (req, res, next) => {
   try {
     const { customerId, category, city } = req.body;

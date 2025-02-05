@@ -16,7 +16,7 @@ import CustomerProfile from './components/CustomerProfile';
 import ShopkeeperProfilePage from './pages/ShopkeeperProfilePage';
 import AdminPage from './pages/AdminPage';
 import NewProductCardPage from './pages/NewProductCardPage';
-import ProductCard from './components/NewProductCard';
+import SavedPage from './pages/SavedPage';
 
 function App() {
   return (
@@ -39,6 +39,7 @@ function App() {
       <Route path="/notifications" element={<NotificationFeed/>} />
       <Route path="/map" element={<GoogleMap/>} />
       <Route path="/new" element={<NewProductCardPage />} />
+      <Route path="/saved" element={<SavedPage />} />
       </Routes>
     </Router>
     </div>

@@ -2,12 +2,11 @@ import { useState } from "react";
 import {
   Home,
   Filter,
-  Bell,
   User,
-  Heart,
   Menu,
   X,
   EllipsisVertical,
+  Bookmark,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
@@ -41,7 +40,7 @@ const SidebarData = () => {
   const menuItems = [
     { icon: Home, label: "Home", link: "/" },
     { icon: Filter, label: "Filter" },
-    { icon: Heart, label: "Saved", link: "/saved" },
+    { icon: Bookmark, label: "Saved", link: "/saved" },
     { icon: NotificationFeed, label: "Notifications", link: "/" },
   ];
 
