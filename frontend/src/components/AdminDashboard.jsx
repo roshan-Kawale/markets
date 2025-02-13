@@ -26,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table"
+import { Link } from 'react-router-dom'
 
 export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -213,32 +214,18 @@ export default function AdminDashboard() {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                    {/* <Button variant="outline" className="text-black" size="sm" onClick={() => handleViewDocuments(shopkeeper.id)}>
-                      <Eye className="mr-2 h-4 w-4" /> View Documents
-                    </Button> */}
-                     {/* <Button variant="outline" size="sm" asChild>
-                        <Link href={`/dashboard/documents/${shopkeeper.id}`} target="_blank" rel="noopener noreferrer">
-                          <Eye className="mr-2 h-4 w-4" /> View Documents
-                        </Link>
-                      </Button> */}
                      <Dialog>
                         <DialogTrigger asChild>
                           <Button variant="outline" className="text-black" size="sm" onClick={() => handleViewDocuments(shopkeeper)}>
                             <Eye className="mr-2 h-4 w-4" /> View Documents
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px] text-black">
-                          <DialogHeader>
-                            <DialogTitle>Shopkeeper Documents</DialogTitle>
-                            <DialogDescription>
-                              Documents for {shopkeeper.name}
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="mt-4">
-                            <p className="text-sm text-gray-500">
-                              {shopkeeper.businessType}
-                            </p>
-                            <img className='h-64 w-64' src={`${shopkeeper.businessLicense}`} alt="businessLicense" />
+                        <DialogContent className="sm:max-w-[700px] h-[500px] text-black">
+                          <div className="">
+                            <Link to={`${shopkeeper.businessLicense}`}>
+                              View Business License
+                            </Link>
+                            <iframe className='w-full h-full' src={`${shopkeeper.businessLicense}`} alt="businessLicense" />
                           </div>
                         </DialogContent>
                       </Dialog>

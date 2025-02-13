@@ -23,7 +23,7 @@ import { userAtom, locationAtom } from "../atoms/store";
 import { useAtom } from "jotai";
 import { CardContent } from "./ui/card";
 import { MdDelete } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const shopCategories = ["Clothes", "Electronics", "Hardware"];
 
@@ -32,7 +32,7 @@ export default function ShopkeeperRegistration() {
   const [location, setLocation] = useAtom(locationAtom);
 
   const [uploadProgress, setUploadProgress] = useState(0);
-  
+
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -218,30 +218,32 @@ export default function ShopkeeperRegistration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-        try {
-          setLoading(true);
-          const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/shopkeeper/create`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(Data),
-          });
-          const data = await res.json();
-          console.log(data);
-          if (data.success === false) {
-            setLoading(false);
-            setErrors({...errors , submit: data.message});
-            return;
-          }
-          setLoading(false);
-          setErrors({...errors , submit: null});
-          navigate("/");
-        } catch (error) {
-          setLoading(false);
-          setErrors({...errors , submit: error.message});
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}api/shopkeeper/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(Data),
         }
-     
+      );
+      const data = await res.json();
+      console.log(data);
+      if (data.success === false) {
+        setLoading(false);
+        setErrors({ ...errors, submit: data.message });
+        return;
+      }
+      setLoading(false);
+      setErrors({ ...errors, submit: null });
+      navigate("/");
+    } catch (error) {
+      setLoading(false);
+      setErrors({ ...errors, submit: error.message });
+    }
   };
 
   return (
@@ -480,13 +482,9 @@ export default function ShopkeeperRegistration() {
                 {uploading && (
                   <div>
                     <p>File uploading : {Math.round(uploadProgress)}%</p>
-                    <Progress               
-                     value={uploadProgress}
-                      max="100"
-                    />
+                    <Progress value={uploadProgress} max="100" />
                   </div>
                 )}
-         
 
                 {formData.businessLicense && (
                   <div className="space-y-4 p-6 flex flex-col justify-center items-center">
@@ -494,26 +492,16 @@ export default function ShopkeeperRegistration() {
                       <CheckCircle2 className="mr-2 h-4 w-4" />
                       File uploaded:
                     </p>
-                    <div className="relative w-64 h-64">
-                      <div
-                        className="absolute inset-0 rounded-lg"
-                        style={{
-                          background: `linear-gradient(90deg, #f0f0f0, #000c40)`,
-                          backgroundSize: "200% 100%",
-                          backgroundPosition: `${gradientPosition}% 0`,
-                          padding: "3px",
-                        }}
-                      >
-                        <div className="relative w-full h-full bg-background rounded-lg overflow-hidden">
-                          <img
-                            src={formData.businessLicense}
-                            alt="Business License"
-                            className="w-full h-full object-contain"
-                          />
-                  
-                        </div>
-                        
-                      </div>
+
+                    <div className="">
+                      <Link to={`${formData.businessLicense}`}>
+                        View Business License
+                      </Link>
+                      <iframe
+                        className="sm:w-[500px] h-full"
+                        src={`${formData.businessLicense}`}
+                        alt="businessLicense"
+                      />
                     </div>
                   </div>
                 )}
@@ -547,8 +535,8 @@ export default function ShopkeeperRegistration() {
         </div>
       </form>
       {errors.submit && (
-                <p className="text-red-500 text-sm mt-1">{errors.submit}</p>
-              )}
+        <p className="text-red-500 text-sm mt-1">{errors.submit}</p>
+      )}
     </div>
   );
 }
