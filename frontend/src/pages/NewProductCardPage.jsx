@@ -3,10 +3,12 @@ import ProductCard from "../components/NewProductCard";
 import { productAtom, userAtom } from "../atoms/store";
 import { useAtom } from "jotai";
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
+import { useNavigate } from "react-router-dom";
 
 export default function NewProductCardPage() {
   const [products, setProducts] = useAtom(productAtom);
   const [user] = useAtom(userAtom);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -28,6 +30,9 @@ export default function NewProductCardPage() {
 
   const handleLike = async ({ e, id }) => {
     e.preventDefault();
+    if (!!user) {
+      navigate("/login");
+    }
     try {
       const res = await fetch(
         `${process.env.REACT_APP_BASE_URL}api/product/like/${id}`,

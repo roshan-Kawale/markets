@@ -167,6 +167,8 @@ export const likeAndUnlikeProduct = async (req, res) => {
       });
     }
 
+    if(!req.body.userId) return; // if user ID is undefined then not like
+
     if (product.likes.includes(req.body.userId)) {
       const index = product.likes.indexOf(req.body.userId);
 
