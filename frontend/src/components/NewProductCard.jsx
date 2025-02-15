@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Star, Heart, MessageCircle, Share2, Bookmark } from "lucide-react";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 export default function ProductCard({ product, isLiked }) {
   const [user, setUser] = useAtom(userAtom);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // const [isLiked, setIsLiked] = useState(false);
   const [userData, setUserData] = useState(user);
 
   const { toast } = useToast();
