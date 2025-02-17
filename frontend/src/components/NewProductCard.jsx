@@ -14,8 +14,6 @@ export default function ProductCard({ product, isLiked }) {
 
   const { toast } = useToast();
 
-  console.log(userData);
-
   const [sliderId, setSliderId] = useState(null);
 
   const handleSavedProduct = async ({ e, id }) => {
@@ -51,6 +49,12 @@ export default function ProductCard({ product, isLiked }) {
       if (data.success === false) {
         return;
       }
+
+      data.imageUrls.forEach((url)=> {
+        const img = new Image();
+        img.src = url;
+      });
+
       setCurrentImageIndex(0);
       setSliderId(id);
     } catch (error) {
@@ -71,6 +75,10 @@ export default function ProductCard({ product, isLiked }) {
                 )
               }
             >
+              {product.imageUrls?.length > 1 && <div className="absolute top-2 right-2 bg-[#121212] px-1 rounded-md">
+                {currentImageIndex+1}/{product.imageUrls?.length}
+              </div>}
+
               <img
                 src={
                   sliderId !== product?._id
@@ -84,7 +92,7 @@ export default function ProductCard({ product, isLiked }) {
                 alt={`${product?.productName} - Image ${currentImageIndex + 1}`}
                 layout="fill"
                 objectFit="cover"
-                className="w-full h-96 group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-96"
               />
             </div>
             <div className="p-4">
