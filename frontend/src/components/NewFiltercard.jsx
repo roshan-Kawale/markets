@@ -261,61 +261,58 @@ export default function NewFilterCard() {
             <Accordion type="single" collapsible className="w-full">
               {filterType === "product" ? (
                 <>
-                  <AccordionItem value="product-category">
-                    <AccordionTrigger>Product Category</AccordionTrigger>
-                    <AccordionContent>
-                      <RadioGroup
-                        value={filterData.productCategory}
-                        onValueChange={(value) => {
-                          handleProductCategoryChange(value);
-                          handleChange("productCategory", value);
-                        }}
-                      >
+                  <div className="space-y-2">
+                    <Label htmlFor="city">Product Category</Label>
+                    <Select
+                      id="city"
+                      value={filterData.productCategory}
+                      onValueChange={(value) => {
+                        handleProductCategoryChange(value);
+                        handleChange("productCategory", value);
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a city" />
+                      </SelectTrigger>
+
+                      <SelectContent>
                         {Object.keys(productCategories).map((category) => (
-                          <div
-                            key={category}
-                            className="flex items-center space-x-2"
+                          <SelectItem
+                            value={category}
+                            id={`product-category-${category}`}
                           >
-                            <RadioGroupItem
-                              value={category}
-                              id={`product-category-${category}`}
-                            />
-                            <Label htmlFor={`product-category-${category}`}>
-                              {category.charAt(0).toUpperCase() +
-                                category.slice(1)}
-                            </Label>
-                          </div>
+                            {category.charAt(0).toUpperCase() +
+                              category.slice(1)}
+                          </SelectItem>
                         ))}
-                      </RadioGroup>
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="product-subcategory">
-                    <AccordionTrigger>Product Subcategory</AccordionTrigger>
-                    <AccordionContent>
-                      <Select
-                        value={filterData.productSubcategory}
-                        onValueChange={(value) =>
-                          handleChange("productSubcategory", value)
-                        }
-                      >
-                        <SelectTrigger id="product-subcategory">
-                          <SelectValue placeholder="Select a subcategory" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {productCategories[selectedProductCategory].map(
-                            (subcategory) => (
-                              <SelectItem
-                                key={subcategory}
-                                value={subcategory.toLowerCase()}
-                              >
-                                {subcategory}
-                              </SelectItem>
-                            )
-                          )}
-                        </SelectContent>
-                      </Select>
-                    </AccordionContent>
-                  </AccordionItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="city">Product Subcategory</Label>
+                    <Select
+                      value={filterData.productSubcategory}
+                      onValueChange={(value) =>
+                        handleChange("productSubcategory", value)
+                      }
+                    >
+                      <SelectTrigger id="product-subcategory">
+                        <SelectValue placeholder="Select a subcategory" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {productCategories[selectedProductCategory].map(
+                          (subcategory) => (
+                            <SelectItem
+                              key={subcategory}
+                              value={subcategory.toLowerCase()}
+                            >
+                              {subcategory}
+                            </SelectItem>
+                          )
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </>
               ) : (
                 <AccordionItem value="shop-category">
