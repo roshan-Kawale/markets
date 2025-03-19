@@ -96,11 +96,14 @@ export const getAllProducts = async (req, res, next) => {
     const productSubcategory = req.query.productSubcategory || "";
     const city = req.query.city || "";
     const rating = req.query.rating || "";
+    const minPrice = parseFloat(req.query.minPrice) || 0;
+    const maxPrice = parseFloat(req.query.maxPrice) || Number.MAX_VALUE;
 
     let query = {
       productName: { $regex: searchTerm, $options: "i" },
       productCategory : { $regex: productCategory, $options: "i" },
-      productSubcategory : { $regex: productSubcategory, $options: "i" }
+      productSubcategory : { $regex: productSubcategory, $options: "i" },
+      price: { $gte: minPrice, $lte: maxPrice }, // Price range filter
     };
 
     if (rating) {

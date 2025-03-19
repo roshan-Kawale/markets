@@ -143,17 +143,16 @@ export default function NewFilterCard() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const searchTermFromUrl = urlParams.get("searchTerm");
-    const cityFromUrl = urlParams.get("city");
-    const ratingFromUrl = urlParams.get("rating");
 
-    if (searchTermFromUrl || cityFromUrl || ratingFromUrl) {
-      setFilterData({
-        searchTerm: searchTermFromUrl || "",
-        city: cityFromUrl || "",
-        rating: ratingFromUrl || "",
-      });
-    }
+    setFilterData({
+      searchTerm: urlParams.get("searchTerm") || "",
+      city: urlParams.get("city") || "",
+      rating: urlParams.get("rating") || "",
+      minPrice: urlParams.get("minPrice") || "",
+      maxPrice: urlParams.get("maxPrice") || "",
+      productCategory : urlParams.get("productCategory") || "",
+      productSubcategory : urlParams.get("productSubcategory") || "",
+    });
 
     const fetchProducts = async () => {
       try {
@@ -173,42 +172,21 @@ export default function NewFilterCard() {
   }, [window.location.search]);
 
   const handleChange = (id, value) => {
+    setFilterData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
     console.log(filterData);
-    if (id === "searchTerm") {
-      setFilterData({ ...filterData, searchTerm: value });
-    }
-    if (id === "city") {
-      setFilterData({ ...filterData, city: value });
-    }
-    if (id === "rating") {
-      setFilterData({ ...filterData, rating: value });
-    }
-    if (id === "productCategory") {
-      setFilterData({ ...filterData, productCategory: value });
-    }
-    if (id === "productSubcategory") {
-      setFilterData({ ...filterData, productSubcategory: value });
-    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-    if (filterData.searchTerm !== undefined) {
-      urlParams.set("searchTerm", filterData.searchTerm);
-    }
-    if (filterData.city !== undefined) {
-      urlParams.set("city", filterData.city);
-    }
-    if (filterData.rating !== undefined) {
-      urlParams.set("rating", filterData.rating);
-    }
-    if (filterData.productCategory !== undefined) {
-      urlParams.set("productCategory", filterData.productCategory);
-    }
-    if (filterData.productSubcategory !== undefined) {
-      urlParams.set("productSubcategory", filterData.productSubcategory);
-    }
+    Object.entries(filterData).forEach(([key, value]) => {
+      if (value !== "" && value !== null) {
+        urlParams.set(key, value);
+      }
+    });
     const searchQuery = urlParams.toString();
     navigate(`/?${searchQuery}`);
   };
@@ -262,9 +240,9 @@ export default function NewFilterCard() {
               {filterType === "product" ? (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="city">Product Category</Label>
+                    <Label htmlFor="productCategory">Product Category</Label>
                     <Select
-                      id="city"
+                      id="productCategory"
                       value={filterData.productCategory}
                       onValueChange={(value) => {
                         handleProductCategoryChange(value);
@@ -272,7 +250,7 @@ export default function NewFilterCard() {
                       }}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a city" />
+                        <SelectValue placeholder="Select a Category" />
                       </SelectTrigger>
 
                       <SelectContent>
@@ -296,7 +274,7 @@ export default function NewFilterCard() {
                         handleChange("productSubcategory", value)
                       }
                     >
-                      <SelectTrigger id="product-subcategory">
+                      <SelectTrigger id="productSubcategory">
                         <SelectValue placeholder="Select a subcategory" />
                       </SelectTrigger>
                       <SelectContent>
@@ -367,9 +345,33 @@ export default function NewFilterCard() {
               <div className="space-y-2">
                 <Label>Price Range</Label>
                 <div className="flex items-center space-x-2">
-                  <Input type="number" placeholder="Min" className="w-20" />
+                  <Input
+                    id="minPrice"
+                    value={filterData.minPrice}
+                    onChange={(e) =>
+                      handleChange(
+                        "minPrice",
+                        e.target.value ? parseFloat(e.target.value) : ""
+                      )
+                    }
+                    type="number"
+                    placeholder="Min"
+                    className="w-20"
+                  />
                   <span>to</span>
-                  <Input type="number" placeholder="Max" className="w-20" />
+                  <Input
+                    id="maxPrice"
+                    value={filterData.maxPrice}
+                    onChange={(e) =>
+                      handleChange(
+                        "maxPrice",
+                        e.target.value ? parseFloat(e.target.value) : ""
+                      )
+                    }
+                    type="number"
+                    placeholder="Max"
+                    className="w-20"
+                  />
                 </div>
               </div>
             )}
