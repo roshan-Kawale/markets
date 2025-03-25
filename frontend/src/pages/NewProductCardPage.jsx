@@ -30,8 +30,9 @@ export default function NewProductCardPage() {
 
   const handleLike = async ({ e, id }) => {
     e.preventDefault();
-    if (!!user) {
+    if (!user) {
       navigate("/login");
+      return;
     }
     try {
       const res = await fetch(
