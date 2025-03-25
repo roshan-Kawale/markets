@@ -11,7 +11,7 @@ import { IoMdAdd } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/store";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { updateShopkeeper } from "../api/shopkeeperApi";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Label } from "./ui/label";
@@ -127,15 +127,15 @@ const productCategories = {
   ],
 };
 
-export const ProductForm = ({ handleSubmit ,  setFormData}) => {
-  const [selectedProductCategory, setSelectedProductCategory] = useState('all')
-  const [selectedProductSubcategory, setSelectedProductSubcategory] = useState('')
+export const ProductForm = ({ handleSubmit, setFormData }) => {
+  const [selectedProductCategory, setSelectedProductCategory] = useState("all");
+  const [selectedProductSubcategory, setSelectedProductSubcategory] =
+    useState("");
 
   const handleProductCategoryChange = (value) => {
-    setSelectedProductCategory(value)
-    setSelectedProductSubcategory('')
-  }
-
+    setSelectedProductCategory(value);
+    setSelectedProductSubcategory("");
+  };
 
   const [formData, setFormDataState] = useState({
     imageUrls: [],
@@ -164,7 +164,6 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
     setFormData(formData);
   }, [formData, setFormData]);
 
-
   const fetchProductData = async () => {
     try {
       const res = await fetch(
@@ -173,14 +172,14 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
       const data = await res.json();
       console.log(data);
       setFormDataState({
-       productName: data.productName,
-       caption: data.caption,
-       price: data.price,
-       imageUrls: data.imageUrls,
-       discount: data.discount,
-       category: data.category,
-       productCategory: data.productCategory,
-       productSubcategory: data.productSubcategory,
+        productName: data.productName,
+        caption: data.caption,
+        price: data.price,
+        imageUrls: data.imageUrls,
+        discount: data.discount,
+        category: data.category,
+        productCategory: data.productCategory,
+        productSubcategory: data.productSubcategory,
       });
     } catch (error) {
       console.log(error.message);
@@ -188,7 +187,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
   };
 
   useEffect(() => {
-    if(productId){
+    if (productId) {
       fetchProductData();
     }
   }, []);
@@ -395,10 +394,7 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
                 />
               </div>
               <div className="mb-4 w-2/5">
-                <label
-                  htmlFor="discount"
-                  className="block  font-semibold mb-2"
-                >
+                <label htmlFor="discount" className="block  font-semibold mb-2">
                   Discount
                 </label>
                 <input
@@ -407,6 +403,8 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
                   className="shadow appearance-none  rounded w-full py-2 px-3 bg-gray-600/20 leading-tight focus:outline-none focus:shadow-outline"
                   value={formData.discount}
                   onChange={handleChange}
+                  min="0"
+                  max="99"
                 />
               </div>
             </div>
@@ -430,40 +428,66 @@ export const ProductForm = ({ handleSubmit ,  setFormData}) => {
                 required
               />
             </div> */}
-            <Accordion type="single" collapsible className="w-full flex gap-4">             
-                  <AccordionItem value="product-category" className="w-1/2">
-                    <AccordionTrigger>Product Category</AccordionTrigger>
-                    <AccordionContent>
-                    <ScrollArea className="h-24">
-                      <RadioGroup value={formData.productCategory} onValueChange={handleProductCategoryChange}>
-                        {Object.keys(productCategories).map((category) => (
-                          <div key={category} className="flex items-center space-x-2">
-                            <RadioGroupItem value={category} id="productCategory" className="text-white"/>
-                            <Label htmlFor="productCategory">{category.charAt(0).toUpperCase() + category.slice(1)}</Label>
-                          </div>
-                        ))}
-                      </RadioGroup>
-                    </ScrollArea>
-                    </AccordionContent>
-                  </AccordionItem>
+            <Accordion type="single" collapsible className="w-full flex gap-4">
+              <AccordionItem value="product-category" className="w-1/2">
+                <AccordionTrigger>Product Category</AccordionTrigger>
+                <AccordionContent>
+                  <ScrollArea className="h-24">
+                    <RadioGroup
+                      value={formData.productCategory}
+                      onValueChange={handleProductCategoryChange}
+                    >
+                      {Object.keys(productCategories).map((category) => (
+                        <div
+                          key={category}
+                          className="flex items-center space-x-2"
+                        >
+                          <RadioGroupItem
+                            value={category}
+                            id="productCategory"
+                            className="text-white"
+                          />
+                          <Label htmlFor="productCategory">
+                            {category.charAt(0).toUpperCase() +
+                              category.slice(1)}
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </ScrollArea>
+                </AccordionContent>
+              </AccordionItem>
 
-                  <AccordionItem value="productSubcategory" className="w-1/2 text-black">
-                    <AccordionTrigger className="text-white">Product Subcategory</AccordionTrigger>
-                    <AccordionContent>
-                      <Select value={formData.productSubcategory} onValueChange={setSelectedProductSubcategory}>
-                        <SelectTrigger id="productSubcategory">
-                          <SelectValue placeholder="Select a subcategory" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {productCategories[formData.productCategory || selectedProductCategory]?.map((subcategory) => (
-                            <SelectItem key={subcategory} value={subcategory.toLowerCase()}>
-                              {subcategory}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </AccordionContent>
-                  </AccordionItem>      
+              <AccordionItem
+                value="productSubcategory"
+                className="w-1/2 text-black"
+              >
+                <AccordionTrigger className="text-white">
+                  Product Subcategory
+                </AccordionTrigger>
+                <AccordionContent>
+                  <Select
+                    value={formData.productSubcategory}
+                    onValueChange={setSelectedProductSubcategory}
+                  >
+                    <SelectTrigger id="productSubcategory">
+                      <SelectValue placeholder="Select a subcategory" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {productCategories[
+                        formData.productCategory || selectedProductCategory
+                      ]?.map((subcategory) => (
+                        <SelectItem
+                          key={subcategory}
+                          value={subcategory.toLowerCase()}
+                        >
+                          {subcategory}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </AccordionContent>
+              </AccordionItem>
             </Accordion>
           </div>
         </div>
@@ -477,9 +501,8 @@ function ProductCreate() {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  const [formData, setFormData] = useState({});
 
+  const [formData, setFormData] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -490,16 +513,19 @@ function ProductCreate() {
         return setError("Discount price must be lower than regular price");
       setLoading(true);
       setError(false);
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}api/product/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          owner: user._id,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_BASE_URL}api/product/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            owner: user._id,
+          }),
+        }
+      );
       const data = await res.json();
       console.log(data);
       setLoading(false);
@@ -524,7 +550,7 @@ function ProductCreate() {
 
   return (
     <div className="p-5 mt-10">
-      <div className="text-2xl font-bold" >Add New Product</div>
+      <div className="text-2xl font-bold">Add New Product</div>
       <ProductForm handleSubmit={handleSubmit} setFormData={setFormData} />
     </div>
   );
