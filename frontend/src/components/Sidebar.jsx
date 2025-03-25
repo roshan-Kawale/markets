@@ -61,9 +61,11 @@ const SidebarData = () => {
         } lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
+          <Link to="/">
           <div className="p-4 border-b bg-zinc-800/40">
             <h1 className="text-2xl font-bold">LocalConnect</h1>
           </div>
+          </Link>
           <nav className="flex-1 overflow-y-auto py-4">
             <ul className="space-y-2 px-2">
               {menuItems.map((item, index) => (
