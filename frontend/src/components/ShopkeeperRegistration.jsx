@@ -25,7 +25,17 @@ import { CardContent } from "./ui/card";
 import { MdDelete } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 
-const shopCategories = ["Clothes", "Electronics", "Hardware" , "Appliances"];
+const shopCategories = [
+  "Clothes",
+  "Electronics",
+  "Hardware",
+  "Appliances",
+  "Toys store",
+  "Sweet shop",
+  "Convenience store",
+  "Medical shop",
+  "Cosmetics store"
+];
 
 export default function ShopkeeperRegistration() {
   const [user, setUser] = useAtom(userAtom);
