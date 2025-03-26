@@ -34,7 +34,8 @@ const shopCategories = [
   "Sweet shop",
   "Convenience store",
   "Medical shop",
-  "Cosmetics store"
+  "Cosmetics store",
+  "Sporting goods store"
 ];
 
 export default function ShopkeeperRegistration() {
