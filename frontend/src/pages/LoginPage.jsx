@@ -3,7 +3,7 @@ import LoginCard from '../components/LoginCard'
 
 function LoginPage() {
   return (
-    <div>
+    <div className="bg-black">
       <LoginCard/>
     </div>
   )

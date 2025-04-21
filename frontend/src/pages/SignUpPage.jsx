@@ -3,7 +3,7 @@ import SignUpCard from '../components/SignUpCard'
 
 function SignUpPage() {
   return (
-    <div>
+    <div className="bg-black">
       <SignUpCard/>
     </div>
   )
