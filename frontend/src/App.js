@@ -17,6 +17,10 @@ import ShopkeeperProfilePage from './pages/ShopkeeperProfilePage';
 import AdminPage from './pages/AdminPage';
 import NewProductCardPage from './pages/NewProductCardPage';
 import SavedPage from './pages/SavedPage';
+import MyBooking from './pages/MyBooking';
+import ShopkeeperBookingPage from './pages/ShopkeeperBookingPage';
+import ShopkeeperInventoryPage from './pages/ShopkeeperInventoryPage';
+import ShopkeeperDashboardPage from './pages/ShopkeeperDashboardPage';
 
 function App() {
   return (
@@ -40,6 +44,10 @@ function App() {
       <Route path="/map" element={<GoogleMap/>} />
       <Route path="/new" element={<NewProductCardPage />} />
       <Route path="/saved" element={<SavedPage />} />
+      <Route path="/mybooking" element={<MyBooking />} />
+      <Route path="/shopkeeper/bookings" element={<ShopkeeperBookingPage />} />
+      <Route path="/shopkeeper/inventory" element={<ShopkeeperInventoryPage />} />
+      <Route path="/shopkeeper/dashboard" element={<ShopkeeperDashboardPage />} />
       </Routes>
     </Router>
     </div>

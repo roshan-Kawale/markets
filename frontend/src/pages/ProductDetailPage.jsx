@@ -3,7 +3,7 @@ import ProductCardDetail from '../components/ProductCardDetail'
 
 function ProductDetailPage() {
   return (
-    <div>
+    <div className='bg-[#272629]'>
       <ProductCardDetail/>
     </div>
   )

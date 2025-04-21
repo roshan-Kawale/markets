@@ -7,10 +7,11 @@ import {
   X,
   EllipsisVertical,
   Bookmark,
+  BarChart,
+  Package,
+  ShoppingBag,
 } from "lucide-react";
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import NewFilterCard from "./NewFiltercard";
 import { Link } from "react-router-dom";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/store";
@@ -22,8 +23,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import NotificationFeed from './NotificationFeed';
-
+import NotificationFeed from "./NotificationFeed";
+import SideBarMenuItem from "./SideBarMenuItem";
 
 const SidebarData = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -38,10 +39,18 @@ const SidebarData = () => {
   };
 
   const menuItems = [
+    { icon: NotificationFeed},
     { icon: Home, label: "Home", link: "/" },
     { icon: Filter, label: "Filter" },
     { icon: Bookmark, label: "Saved", link: "/saved" },
-    { icon: NotificationFeed, label: "Notifications", link: "/" },
+  ];
+
+  const customerMenuItem = [{ icon: ShoppingBag, label: "My Booking", link: "/mybooking" }];
+
+  const shopkeeperMenuItem = [
+    { icon: ShoppingBag, label: "Booking", link: "/shopkeeper/bookings" },
+    { icon: Package, label: "Inventory", link: "/shopkeeper/inventory" },
+    { icon: BarChart, label: "Dashboard", link: "/shopkeeper/dashboard" },
   ];
 
   return (
@@ -62,35 +71,17 @@ const SidebarData = () => {
       >
         <div className="flex flex-col h-full">
           <Link to="/">
-          <div className="p-4 border-b bg-zinc-800/40">
-            <h1 className="text-2xl font-bold">LocalConnect</h1>
-          </div>
+            <div className="p-4 border-b bg-zinc-800/40">
+              <h1 className="text-2xl font-bold">LocalConnect</h1>
+            </div>
           </Link>
-          <nav className="flex-1 overflow-y-auto py-4">
-            <ul className="space-y-2 px-2">
-              {menuItems.map((item, index) => (
-                <li key={index}>
-                  <div className="flex items-center text-white space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-gray-900">
-                    <item.icon className="h-5 w-5 ml-1" />
-
-                    {item.label == "Filter" ? (
-                      <Dialog>
-                        <DialogTrigger>
-                          <span>{item.label}</span>
-                        </DialogTrigger>
-                        <DialogContent className="h-[90vh] text-black">
-                          <NewFilterCard />
-                        </DialogContent>
-                      </Dialog>
-                    ) : (
-                      <Link to={`${item.link}`}>
-                        <span>{item.label}</span>
-                      </Link>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
+          <nav className="flex-1 overflow-y-auto py-4 space-y-2">
+            <SideBarMenuItem menuItems={menuItems} />
+            {user.role === "shopkeeper" ? (
+              <SideBarMenuItem menuItems={shopkeeperMenuItem} />
+            ) : user.role === "consumer" ? (
+              <SideBarMenuItem menuItems={customerMenuItem} />
+            ) : null}
           </nav>
           {user.role == null && (
             <div className="p-2 border-t">
@@ -108,7 +99,13 @@ const SidebarData = () => {
                 <div>
                   <p className="font-medium">{user.name}</p>
                   <Link
-                    to={`/${user.role === "shopkeeper" ? "profile" : user.role=== "consumer" ? "customer" : "admin"}/${user._id}`}
+                    to={`/${
+                      user.role === "shopkeeper"
+                        ? "profile"
+                        : user.role === "consumer"
+                        ? "customer"
+                        : "admin"
+                    }/${user._id}`}
                     className="flex items-center space-x-3"
                   >
                     <span className="text-sm text-gray-500">View Profile</span>

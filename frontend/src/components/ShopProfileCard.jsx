@@ -92,9 +92,9 @@ const ShopProfileCard = () => {
   return (
     <>
       {isShopkeeper &&  shopkeeperData?.shopkeeper.isShopkeeper ? (
-        <div className=" p-4 sm:h-screen">
+        <div className=" p-4 sm:h-screen lg:ml-64 mt-10">
           <div className="flex flex-col gap-4 sm:fixed justify-start items-center">
-            <div className="bg-black border-2 border-gray-800  sm:fixed sm:w-[96vw] sm:h-[33vh] rounded-3xl p-4 flex flex-col">
+            <div className="bg-[#121212] border-2 border-gray-800 rounded-3xl  sm:fixed sm:w-[75vw] sm:h-[33vh] p-4 flex flex-col">
               <div className="flex sm:flex-row gap-8 p-4">
                 <div>
                   <img
@@ -131,7 +131,7 @@ const ShopProfileCard = () => {
                 {user._id === userId && (
                   <div
                     asChild
-                    className="absolute right-8 top-10 sm:top-6 cursor-pointer hover:text-green-300"
+                    className="absolute right-8 top-20 sm:top-6 cursor-pointer hover:text-green-300"
                   >
                     <DropdownMenu>
                       <DropdownMenuTrigger className="outline-none">
@@ -214,8 +214,8 @@ const ShopProfileCard = () => {
               </div>
             </div>
             {/* second div */}
-            <ScrollArea className="bg-black border-2 border-gray-800 rounded-3xl sm:mt-[34vh] h-[62vh] w-[96vw] relative">
-              <div className="flex px-8 py-4 gap-2 justify-start items-center sm:fixed absolute w-[95vw] rounded-tl-3xl bg-black">
+            <ScrollArea className="bg-[#121212] border-2 border-gray-800 rounded-3xl sm:mt-[34vh] h-[62vh] w-[75vw] relative">
+              <div className="flex px-8 py-4 gap-2 justify-start rounded-3xl items-center sm:fixed absolute w-[75vw] bg-[#121212]">
                 <div className="w-2 h-9 rounded-md bg-[#2cb6bd]"></div>
                 <h2 className="text-xl">Posts</h2>
                 {user._id === userId && (
